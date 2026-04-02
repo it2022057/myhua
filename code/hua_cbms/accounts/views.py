@@ -1,0 +1,246 @@
+from django.contrib.auth import get_user_model, logout, update_session_auth_hash
+from django.contrib.auth.decorators import login_required
+from django.core.signing import TimestampSigner, SignatureExpired, BadSignature
+from django.shortcuts import render, redirect, get_object_or_404
+from django.urls import reverse_lazy
+from django.utils.safestring import mark_safe
+from django.utils.translation import gettext_lazy as _
+
+from hua_cbms import settings
+from .checks import app_urls, is_secretariat, is_staff_member
+from .forms import SignUpForm, RegisterForm, PasswordForm, ForgotPasswordForm
+from .utils import complexity_message, get_domain_uri, send_password_link
+
+
+# Create your views here.
+
+def render_unauthorized_staff(request):
+    msg1 = _('Δεν είστε δηλωμένος στο σύστημα ως μέλος του ιδρύματος.')
+    return render(request, 'accounts/message.html',
+                  context={'message': msg1})
+
+
+
+@login_required
+def index(request):
+    # return HttpResponse("This is index view")
+    if is_secretariat(request.user):
+        return redirect('accounts:dashboard')
+    elif is_staff_member(request.user):
+        return redirect('accounts:dashboard')
+
+    return redirect('accounts:dashboard')
+
+
+@login_required
+def logout_view(request):
+    logout(request)
+    msg1 = _('Αποσυνδεθήκατε από το σύστημα. Ευχαριστούμε που χρησιμοποιήσατε την υπηρεσία μας. ')
+    msg2 = _('Συνδεθείτε ξανά')
+    here = _('εδώ')
+    return render(request,
+                  'accounts/message.html',
+                  context={'message':
+                               """
+                                 %s </br> </br>
+                                 %s <a href="%s"> %s </a>
+                                 """ % (msg1, msg2, reverse_lazy('accounts:index'), here)})
+
+
+def signup(request, token):
+    logout(request)
+    signer = TimestampSigner()
+    try:
+        unsigned = signer.unsign_object(token, max_age=settings.INVITATION_REFERENCE_MAX_AGE_SECS)
+        email = unsigned['email']
+    except SignatureExpired:
+        message = _('H πρόκληση να εγγραφείτε έχει λήξει. Θα πρέπει να επαναλάβετε την διαδικασία.')
+        return render(request, 'accounts/message.html', context={'message': message})
+
+    except BadSignature:
+        message = _('O σύνδεσμος δεν είναι σωστός!')
+        return render(request, 'accounts/message.html', context={'message': message})
+
+    UserModel = get_user_model()
+
+    if UserModel.objects.filter(username=email).count() > 0:
+        message = _('Έχετε ήδη εγγραφεί στο σύστημα!')
+        return render(request, 'accounts/message.html', context={'message': message})
+
+    if request.method == "POST":
+
+        form = SignUpForm(request.POST, email=email)
+        if form.is_valid():
+            cleaned_data = form.cleaned_data
+            email = cleaned_data['email']
+            name = cleaned_data['name']
+            surname = cleaned_data['surname']
+            password = cleaned_data['password1']
+            user = UserModel.objects.create_user(email, email=email, password=password, first_name=name,
+                                                 last_name=surname)
+            user.save()
+            return redirect('accounts:signup_success')
+        else:
+            alertclass = "alert alert-info"
+
+    else:
+        form = SignUpForm(email=email)
+        alertclass = "alert alert-info"
+
+    return render(request, "accounts/signup.html",
+                  {"form": form, "password_policy": mark_safe(complexity_message()), "alertclass": alertclass})
+
+
+def signup_success(request):
+    msg1 = _('Εγγραφήκατε επιτυχώς στο σύστημα!')
+    msg2 = _('Συνδεθείτε ξανά')
+    msg3 = _('εδώ')
+    return render(request,
+                  'accounts/message.html',
+                  context={'message':
+                               """
+                                 %s </br></br>
+                                 %s <a href="%s"> %s </a>
+                                 """ % (msg1, msg2, reverse_lazy('accounts:index'), msg3)})
+
+
+def register(request):
+    back_url = reverse_lazy('accounts:index')
+    domain = get_domain_uri(request)
+    if request.method == "POST":
+
+        form = RegisterForm(request.POST)
+        if form.is_valid():
+            signer = TimestampSigner()
+            email = form.cleaned_data['email1']
+            signed_data = signer.sign_object({'email': email})
+            url = domain + reverse_lazy('accounts:signup', kwargs={'token': signed_data})
+            #message_body = settings.REGISTRATION_MESSAGE.format(url=url)
+            #notify.delay(email, settings.REGISTRATION_SUBJECT, message_body)
+            return redirect('accounts:register_success')
+        else:
+            return render(request, "accounts/register.html", {"form": form, "back_url": back_url})
+    else:
+        form = RegisterForm()
+    return render(request, "accounts/register.html", {"form": form, "back_url": back_url})
+
+
+def register_success(request):
+    return render(request,
+                  'accounts/message.html',
+                  context={'message': _(
+                      'Έχει αποσταλλεί e-mail στην διεύθυνση που δηλώσατε για να ενεργοποιήσετε το λογαριασμό σας')})
+
+
+# Landing page for apps destined for the general public (after registration)
+@login_required
+def dashboard(request):
+    user = request.user
+    apps = app_urls(user)
+    return render(request,
+                  'accounts/landing.html',
+                  context={'apps': apps}
+                  )
+
+
+@login_required
+def password_change(request):
+    user = request.user
+    success_url = reverse_lazy('accounts:dashboard')
+
+    if settings.INTERNAL_DOMAIN in user.email:
+        msg1 = _(
+            'Είστε ιδρυματικός χρήστης. Θα πρέπει να αλλάξετε τον κωδικό χρησιμοποιώντας τα κεντρικά συστήματα του ιδρύματος')
+        msg2 = _('Επιστροφή')
+        message = """
+                <p> %s </p>
+                <a href="%s" class="alert-link"> %s </a>
+                """ % (msg1, success_url, msg2)
+        return render(request, 'accounts/message.html', context={'message': mark_safe(message)})
+
+    if request.method == 'POST':
+        form = PasswordForm(request.POST)
+        if form.is_valid():
+            password = form.cleaned_data['password1']
+            user.set_password(password)
+            user.save()
+            update_session_auth_hash(request, user)
+            msg1 = _('Ο κωδικός σας έχει αλλάξει.')
+            msg2 = _('Επιστροφή')
+            message = """
+                <p> %s </p>
+                </br>
+                <a href="%s" class="alert-link"> %s </a>
+                """ % (msg1, success_url, msg2)
+            return render(request, 'accounts/message.html',
+                          context={
+                              'message': mark_safe(message),
+                              'back_url': success_url})
+    else:
+        form = PasswordForm()
+
+    return render(request, "accounts/changepassword.html",
+                  context={"form": form, "password_policy": mark_safe(complexity_message()),
+                           "alertclass": "alert alert-info",
+                           "back_url": success_url})
+
+
+def forgot_password(request):
+    back_url = reverse_lazy('accounts:index')
+    if request.method == 'POST':
+        form = ForgotPasswordForm(request.POST)
+        if form.is_valid():
+            email = form.cleaned_data['email1']
+            send_password_link(request, email)
+            msg = _('Παρακαλούμε ελέγξτε την διεύθυνση ηλεκτρονικού ταχυδρομείου που καταχωρήσατε για την συνέχεια.')
+            message = """
+                <p> %s </p>
+            """ % msg
+            return render(request, 'accounts/message.html',
+                          context={'message': mark_safe(message), "back_url": back_url})
+        else:
+            return render(request, "accounts/forgotpassword.html", {"form": form, "back_url": back_url})
+    else:
+        form = ForgotPasswordForm()
+        return render(request, "accounts/forgotpassword.html", {"form": form, "back_url": back_url})
+
+
+def password_reset_choice(request):
+    return render(request, 'accounts/password_reset_choice.html')
+
+
+def password_token(request, token):
+    signer = TimestampSigner()
+    try:
+        invitation = signer.unsign_object(token, max_age=settings.PASSWORD_RESET_LINK_AGE)
+    except SignatureExpired:
+        message = _('Ο σύνδεσμος αυτός έχει λήξει.')
+        return render(request, 'accounts/message.html', context={'message': message})
+    except BadSignature:
+        message = _('O σύνδεσμος δεν είναι σωστός!')
+        return render(request, 'accounts/message.html', context={'message': message})
+    email = invitation['email']
+    UserModel = get_user_model()
+    user = get_object_or_404(UserModel, email=email)
+    if request.method == 'POST':
+        form = PasswordForm(request.POST)
+        if form.is_valid():
+            password = form.cleaned_data['password1']
+            user.set_password(password)
+            user.save()
+            success_url = reverse_lazy('accounts:dashboard')
+            msg1 = _('Ο κωδικός σας έχει αλλάξει.')
+            msg2 = _('Επιστροφή')
+            message = """
+                <p> %s </p>
+                </br>
+                <a href="%s" class="alert-link">%s</a>
+                """ % (msg1, success_url, msg2)
+            return render(request, 'accounts/message.html', context={'message': mark_safe(message)})
+    else:
+        form = PasswordForm()
+
+    return render(request, "accounts/changepassword.html",
+                  {"form": form, "password_policy": mark_safe(complexity_message()), "alertclass": "alert alert-info"})
+
+

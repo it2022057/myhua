@@ -1,0 +1,1732 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-04-01 15:05+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: accounts/app_landings.py:45
+#: subjects/views.py:
+msgid "Θέματα"
+msgstr "Subjects"
+
+#: accounts/app_landings.py:139
+msgid "Διαχείριση συνθηματικού"
+msgstr "Password management"
+
+#: accounts/checks.py:167
+#, python-format
+msgid "Πρέπει να χρησιμοποιήσετε τουλάχιστον %d χαρακτήρες για κωδικό"
+msgstr "You must use at least %d characters for the password"
+
+#: accounts/checks.py:170
+msgid "Οι δύο κωδικοί δεν ταιριάζουν!"
+msgstr "The two passwords do not match!"
+
+#: accounts/checks.py:186
+msgid ""
+"Χρησιμοποιήστε μόνο ψηφία από 0 εώς 9, λατινικούς ή τους ειδικούς χαρακτήρες "
+"που αναφέρονται παραπάνω."
+msgstr ""
+"Use only digits from 0 to 9, Latin letters, or the special characters listed "
+"above."
+
+#: accounts/checks.py:189
+msgid "Δεν έχετε χρησιμοποιήσει τουλάχιστον ένα ψηφίο από 0 εώς 9"
+msgstr "You have not used at least one digit from 0 to 9"
+
+#: accounts/checks.py:192
+msgid "Δεν έχετε χρησιμοποιήσει τουλάχιστον ένα λατινικό κεφαλαίο γράμμα"
+msgstr "You have not used at least one uppercase Latin letter"
+
+#: accounts/checks.py:195
+msgid "Δεν έχετε χρησιμοποιήσει τουλάχιστον ένα λατινικό πεζό γράμμα"
+msgstr "You have not used at least one lowercase Latin letter"
+
+#: accounts/checks.py:198
+msgid "Δεν έχετε χρησιμοποιήσει τουλάχιστον δύο ειδικούς χαρακτήρες"
+msgstr "You have not used at least two special characters"
+
+#: accounts/forms.py:13
+msgid "Το email σας"
+msgstr "Your email"
+
+#: accounts/forms.py:14
+msgid "To μικρό σας όνομα"
+msgstr "Your first name"
+
+#: accounts/forms.py:15
+msgid "To επίθετο σας"
+msgstr "Your last name"
+
+#: accounts/forms.py:16
+msgid "Κωδικός πρόσβασης"
+msgstr "Password"
+
+#: accounts/forms.py:17
+msgid "Κωδικός πρόσβασης (επανάληψη)"
+msgstr "Password (confirmation)"
+
+#: accounts/forms.py:28
+msgid "Παρακαλούμε τηρήστε τις οδηγίες στην οθόνη για τον κωδικό σας!"
+msgstr "Please follow the on-screen instructions for your password!"
+
+#: accounts/forms.py:39
+msgid "Δεν μπορείτε να χρησιμοποιήσετε διεύθυνση ταχυδρομείου @"
+msgstr "You cannot use an email address with @"
+
+#: accounts/forms.py:44 accounts/forms.py:71
+msgid "Υπάρχει ήδη χρήστης με αυτό το e-mail"
+msgstr "A user with this email already exists"
+
+#: accounts/forms.py:50 accounts/forms.py:74
+msgid "Το e-mail σας:"
+msgstr "Your email:"
+
+#: accounts/forms.py:51 accounts/forms.py:75
+msgid "Το e-mail σας (ξανά):"
+msgstr "Your email (again):"
+
+#: accounts/forms.py:57 accounts/forms.py:81
+msgid "Εισάγετε μία έγκυρη διεύθυνση ηλεκτρονικού ταχυδρομείου"
+msgstr "Enter a valid email address"
+
+#: accounts/forms.py:63 accounts/forms.py:87
+msgid "Τα email πρέπει να ταυτίζονται!"
+msgstr "The email addresses must match!"
+
+#: accounts/forms.py:66 accounts/forms.py:90
+msgid "Αν έχετε ήδη email της μορφής @"
+msgstr "If you already have an email of the form @"
+
+#: accounts/forms.py:66
+msgid " δεν χρειάζεται να εγγραφείτε."
+msgstr " you do not need to register."
+
+#: accounts/forms.py:90
+msgid " δεν μπορείτε να επαναφέρετε τον κωδικό σας μέσω αυτού του συστήματος."
+msgstr " you cannot reset your password through this system."
+
+#: accounts/forms.py:95
+msgid "Δεν υπάρχει χρήστης με αυτό το e-mail"
+msgstr "There is no user with this email"
+
+#: accounts/forms.py:100
+msgid "Νέος κωδικός πρόσβασης"
+msgstr "New password"
+
+#: accounts/forms.py:101
+msgid "Νέος κωδικός πρόσβασης (επανάληψη)"
+msgstr "New password (repeat)"
+
+#: accounts/models.py:42
+msgid "Άρρεν"
+msgstr "Male"
+
+#: accounts/models.py:43
+msgid "Θήλυ"
+msgstr "Female"
+
+#: accounts/models.py:44
+msgid "Άλλο"
+msgstr "Other"
+
+#: accounts/templates/accounts/changepassword.html:6
+msgid "Αλλαγή Κωδικού"
+msgstr "Change Password"
+
+#: accounts/templates/accounts/changepassword.html:16
+#: accounts/templates/accounts/forgotpassword.html:6
+#: accounts/templates/accounts/forgotpassword.html:11
+msgid "Επαναφορά Κωδικού"
+msgstr "Password Reset"
+
+#: accounts/templates/accounts/forgotpassword.html:7
+msgid "Παρακαλούμε πληκτορολογήστε το email με το οποίο συνδέεστε στο σύστημα"
+msgstr "Please enter the email address you use to log in to the system"
+
+#: accounts/templates/accounts/landing.html:4
+msgid "Κεντρική Σελίδα"
+msgstr "Home Page"
+
+#: accounts/templates/accounts/landing.html:5
+msgid "Καλώς ορίσατε στην εφαρμογή μας."
+msgstr "Welcome to our application."
+
+#: accounts/templates/accounts/landing.html:6
+msgid "Μπορείτε να έχετε πρόσβαση στις εξής εφαρμογές"
+msgstr "You can access the following applications"
+
+#: accounts/templates/accounts/page.html:48
+msgid "Κεντρική"
+msgstr "Home"
+
+#: accounts/templates/accounts/page.html:49
+msgid "Έξοδος"
+msgstr "Logout"
+
+#: accounts/templates/accounts/page.html:88
+#: accounts/templates/accounts/page.html:95 accounts/views.py:154
+#: accounts/views.py:169 accounts/views.py:233
+msgid "Επιστροφή"
+msgstr "Back"
+
+#: accounts/templates/accounts/password_reset_choice.html:6
+msgid "Επαναφορά κωδικού"
+msgstr "Password Reset"
+
+#: accounts/templates/accounts/password_reset_choice.html:7
+msgid "Επιλέξτε ένα από τα παρακάτω"
+msgstr "Select one of the following"
+
+#: accounts/templates/accounts/password_reset_choice.html:13
+msgid "Εσωτερικός Χρήστης"
+msgstr "Institutional User"
+
+#: accounts/templates/accounts/password_reset_choice.html:14
+#: accounts/templates/accounts/password_reset_choice.html:19
+msgid "Είστε εσωτερικός χρήστης"
+msgstr "You are an institutional user"
+
+#: accounts/templates/accounts/password_reset_choice.html:14
+msgid "δηλαδή συνδέεστε με ιδρυματικό email"
+msgstr "i.e. you connect to the system with an institutional email"
+
+#: accounts/templates/accounts/password_reset_choice.html:15
+#: accounts/templates/accounts/password_reset_choice.html:20
+msgid "Μεταβείτε"
+msgstr "Go to"
+
+#: accounts/templates/accounts/password_reset_choice.html:15
+#: accounts/templates/accounts/password_reset_choice.html:20
+#: accounts/views.py:40 accounts/views.py:97
+msgid "εδώ"
+msgstr "here"
+
+#: accounts/templates/accounts/password_reset_choice.html:15
+#: accounts/templates/accounts/password_reset_choice.html:20
+msgid "για να επαναφέρετε τον κωδικό σας"
+msgstr "to reset your password"
+
+#: accounts/templates/accounts/password_reset_choice.html:18
+msgid "Εξωτερικός Χρήστης"
+msgstr "External User"
+
+#: accounts/templates/accounts/password_reset_choice.html:19
+msgid "δηλαδή συνδέεστε με κάποιο εξωτερικό email"
+msgstr "i.e. you connect to the system using some external email"
+
+#: accounts/templates/accounts/register.html:6
+msgid "Παρακαλούμε καταχωρείστε το e-mail σας"
+msgstr "Please enter your email address"
+
+#: accounts/templates/accounts/register.html:7
+msgid ""
+"Θα σας στείλουμε e-mail επιβεβαίωσης για να επαληθεύσετε την ηλεκτρονική σας "
+"διεύθυνση"
+msgstr "We will send you a confirmation email to verify your email address"
+
+#: accounts/templates/accounts/register.html:12
+#: accounts/templates/accounts/signup.html:16
+msgid "Εγγραφή!"
+msgstr "Register!"
+
+#: accounts/templates/accounts/signup.html:7
+msgid "Παρακαλούμε καταχωρείστε τα στοιχεία σας"
+msgstr "Please enter your details"
+
+#: accounts/templates/registration/login.html:8
+msgid "Δεν δώσατε σωστό συνδυασμό email και συνθηματικού"
+msgstr "You did not provide a valid email and password combination"
+
+#: accounts/templates/registration/login.html:15
+msgid "Είστε ήδη συνδεδεμένος."
+msgstr "You are already logged in."
+
+#: accounts/templates/registration/login.html:20
+msgid "Παρακαλούμε συνδεθείτε με τον λογαριασμό σας."
+msgstr "Please log in with your account."
+
+#: accounts/templates/registration/login.html:52
+msgid "Email"
+msgstr "Email"
+
+#: accounts/templates/registration/login.html:54
+msgid "Συνθηματικό"
+msgstr "Password"
+
+#: accounts/templates/registration/login.html:61
+msgid "Εισοδος"
+msgstr "Login"
+
+#: accounts/templates/registration/login.html:66
+msgid "Εγγραφή"
+msgstr "Register"
+
+#: accounts/templates/registration/login.html:71
+msgid "Ξέχασα τον κωδικό μου"
+msgstr "I forgot my password"
+
+#: accounts/utils.py:27
+#, python-format
+msgid ""
+"Για το κωδικό σας πρέπει να χρησιμοποιήσετε κωδικό που να περιέχει "
+"τουλάχιστον %(num)d χαρακτήρες με:"
+msgstr "Choose a password with at least %(num)d characters with:"
+
+#: accounts/utils.py:30
+#, python-format
+msgid "%(num)d τουλάχιστον λατινικούς κεφαλαίους χαρακτήρες"
+msgstr "%(num)d at least latin capital letter(s)"
+
+#: accounts/utils.py:31
+#, python-format
+msgid "%(num)d τουλάχιστον λατινικούς μικρούς χαρακτήρες"
+msgstr "%(num)d at least latin small letter(s)"
+
+#: accounts/utils.py:32
+#, python-format
+msgid "%(num)d τουλάχιστον ψηφία (0 εώς 9)"
+msgstr "%(num)d at least digit(s) from 0 to 9"
+
+#: accounts/utils.py:33
+#, python-format
+msgid "%(chars)d τουλάχιστον ειδικούς χαρακτήρες από %(special)s"
+msgstr "%(chars)d special characters, chosen from %(special)s "
+
+#: accounts/utils.py:37
+msgid ""
+"Μην χρησιμοποιείτε άλλους χαρακτήρες εκτός ψηφίων, των ειδικών χαρακτήρων "
+"και λατινικών χαρακτήρων"
+msgstr ""
+"Use only digits from 0 to 9, Latin letters, or the special characters listed "
+"above."
+
+#: accounts/views.py:18
+msgid "Δεν είστε δηλωμένος στο σύστημα ως μέλος του ιδρύματος."
+msgstr "You are not registered in the system as a member of the institution."
+
+#: accounts/views.py:38
+msgid ""
+"Αποσυνδεθήκατε από το σύστημα. Ευχαριστούμε που χρησιμοποιήσατε την υπηρεσία "
+"μας. "
+msgstr "You have been logged out. Thank you for using our service."
+
+#: accounts/views.py:39 accounts/views.py:96
+msgid "Συνδεθείτε ξανά"
+msgstr "Log in again"
+
+#: accounts/views.py:57
+msgid ""
+"H πρόκληση να εγγραφείτε έχει λήξει. Θα πρέπει να επαναλάβετε την διαδικασία."
+msgstr ""
+"The invitation to register has expired. You will need to repeat the process."
+
+#: accounts/views.py:61 accounts/views.py:220
+msgid "O σύνδεσμος δεν είναι σωστός!"
+msgstr "The link is invalid!"
+
+#: accounts/views.py:67
+msgid "Έχετε ήδη εγγραφεί στο σύστημα!"
+msgstr "You are already registered in the system!"
+
+#: accounts/views.py:95
+msgid "Εγγραφήκατε επιτυχώς στο σύστημα!"
+msgstr "You have successfully registered in the system!"
+
+#: accounts/views.py:132
+msgid ""
+"Έχει αποσταλλεί e-mail στην διεύθυνση που δηλώσατε για να ενεργοποιήσετε το "
+"λογαριασμό σας"
+msgstr ""
+"An email has been sent to the address you provided to activate your account"
+
+#: accounts/views.py:153
+msgid ""
+"Είστε ιδρυματικός χρήστης. Θα πρέπει να αλλάξετε τον κωδικό χρησιμοποιώντας "
+"τα κεντρικά συστήματα του ιδρύματος"
+msgstr ""
+"You are an institutional user. You must change your password using the "
+"institution’s central systems."
+
+#: accounts/views.py:168 accounts/views.py:232
+msgid "Ο κωδικός σας έχει αλλάξει."
+msgstr "Your password has been changed."
+
+#: accounts/views.py:195
+msgid ""
+"Παρακαλούμε ελέγξτε την διεύθυνση ηλεκτρονικού ταχυδρομείου που καταχωρήσατε "
+"για την συνέχεια."
+msgstr "Please check the email address you provided to proceed."
+
+#: accounts/views.py:217
+msgid "Ο σύνδεσμος αυτός έχει λήξει."
+msgstr "This link has expired."
+
+#: bodies/models.py:11 subjects/views.py:
+msgid "Συλλογικό Όργανο"
+msgstr "Collective Body"
+
+#: bodies/models.py:12
+msgid "Συλλογικά Όργανα"
+msgstr "Collective Bodies"
+
+#: core/forms.py:14
+msgid "Κάντε click στο πεδίο και επιλέξτε."
+msgstr "Click on the field and select."
+
+#: core/forms.py:15
+msgid "Υποβολή"
+msgstr "Submission"
+
+#: core/templates/core/partials/file_input.html:20
+#: core/templates/core/partials/file_input_old.html:20
+msgid "Δεν υπάρχει αρχείο"
+msgstr "No file exists"
+
+#: core/templates/core/partials/file_input.html:47
+msgid "Αντικατάσταση"
+msgstr "Replace"
+
+#: core/templates/core/partials/file_input.html:49
+#: core/templates/core/partials/file_input2.html:27
+#: core/templates/core/partials/file_input_old.html:43
+msgid "Επιλέξτε αρχείο"
+msgstr "Select file"
+
+#: core/templates/core/partials/file_input.html:110
+#: core/templates/core/partials/file_input_old.html:104
+msgid "Θα χρησιμοποιηθεί το αρχείο: "
+msgstr "The file to be used is: "
+
+#: core/templates/core/partials/file_input2.html:88
+msgid "Θα αντικατασταθεί με:"
+msgstr "Will be replaced with:"
+
+#: core/templates/core/partials/table.html:11
+msgid "Αναζήτηση"
+msgstr "Search"
+
+#: core/templates/core/partials/table.html:12
+msgid "σύνολο:"
+msgstr "total:"
+
+#: core/templates/core/partials/table.html:12
+msgid "εγγραφές"
+msgstr "records"
+
+#: core/templates/core/partials/table.html:14
+msgid "Προηγούμενο"
+msgstr "Previous"
+
+#: core/templates/core/partials/table.html:15
+msgid "Επόμενο"
+msgstr "Next"
+
+#: core/templates/core/show_object.html:18
+msgid ""
+"Παρακαλούμε διορθώστε τα σφάλματα στην φόρμα όπως εμφανίζονται παρακάτω."
+msgstr "Please correct the errors in the form as shown below."
+
+#: core/templates/core/show_object.html:54
+msgid "Εντάξει"
+msgstr "OK"
+
+#: core/templates/core/show_object.html:54
+#: core/templates/core/show_object.html:71
+msgid "Άκυρο"
+msgstr "Cancel"
+
+#: core/templates/core/show_object.html:69
+msgid "Είστε σίγουροι; "
+msgstr "Are you sure? "
+
+#: core/templates/core/show_object.html:70
+msgid "Διαγραφή!"
+msgstr "Delete!"
+
+#: core/views.py:24
+msgid "Καταχωρήσεις"
+msgstr "Entries"
+
+#: core/views.py:29 core/views.py:229
+msgid "Νέα καταχώρηση"
+msgstr "New entry"
+
+#: core/views.py:34
+msgid "Προσωπικά Στοιχεία"
+msgstr "Personal Information"
+
+#: core/views.py:40
+msgid "Επιβεβαίωση"
+msgstr "Confirm"
+
+#: core/views.py:41
+msgid "Είστε σίγουροι ότι θέλετε να αποθηκεύσετε τις αλλαγές;"
+msgstr "Are you sure you want to save the changes?"
+
+#: core/views.py:42
+msgid "Όχι"
+msgstr "No"
+
+#: core/views.py:43
+msgid "Ναι"
+msgstr "Yes"
+
+#: core/views.py:52
+msgid "Ενημέρωση"
+msgstr "Update"
+
+#: core/views.py:59
+msgid "Εικόνα"
+msgstr "Overview"
+
+#: core/views.py:65
+msgid "Στοχεία"
+msgstr "Info"
+
+#: core/views.py:71
+msgid "Διαγραφή"
+msgstr "Delete"
+
+#: core/views.py:74
+msgid "Δεν υπάρχουν καταχωρήσεις"
+msgstr "No entries found"
+
+#: core/views.py:80
+msgid "Ενημέρωση στοιχείων"
+msgstr "Update data"
+
+#: core/widgets.py:11
+msgid "Επιλέξτε"
+msgstr "Select"
+
+#: subjects/templates/subjects/show_object.html:101
+msgid "Είστε σίγουροι;"
+msgstr "Are you sure?"
+
+#: subjects/views.py:
+msgid "Δείκτης"
+msgstr "Index"
+
+#: subjects/views.py:
+msgid "Τύπος"
+msgstr "Type"
+
+#: subjects/views.py:
+msgid "Κατηγορία"
+msgstr "Category"
+
+#: subjects/views.py:
+msgid "Σημειώσεις"
+msgstr "Notes"
+
+#~ msgid "Timesheets"
+#~ msgstr "Timesheets"
+
+#~ msgid "Άδειες"
+#~ msgstr "Leaves"
+
+#~ msgid "Έργα"
+#~ msgstr "Projects"
+
+#~ msgid "Αποφάσεις"
+#~ msgstr "Decisions"
+
+#~ msgid "Συνεργάτες"
+#~ msgstr "Associates"
+
+#~ msgid "Προσωπικό"
+#~ msgstr "Staff"
+
+#~ msgid "Προκλήσεις Διδακτορικών"
+#~ msgstr "Doctoral Calls"
+
+#~ msgid "Διδακτορικές Διατριβές"
+#~ msgstr "Doctoral Theses"
+
+#~ msgid "Το διδακτορικό μου"
+#~ msgstr "My PhD Thesis"
+
+#~ msgid "Η διπλωματική μου"
+#~ msgstr "My thesis"
+
+#~ msgid "Αίτηση για Διδακτορικό"
+#~ msgstr "Your Doctorate Applications"
+
+#~ msgid "Ε-mail"
+#~ msgstr "E-mail"
+
+#~ msgid "Όνομα"
+#~ msgstr "First Name"
+
+#~ msgid "Επώνυμο"
+#~ msgstr "Last Name"
+
+#~ msgid "Όνομα Πατρός"
+#~ msgstr "Father’s Name"
+
+#~ msgid "Ημερομηνία Γέννησης"
+#~ msgstr "Date of Birth"
+
+#~ msgid "ΑΦΜ"
+#~ msgstr "Tax Identification Number"
+
+#~ msgid "ΑΜΚΑ"
+#~ msgstr "Social Security Number"
+
+#~ msgid "Φορεάς"
+#~ msgstr "Organization"
+
+#~ msgid "Σχολή"
+#~ msgstr "School"
+
+#~ msgid "Τμήμα εντός του ιδρύματος"
+#~ msgstr "Department within the institution"
+
+#~ msgid "Ιδιότητα"
+#~ msgstr "Position"
+
+#~ msgid "Οδός"
+#~ msgstr "Street"
+
+#~ msgid "Ταχυδρομικός Κώδικας"
+#~ msgstr "Postal Code"
+
+#~ msgid "Πόλη"
+#~ msgstr "City"
+
+#~ msgid "Χώρα"
+#~ msgstr "Country"
+
+#~ msgid "Κινητό Τηλέφωνο"
+#~ msgstr "Mobile Phone"
+
+#~ msgid "Τηλέφωνο Οικίας"
+#~ msgstr "Home Phone"
+
+#~ msgid "Τηλέφωνο Εργασίας"
+#~ msgstr "Work Phone"
+
+#~ msgid "Αριθμός Θέσης"
+#~ msgstr "Seat Number"
+
+#~ msgid "Γραφείο"
+#~ msgstr "Office"
+
+#~ msgid "Αριθμός Κάρτας"
+#~ msgstr "Card Number"
+
+#~ msgid "Πρόγραμμα Σπουδών"
+#~ msgstr "Study Program"
+
+#~ msgid "Αριθμός Μητρώου"
+#~ msgstr "Registration Number"
+
+#~ msgid "Είναι εσωτερικός;"
+#~ msgstr "Is internal?"
+
+#~ msgid "Επιπλέον Πληροφορίες"
+#~ msgstr "Additional Information"
+
+#~ msgid "Ημέρες παρουσίας (εβδομαδίαιες)"
+#~ msgstr "Days of presence (per week)"
+
+#~ msgid "Έχει σύμβαση;"
+#~ msgstr "Has a contract?"
+
+#~ msgid "Έργο στο οποίο εργάζεται"
+#~ msgstr "Project currently assigned"
+
+#~ msgid "Είναι υποψήφιος διδάκτορας;"
+#~ msgstr "Is a PhD candidate?"
+
+#~ msgid "Είναι μεταδιδακτορικός;"
+#~ msgstr "Is a postdoctoral researcher?"
+
+#~ msgid "Μπορεί να κάνει αίτηση για διδακτορικό;"
+#~ msgstr "Can apply for a PhD?"
+
+#~ msgid "Μπορεί να είναι αξιολογητής σε αιτήσεις διδακτορικού;"
+#~ msgstr "Can be an evaluator for PhD applications?"
+
+#~ msgid "Μπορεί να είναι επιβλέπων ή μέλος επιτροπής διπλωματικών;"
+#~ msgstr "Can be a supervisor or a member of a thesis committee?"
+
+#~ msgid "Στοιχεία Προφίλ"
+#~ msgstr "Profile Information"
+
+#~ msgid "Διεύθυνση Κατοικίας"
+#~ msgstr "Home Address"
+
+#~ msgid "Διεύθυνση Εργασίας "
+#~ msgstr "Work Address"
+
+#~ msgid "Θέση Εργασίας"
+#~ msgstr "Job Position"
+
+#~ msgid "Τίτλος"
+#~ msgstr "Title"
+
+#~ msgid "Τίτλος (Αγγλικά)"
+#~ msgstr "Title (English)"
+
+#~ msgid "Περιγραφή"
+#~ msgstr "Description"
+
+#~ msgid "Ημερομηνία Έναρξης"
+#~ msgstr "Start Date"
+
+#~ msgid "Ημερομηνία Λήξης"
+#~ msgstr "End Date"
+
+#~ msgid "Επιβλέπων"
+#~ msgstr "Supervisor"
+
+#~ msgid "Αξιολογητές"
+#~ msgstr "Evaluators"
+
+#~ msgid "Έγγραφο Πρόσκλησης"
+#~ msgstr "Call Document"
+
+#~ msgid "Δημοσιευμένη"
+#~ msgstr "Published"
+
+#~ msgid "Βιογραφικό Σημείωμα"
+#~ msgstr "Curriculum Vitae"
+
+#~ msgid "Υποψήφιος"
+#~ msgstr "Applicant"
+
+#~ msgid "Πρόσκληση"
+#~ msgstr "Call"
+
+#~ msgid "Αντίγραφο Ταυτότητας ή Διαβατηρίου"
+#~ msgstr "Copy of ID Card or Passport"
+
+#~ msgid "Πλάνο Διδακτορικής Διατριβής"
+#~ msgstr "Doctoral Dissertation Plan"
+
+#~ msgid "Ημερομηνία Υποβολής"
+#~ msgstr "Submission Date"
+
+#~ msgid "Κατάσταση"
+#~ msgstr "Status"
+
+#~ msgid "Συστατικές Επιστολές"
+#~ msgstr "Letters of Recommendation"
+
+#~ msgid "Υπεύθυνη Δήλωση"
+#~ msgstr "Statutory Declaration"
+
+#~ msgid "Επιπλέον Τεκμηρίωση"
+#~ msgstr "Additional Documentation"
+
+#~ msgid "Αριθμός Αναφοράς Συστήματος"
+#~ msgstr "System Reference Number"
+
+#~ msgid "Αριθμός Ιδρυματικού Πρωτοκόλλου"
+#~ msgstr "Institutional Protocol Number"
+
+#~ msgid "Όνομα Πατέρα"
+#~ msgstr "Father's Name"
+
+#~ msgid "Φύλο"
+#~ msgstr "Gender"
+
+#~ msgid "Οδός Κατοικίας"
+#~ msgstr "Home Street Address"
+
+#~ msgid "Αριθμός Κατοικίας"
+#~ msgstr "Home Address Number"
+
+#~ msgid "Ταχυδρομικός Κώδικας Κατοικίας"
+#~ msgstr "Home Postal Code"
+
+#~ msgid "Πόλη Κατοικίας"
+#~ msgstr "Home City"
+
+#~ msgid "Χώρα Κατοικίας"
+#~ msgstr "Home Country"
+
+#~ msgid "Σταθερό Τηλέφωνο"
+#~ msgstr "Landline Phone"
+
+#~ msgid "Οδός Εργασίας"
+#~ msgstr "Work Street Address"
+
+#~ msgid "Αριθμός Εργασίας"
+#~ msgstr "Work Address Number"
+
+#~ msgid "Τ.Κ. Εργασίας"
+#~ msgstr "Work Postal Code"
+
+#~ msgid "Πόλη Εργασίας"
+#~ msgstr "Work City"
+
+#~ msgid "Χώρα Εργασίας"
+#~ msgstr "Work Country"
+
+#~ msgid "Φωτογραφία"
+#~ msgstr "Photo"
+
+#~ msgid "Τελευταία Ενημέρωση"
+#~ msgstr "Last Updated"
+
+#~ msgid "Τύπος Πτυχίου"
+#~ msgstr "Degree Type"
+
+#~ msgid "Πανεπιστήμιο"
+#~ msgstr "University"
+
+#~ msgid "Τμήμα"
+#~ msgstr "Department"
+
+#~ msgid "Βαθμός"
+#~ msgstr "Grade"
+
+#~ msgid "Αντίγραφο Πτυχίου"
+#~ msgstr "Copy of Degree"
+
+#~ msgid "Έτος"
+#~ msgstr "Year"
+
+#~ msgid "Αναλυτική Βαθμολογία"
+#~ msgstr "Transcript"
+
+#~ msgid "Αίτηση Διδακτορικού"
+#~ msgstr "PhD Application"
+
+#~ msgid "Τηλέφωνο"
+#~ msgstr "Phone"
+
+#~ msgid "Συστατική Επιστολή"
+#~ msgstr "Reference Letter"
+
+#~ msgid "Ίδρυμα/Φορέας"
+#~ msgstr "Institution/Body"
+
+#~ msgid "Στοιχεία Επαφής"
+#~ msgstr "Contact Information"
+
+#~ msgid "Τίτλος Περιοδικού"
+#~ msgstr "Journal Title"
+
+#~ msgid "Συγγραφείς"
+#~ msgstr "Authors"
+
+#~ msgid "Εκδότης"
+#~ msgstr "Publisher"
+
+#~ msgid "Τόμος"
+#~ msgstr "Volume"
+
+#~ msgid "Σελίδες"
+#~ msgstr "Pages"
+
+#~ msgid "Σύνδεσμος"
+#~ msgstr "Link"
+
+#~ msgid "DOI"
+#~ msgstr "DOI"
+
+#~ msgid "Αρχείο PDF"
+#~ msgstr "PDF File"
+
+#~ msgid "Τίτλος Συνεδρίου"
+#~ msgstr "Conference Title"
+
+#~ msgid "Εταιρεία / Φορέας"
+#~ msgstr "Company / Organization"
+
+#~ msgid "Καθήκοντα"
+#~ msgstr "Duties"
+
+#~ msgid "Σύμβαση (ή άλλο αποδεικτικό)"
+#~ msgstr "Contract (or other proof)"
+
+#~ msgid ""
+#~ "Αρχείο PDF που περιγράφει το πλάνο της διδακτορικής διατριβής, όπως "
+#~ "απαιτείται από την πρόσκληση."
+#~ msgstr ""
+#~ "PDF file describing the doctoral thesis plan, as required by the call."
+
+#~ msgid ""
+#~ "Βιογραφικό σημείωμα σε μορφή PDF. Δεν υπάρχει κάποιο προτεινόμενο format."
+#~ msgstr "Curriculum vitae in PDF format. There is no suggested format."
+
+#~ msgid ""
+#~ "Σημειώσεις που θα θέλατε να ληφθούν υπόψη από την επιτροπή αξιολόγησης. "
+#~ "(Προαιρετικό)"
+#~ msgstr ""
+#~ "Notes you would like the evaluation committee to consider. (Optional)"
+
+#~ msgid ""
+#~ "Κάποιο επιπλέον αρχείο PDF με τεκμηρίωση που θα θέλατε να ληφθούν υπόψη "
+#~ "από την επιτροπή αξιολόγησης. (Προαιρετικό)"
+#~ msgstr ""
+#~ "An additional PDF file with documentation you would like the evaluation "
+#~ "committee to consider. (Optional)"
+
+#~ msgid ""
+#~ "Υπεύθυνη δήλωση σε μορφή PDF που να δηλώνει ότι δεν είστε εγγεγραμμένος "
+#~ "σε κάποιο άλλο διδακτορικό πρόγραμμα."
+#~ msgstr ""
+#~ "Statutory declaration in PDF format stating that you are not enrolled in "
+#~ "another doctoral program."
+
+#~ msgid ""
+#~ "H ημερομηνία έναρξης δεν μπορεί να είναι προγενέστερη της ημερομηνίας "
+#~ "λήξης"
+#~ msgstr "The start date cannot be earlier than the end date"
+
+#~ msgid "H ημερομηνία δεν μπορεί να είναι στο μέλλον."
+#~ msgstr "The date cannot be in the future."
+
+#~ msgid "Δεν μπορείτε να καταχωρήσετε χρονιά που ανήκει στο μέλλον."
+#~ msgstr "You cannot enter a year that is in the future."
+
+#~ msgid "Δεν επιτρέπεται να ανεβάσετε αρχείο που δεν είναι της μορφής PDF."
+#~ msgstr "You are not allowed to upload a file that is not in PDF format."
+
+#~ msgid "Δεν φαίνεται να ανεβάσατε κατάλληλο PDF αρχείο."
+#~ msgstr "You don't seem to have uploaded a proper PDF file."
+
+#~ msgid ""
+#~ "Κάντε click στο πεδίο και επιλέξτε. Αν απασχολείστε ακόμα εκεί "
+#~ "καταχωρείστε την σημερινή ημερομηνία."
+#~ msgstr ""
+#~ "Click on the field and select. If you are still employed there, enter "
+#~ "today's date."
+
+#~ msgid "Υποβολή Συστατικής Επιστολής"
+#~ msgstr "Submit Reference Letter"
+
+#~ msgid "Χρησιμοποιείστε την μορφή DD/MM/YYYY, π.χ. 28/2/2020"
+#~ msgstr "Use the format DD/MM/YYYY, e.g., 28/2/2020"
+
+#~ msgid ""
+#~ "Χρησιμοποιείστε την μορφή DD/MM/YYYY, π.χ. 28/2/2020. Αν ακόμα "
+#~ "απασχολήστε συμπληρώστε την τωρινή ημερομηνία."
+#~ msgstr ""
+#~ "Use the format DD/MM/YYYY, e.g., 28/2/2020. If you are still employed, "
+#~ "fill in the current date."
+
+#~ msgid "Περιγραφή της πρόσκλησης"
+#~ msgstr "Call description"
+
+#~ msgid "Επίσημο έγγραφο πρόσκλησης"
+#~ msgstr "Official call document"
+
+#~ msgid "Επιτυχής"
+#~ msgstr "Successful"
+
+#~ msgid "Μη επιτυχής"
+#~ msgstr "Unsuccessful"
+
+#~ msgid "Οριστικοποιημένη"
+#~ msgstr "Finalized"
+
+#~ msgid "Έχει Υποβληθεί"
+#~ msgstr "Submitted"
+
+#~ msgid "Προσωρινή"
+#~ msgstr "Draft"
+
+#~ msgid "Προπτυχιακό"
+#~ msgstr "Undergraduate"
+
+#~ msgid "Μεταπτυχιακό"
+#~ msgstr "Postgraduate"
+
+#~ msgid "Διδακτορικό"
+#~ msgstr "Doctoral"
+
+#~ msgid "Υποβλήθηκε"
+#~ msgstr "Submitted"
+
+#~ msgid "Αναμένεται"
+#~ msgstr "Pending"
+
+#~ msgid "Θα Ειδοποιηθεί Μετά την Υποβολή"
+#~ msgstr "Will be notified after submission"
+
+#~ msgid "Αλλαγή Κωδικού Πρόσβασης"
+#~ msgstr "Change Password"
+
+#~ msgid "Επισκόπηση Αίτησης"
+#~ msgstr "Application Overview"
+
+#~ msgid "Διαγραφή Αίτησης!"
+#~ msgstr "Delete Application!"
+
+#~ msgid "Εξαγωγή"
+#~ msgstr "Export"
+
+#~ msgid "Στοιχεία της Πρόσκλησης"
+#~ msgstr "Call Details"
+
+#~ msgid "Επεξεργασία Πρόσκλησης"
+#~ msgstr "Edit Call"
+
+#~ msgid "Επισυναπτόμενο αρχείο πρόσκλησης"
+#~ msgstr "Attached call file"
+
+#~ msgid "H πρόσκληση δεν έχει επισυναπτόμενο αρχείο!"
+#~ msgstr "The call does not have an attached file!"
+
+#~ msgid "Στοιχεία Υποψηφίου"
+#~ msgstr "Applicant Details"
+
+#~ msgid "Επεξεργασία Υποψηφίου"
+#~ msgstr "Edit Applicant"
+
+#~ msgid "Δεν έχει ανέβει βιογραφικό σημείωμα"
+#~ msgstr "No curriculum vitae has been uploaded"
+
+#~ msgid "Στοιχεία Αίτησης"
+#~ msgstr "Application Details"
+
+#~ msgid "Επεξεργασία Αίτησης"
+#~ msgstr "Edit Application"
+
+#~ msgid "Τίτλοι Σπουδών"
+#~ msgstr "Academic Degrees"
+
+#~ msgid "Δεν έχουν καταχωρηθεί τίτλοι σπουδών"
+#~ msgstr "No academic degrees have been registered"
+
+#~ msgid "Εργασιακή Εμπειρία"
+#~ msgstr "Work Experience"
+
+#~ msgid "Δεν έχει καταχωρηθεί κάποια εργασιακή εμπειρία"
+#~ msgstr "No work experience has been registered"
+
+#~ msgid "Δημοσιεύσεις"
+#~ msgstr "Publications"
+
+#~ msgid "Περιοδικά"
+#~ msgstr "Journals"
+
+#~ msgid "Δεν έχει καταχωρηθεί κάποια δημοσίευση σε περιοδικό"
+#~ msgstr "No journal publication has been registered"
+
+#~ msgid "Συνέδρια"
+#~ msgstr "Conferences"
+
+#~ msgid "Δεν έχει καταχωρήθει κάποια δημοσίευση σε συνέδριο"
+#~ msgstr "No conference publication has been registered"
+
+#~ msgid "Συστατικές Επιστολές που έχουν υποβληθεί"
+#~ msgstr "Submitted Letters of Recommendation"
+
+#~ msgid "Νέο σημείο επαφής"
+#~ msgstr "New contact point"
+
+#~ msgid "Δεν έχει υποβληθεί κάποια συστατική επιστολή"
+#~ msgstr "No letter of recommendation has been submitted"
+
+#~ msgid "Συστατικές Επιστολές που δεν έχουν ακόμα αποστάλλει"
+#~ msgstr "Letters of recommendation not yet sent"
+
+#~ msgid ""
+#~ "Δεν έχει υπάρχει κάποια επαφή που να μην έχει αποστείλει συστατική "
+#~ "επιστολή"
+#~ msgstr "There is no contact that has not sent a letter of recommendation"
+
+#~ msgid "Υποβολή αίτησης"
+#~ msgstr "Submit application"
+
+#~ msgid "Στοιχεία Πρόσκλησης"
+#~ msgstr "Call Details"
+
+#~ msgid "Τίτλος Πρόσκλησης"
+#~ msgstr "Call Title"
+
+#~ msgid "Οδηγίες"
+#~ msgstr "Instructions"
+
+#~ msgid "Μπορείτε να υποβάλλετε την αίτηση σας εδώ."
+#~ msgstr "You can submit your application here."
+
+#~ msgid "Θα πρέπει να ανεβάσετε το έγγραφο"
+#~ msgstr "You must upload the document"
+
+#~ msgid ""
+#~ "Μπορείτε επίσης να συμπληρώσετε κάποιες παρατηρήσεις/σημειώσεις για την "
+#~ "αίτηση σας, αν το επιθυμείτε στο αντίστοιχο πεδίο παρακάτω."
+#~ msgstr ""
+#~ "You can also fill in some observations/notes for your application in the "
+#~ "corresponding field below, if you wish."
+
+#~ msgid "Προσοχή"
+#~ msgstr "Attention"
+
+#~ msgid ""
+#~ "Εδώ μπορείτε να υποβάλλετε αίτηση για εκπόνηση διδακτορικής διατριβής."
+#~ msgstr "Here you can submit an application for a doctoral thesis."
+
+#~ msgid ""
+#~ "To κύριο σώμα της αίτησης σας, περιλαμβάνει στοιχεία σχετικά με το πλάνο "
+#~ "διδακτορικής διατριβής και άλλες απαιτούμενες από την πρόσκληση "
+#~ "πληροφορίες."
+#~ msgstr ""
+#~ "The main body of your application includes details regarding the doctoral "
+#~ "thesis plan and other information required by the call."
+
+#~ msgid ""
+#~ "Τα προσωπικά στοιχεία της αίτησης σας, περιλαμβάνουν στοιχεία που αφορούν "
+#~ "την ταυτοποίηση σας."
+#~ msgstr ""
+#~ "The personal details of your application include information regarding "
+#~ "your identification."
+
+#~ msgid ""
+#~ "Στα επισυναπτόμενα μπορείτε να καταχωρήσετε τα πτυχία σας, την εργασιακή "
+#~ "σας εμπειρία και τις δημοσιεύσεις σας."
+#~ msgstr ""
+#~ "In the attachments, you can register your degrees, work experience, and "
+#~ "publications."
+
+#~ msgid ""
+#~ "Στις συστατικές επιστολές θα καταχωρήσετε σημεία επαφής που θα "
+#~ "προσκληθούν από το σύστημα να παρέχουν συστατική επιστολή"
+#~ msgstr ""
+#~ "In the letters of recommendation, you will register contact points that "
+#~ "will be invited by the system to provide a reference letter."
+
+#~ msgid ""
+#~ "Όταν ολοκληρώσετε την καταχώρηση των στοιχείων σας πατήστε \"Υποβολή\" "
+#~ "για να υποβάλλεται την αίτηση στο σύστημα. Μέχρι την ημερομηνία λήξης της "
+#~ "πρόσκλησης μπορείτε να κάνετε αλλαγές στην αίτηση σας."
+#~ msgstr ""
+#~ "When you have finished entering your details, press \"Submit\" to submit "
+#~ "the application to the system. You can make changes to your application "
+#~ "until the call deadline."
+
+#~ msgid "Επισυναπτόμενα"
+#~ msgstr "Attachments"
+
+#~ msgid "Εδώ μπορείτε να υποβάλλετε τα επισυναπτόμενα για την αίτηση σας."
+#~ msgstr "Here you can submit the attachments for your application."
+
+#~ msgid ""
+#~ "Βεβαιωθείτε ότι έχει συμπληρώσει έχετε προσθέσει όλες τις συνοδευτικές "
+#~ "πληροφορίες (π.χ. πτυχία, κτλ)"
+#~ msgstr ""
+#~ "Make sure you have added all the accompanying information (e.g. degrees, "
+#~ "etc.)"
+
+#~ msgid "Σημεία Επαφής"
+#~ msgstr "Contact Points"
+
+#~ msgid ""
+#~ "Εδώ μπορείτε να καταχωρήσετε σημεία επαφής για την παροχή συστατικών "
+#~ "επιστολών για την αίτηση σας."
+#~ msgstr ""
+#~ "Here you can register contact points for the provision of reference "
+#~ "letters for your application."
+
+#~ msgid ""
+#~ "Όταν υποβάλλετε την αίτηση σας, θα τους αποσταλλεί email για να ανεβάσουν "
+#~ "την συστατική τους επιστολή."
+#~ msgstr ""
+#~ "When you submit your application, an email will be sent to them to upload "
+#~ "their reference letter."
+
+#~ msgid ""
+#~ "Δεν μπορείτε να διαγράψετε σημεία επαφής όταν έχετε υποβάλλει την αίτηση."
+#~ msgstr ""
+#~ "You cannot delete contact points once you have submitted the application."
+
+#~ msgid "Κατεβάστε εδώ"
+#~ msgstr "Download here"
+
+#~ msgid "Δεν έχει υποβληθεί κάποιο αρχείο."
+#~ msgstr "No file has been submitted."
+
+#~ msgid "Κωδικός Αναφοράς Συστήματος"
+#~ msgstr "System Reference Code"
+
+#~ msgid "Προθεσμία Υποβολής"
+#~ msgstr "Submission Deadline"
+
+#~ msgid "Στο πεδίο"
+#~ msgstr "In the field"
+
+#~ msgid ""
+#~ "θα ανεβάσετε ένα αρχείο σε μορφή PDF το οποίο θα περιγράφει ένα σχέδιο "
+#~ "δράσης για τα πρώτα βήματα της διδακτορικής διατριβής αν επιλεγείτε."
+#~ msgstr ""
+#~ "you will upload a PDF file describing an action plan for the first steps "
+#~ "of the doctoral thesis if selected."
+
+#~ msgid ""
+#~ "θα ανεβάσετε ένα αρχείο υπεύθυνης δήλωσης ψηφιακά υπογεγραμμένο ή "
+#~ "βεβαιωμένο από gov.gr στο οποίο θα αναγράψετε: "
+#~ msgstr ""
+#~ "you will upload a statutory declaration file, digitally signed or "
+#~ "certified via gov.gr, in which you will state: "
+
+#~ msgid ""
+#~ "Όλα τα υποβαλλόμενα στοιχεία και πληροφορίες είναι αληθής και ακριβή. "
+#~ "Επιπλέον, δεν είμαι εγγεγραμμένος/η σε διδακτορικό πρόγραμμα σπουδών, "
+#~ "ούτε μου έχει αποδοθεί Διδακτορικός τίτλος σπουδών"
+#~ msgstr ""
+#~ "All submitted data and information are true and accurate. Furthermore, I "
+#~ "am not enrolled in a doctoral study program, nor have I been awarded a "
+#~ "Doctoral degree"
+
+#~ msgid "και θα απευθύνεται στην γραμματεία του Τμήματος"
+#~ msgstr "and it will be addressed to the Department's secretariat"
+
+#~ msgid "Πληροφορίες Πρόσκλησης"
+#~ msgstr "Call Information"
+
+#~ msgid "Είστε σίγουροι; Θα διαγραφούν όλα τα στοιχεία της αίτησης σας!"
+#~ msgstr "Are you sure? All your application data will be deleted!"
+
+#~ msgid "Άκυρο!"
+#~ msgstr "Cancel!"
+
+#~ msgid "Διαχείριση Υποψηφίων"
+#~ msgstr "Applicant Management"
+
+#~ msgid "Διαχείριση Προσκλήσεων"
+#~ msgstr "Call Management"
+
+#~ msgid "Σύστημα Διαχείρισης Προσκλήσεων Εκπόνησης Διδακτορικής Διατριβής"
+#~ msgstr "Doctoral Thesis Call Management System"
+
+#~ msgid "Καλώς ήρθατε!"
+#~ msgstr "Welcome!"
+
+#~ msgid "Στοιχεία πρόσκλησης υποβολής αιτήσεων"
+#~ msgstr "Call for applications details"
+
+#~ msgid "Τίτλος Διδακτορικού"
+#~ msgstr "PhD Title"
+
+#~ msgid ""
+#~ "Παρακαλούμε ανεβάστε την συστατική σας επιστολή για τον υποψήφιο "
+#~ "χρησιμοποιώντας αυτή την φόρμα."
+#~ msgstr ""
+#~ "Please upload your reference letter for the candidate using this form."
+
+#~ msgid ""
+#~ "Mπορείτε να συμπληρώσετε προαιρετικά και παρατηρήσεις για τον υποψήφιο."
+#~ msgstr "You may optionally fill in remarks about the candidate."
+
+#~ msgid ""
+#~ "Επίσης μπορείτε να διορθώσετε τα στοιχεία επικοινωνίας σας, όπως αυτά "
+#~ "έχουν καταχωρηθεί από τον υποψήφιο."
+#~ msgstr ""
+#~ "You can also correct your contact details, as they have been entered by "
+#~ "the candidate."
+
+#~ msgid ""
+#~ "Πατήστε \"Υποβολή Συστατικής Επιστολής\" όταν συμπληρώσετε την παρακάτω "
+#~ "φόρμα"
+#~ msgstr ""
+#~ "Press \"Submit Reference Letter\" once you have completed the form below"
+
+#~ msgid ""
+#~ "Διορθώστε τα παρακάτω σφάλματα για να μπορέσετε να υποβάλλετε την αίτηση "
+#~ "σας:"
+#~ msgstr "Correct the following errors to be able to submit your application:"
+
+#~ msgid "Υποβολή Αίτησης"
+#~ msgstr "Application Submission"
+
+#~ msgid "Προειδοποιητικά μηνύματα:"
+#~ msgstr "Warning messages:"
+
+#~ msgid "Επιτυχείς έλεγχοι:"
+#~ msgstr "Successful checks:"
+
+#~ msgid "Το κύριο σώμα της αίτησης είναι συμπληρωμένο."
+#~ msgstr "The main body of the application is completed."
+
+#~ msgid ""
+#~ "Δεν έχετε συμπληρώσει όλα τα απαιτούμενα πεδία στο κύριο μέρος της "
+#~ "αίτησης σας: "
+#~ msgstr ""
+#~ "You have not completed all the required fields in the main part of your "
+#~ "application: "
+
+#~ msgid "Τα προσωπικά σας στοιχεία είναι συμπληρωμένα."
+#~ msgstr "Your personal details are completed."
+
+#~ msgid "Δεν έχετε συμπληρώσει όλα τα απαιτούμενα πεδία: "
+#~ msgstr "You have not filled in all the required fields: "
+
+#~ msgid "Δεν έχετε καταχωρήσει καθόλου τίτλους σπουδών"
+#~ msgstr "You have not registered any degrees"
+
+#, python-format
+#~ msgid "Έχετε καταχωρήσει %(no)s τίτλους σπουδών."
+#~ msgstr "You have registered %(no)s degrees."
+
+#~ msgid ""
+#~ "Δεν έχετε καταχωρήσει σημεία επαφής για παροχή συστατικής επιστολής. "
+#~ "Βεβαιωθείτε ότι δεν απαιτείται από την πρόσκληση."
+#~ msgstr ""
+#~ "You have not registered any contact points for providing a reference "
+#~ "letter. Make sure it is not required by the call."
+
+#, python-format
+#~ msgid ""
+#~ "Έχετε καταχωρήσει %(no)s σημεία επαφής για παροχή συστατικής επιστολής."
+#~ msgstr ""
+#~ "You have registered %(no)s contact points for providing a reference "
+#~ "letter."
+
+#~ msgid "Δεν έχετε καταχωρήσει καθόλου εργασιακή εμπειρία"
+#~ msgstr "You have not registered any work experience"
+
+#, python-format
+#~ msgid "Έχετε καταχωρήσει %(no)s εγγραφές στην εργασιακή εμπειρία."
+#~ msgstr "You have registered %(no)s entries in work experience."
+
+#~ msgid "Δεν έχετε καταχωρήσει δημοσιεύσεις σε ερευνητικά περιοδικά"
+#~ msgstr "You have not registered any publications in research journals"
+
+#, python-format
+#~ msgid "Έχετε καταχωρήσει %(no)s δημοσιεύσεις σε ερευνητικά περιοδικά"
+#~ msgstr "You have registered %(no)s publications in research journals"
+
+#~ msgid "Δεν έχετε καταχωρήσει δημοσιεύσεις σε ερευνητικά συνέδρια"
+#~ msgstr "You have not registered any publications in research conferences"
+
+#, python-format
+#~ msgid "Έχετε καταχωρήσει %(no)s δημοσιεύσεις σε ερευνητικά συνέδρια"
+#~ msgstr "You have registered %(no)s publications in research conferences"
+
+#~ msgid "Πατήστε \"Επιστροφή\" για να τα συμπληρώσετε."
+#~ msgstr "Press \"Back\" to fill them in."
+
+#~ msgid "Ανοιχτές Προσκλήσεις"
+#~ msgstr "Open Calls"
+
+#~ msgid "Θέμα"
+#~ msgstr "Subject"
+
+#~ msgid "Λεπτομέρειες"
+#~ msgstr "Details"
+
+#~ msgid "Αίτηση"
+#~ msgstr "Application"
+
+#~ msgid "Αιτήσεις σε προσωρινή αποθήκευση"
+#~ msgstr "Applications in draft status"
+
+#~ msgid "Αριθμός αναφοράς"
+#~ msgstr "Reference number"
+
+#~ msgid "Αιτήσεις που έχουν υποβληθεί"
+#~ msgstr "Submitted applications"
+
+#~ msgid "Σημεία Επαφής για Παροχή Συστατικής Επιστολής"
+#~ msgstr "Contact Points for Providing Reference Letter"
+
+#~ msgid "Φορέας"
+#~ msgstr "Institution"
+
+#~ msgid "Κατάσταση Συστατικής"
+#~ msgstr "Reference Status"
+
+#~ msgid ""
+#~ "Παρακαλούμε συμπληρώστε τα στοιχεία που λείπουν παρακάτω για να "
+#~ "συνεχίσετε."
+#~ msgstr "Please fill in the missing information below to continue."
+
+#~ msgid "Πτυχία"
+#~ msgstr "Degrees"
+
+#~ msgid "Έτος Έναρξης"
+#~ msgstr "Start Year"
+
+#~ msgid "Δημοσιεύσεις σε Περιοδικά"
+#~ msgstr "Journal Publications"
+
+#~ msgid "Περιοδικό"
+#~ msgstr "Journal"
+
+#~ msgid "Δημοσιεύσεις σε Συνέδρια"
+#~ msgstr "Conference Publications"
+
+#~ msgid "Συνέδριο"
+#~ msgstr "Conference"
+
+#~ msgid "Στοιχεία τίτλου σπουδών"
+#~ msgstr "Degree information"
+
+#~ msgid "Στοιχεία εργασιακής εμπειρίας"
+#~ msgstr "Work experience information"
+
+#~ msgid "Στοιχεία δημοσιεύσης"
+#~ msgstr "Publication information"
+
+#~ msgid "Στοιχεία σημείου επαφής"
+#~ msgstr "Contact point information"
+
+#~ msgid "Λεπτομέρειες Πρόσκλησης"
+#~ msgstr "Call Details"
+
+#~ msgid ""
+#~ "\n"
+#~ "            H πρόκληση για να υποβάλλετε την συστατική έχει λήξει.\n"
+#~ "            "
+#~ msgstr ""
+#~ "\n"
+#~ "            The invitation to submit the reference letter has expired.\n"
+#~ "            "
+
+#~ msgid ""
+#~ "\n"
+#~ "            O σύνδεσμος δεν είναι σωστός!\n"
+#~ "            "
+#~ msgstr ""
+#~ "\n"
+#~ "            The link is invalid!\n"
+#~ "            "
+
+#~ msgid "Ευχαριστούμε πολύ! Η συστατική σας καταχωρήθηκε."
+#~ msgstr "Thank you very much! Your reference letter has been submitted."
+
+#~ msgid "Αίτησεις"
+#~ msgstr "Applications"
+
+#~ msgid "Προσκλήσεις που έχουν λήξει"
+#~ msgstr "Expired calls"
+
+#~ msgid "Αιτήσεις"
+#~ msgstr "Applications"
+
+#~ msgid "Στοιχεία δημοσίευσης"
+#~ msgstr "Publication information"
+
+#~ msgid "Νέα πρόσκληση"
+#~ msgstr "New call"
+
+#~ msgid "Προσκλήσεις που δεν έχουν ακόμα ανοίξει"
+#~ msgstr "Calls that have not opened yet"
+
+#~ msgid "Προσκλήσεις που δεν είναι δημοσιευμένες"
+#~ msgstr "Unpublished calls"
+
+#~ msgid "Αριθμός μητρώου"
+#~ msgstr "Registration number"
+
+#~ msgid "Υποψήφιος Διδάκτορας"
+#~ msgstr "PhD Candidate"
+
+#~ msgid "Επιβλέπων Καθηγητής"
+#~ msgstr "Supervisor Professor"
+
+#~ msgid "Τριμελής Συμβουλευτική Επιτροπή"
+#~ msgstr "Three-member Advisory Committee"
+
+#~ msgid "Τίτλος Διατριβής (Ελληνικά)"
+#~ msgstr "Dissertation Title (Greek)"
+
+#~ msgid "Τίτλος Διατριβής (Αγγλικά)"
+#~ msgstr "Dissertation Title (English)"
+
+#~ msgid "Ημερομηνία Εγγραφής"
+#~ msgstr "Registration Date"
+
+#~ msgid "Έτος Εγγραφής"
+#~ msgstr "Registration Year"
+
+#~ msgid "Αριθμός Πράξης Εγγραφής"
+#~ msgstr "Registration Act Number"
+
+#~ msgid "Ημερομηνία Αναγόρευσης"
+#~ msgstr "Award Date"
+
+#~ msgid "Συνέλευση Αναγόρευσης"
+#~ msgstr "Award Assembly"
+
+#~ msgid "Κατάσταση Φοίτησης"
+#~ msgstr "Enrollment Status"
+
+#~ msgid "Περίληψη (Ελληνικά)"
+#~ msgstr "Abstract (Greek)"
+
+#~ msgid "Περίληψη (Αγγλικά)"
+#~ msgstr "Abstract (English)"
+
+#~ msgid "Διδακτορική Διατριβή"
+#~ msgstr "Doctoral Dissertation"
+
+#~ msgid "Συμμετέχει στη δημοσίευση ο επιβλέπων καθηγητής;"
+#~ msgstr "Does the supervisor participate in the publication?"
+
+#~ msgid "Τεύχος"
+#~ msgstr "Issue"
+
+#~ msgid "Μέλος ΔΕΠ"
+#~ msgstr "Faculty Member"
+
+#~ msgid "Μάθημα"
+#~ msgstr "Course"
+
+#~ msgid "Ώρες ανά Εβδομάδα"
+#~ msgstr "Hours per Week"
+
+#~ msgid "Αριθμός Εβδομάδων"
+#~ msgstr "Number of Weeks"
+
+#~ msgid "Με Σύμβαση"
+#~ msgstr "With Contract"
+
+#~ msgid "Ημερομηνία Εξέτασης"
+#~ msgstr "Examination Date"
+
+#~ msgid "Συνολικές Ώρες Απασχόλησης"
+#~ msgstr "Total Working Hours"
+
+#~ msgid "Σχετική Απόφαση / Έγγραφο"
+#~ msgstr "Related Decision / Document"
+
+#~ msgid "Ημερομηνία Δημιουργίας"
+#~ msgstr "Created Date"
+
+#~ msgid "Ημερομηνία Τελευταίας Ενημέρωσης"
+#~ msgstr "Last Updated Date"
+
+#~ msgid "Χρήστης που Δημιούργησε την Εγγραφή"
+#~ msgstr "User who created the record"
+
+#~ msgid "Χρήστης που Ενημέρωσε Τελευταίος την Εγγραφή"
+#~ msgstr "User who last updated the record"
+
+#~ msgid "Ημερομηνία Απόφασης"
+#~ msgstr "Decision Date"
+
+#~ msgid "Εισήγηση"
+#~ msgstr "Recommendation"
+
+#~ msgid "Επισυναπτόμενο έγγραφο"
+#~ msgstr "Attached document"
+
+#~ msgid "Χρήστης"
+#~ msgstr "User"
+
+#~ msgid "Ηλεκτρονική Διεύθυνση"
+#~ msgstr "Email Address"
+
+#~ msgid "Δευτερεύουσα Ηλεκτρονική Διεύθυνση"
+#~ msgstr "Secondary Email Address"
+
+#~ msgid "Αριθμός Φορολογικού Μητρώου (ΑΦΜ)"
+#~ msgstr "Tax Registry Number"
+
+#~ msgid "Αριθμός Μητρώου Κοινωνικής Ασφάλισης (ΑΜΚΑ)"
+#~ msgstr "Social Security Number"
+
+#~ msgid "Τηλέφωνο Κατοικίας"
+#~ msgstr "Home Phone"
+
+#~ msgid "Ταχυδρομικός Κώδικας Εργασίας"
+#~ msgstr "Work Address Postal Code"
+
+#~ msgid "Δεν μπορείτε να καταχωρήσετε εισήγηση για επόμενη χρονιά."
+#~ msgstr "You cannot submit a recommendation for a future year."
+
+#~ msgid ""
+#~ "Έχετε ήδη καταχωρήσει εισήγηση σε αυτή την χρονιά για αυτήν τη διατριβή."
+#~ msgstr ""
+#~ "You have already submitted a recommendation for that year for the thesis "
+#~ "in question."
+
+#~ msgid "Δεν μπορείτε να καταχωρήσετε αναφορά για επόμενη χρονιά."
+#~ msgstr "You cannot submit a report for a future year."
+
+#~ msgid "Έχετε ήδη καταχωρήσει αναφορά για την χρονιά αυτή"
+#~ msgstr "You have already submitted a report for this year"
+
+#~ msgid "Ολοκληρωμένη"
+#~ msgstr "Completed"
+
+#~ msgid "Ενεργή"
+#~ msgstr "Active"
+
+#~ msgid "Διακοπή φοίτησης"
+#~ msgstr "Suspension of studies"
+
+#~ msgid "Διαλέξεις θεωρίας"
+#~ msgstr "Lecture courses"
+
+#~ msgid "Εργαστηριακά μαθήματα"
+#~ msgstr "Lab courses"
+
+#~ msgid "Ικανοποιητική"
+#~ msgstr "Satisfactory"
+
+#~ msgid "Οριακά Ικανοποιητική"
+#~ msgstr "Marginal"
+
+#~ msgid "Ανεπαρκής - Διαγραφή"
+#~ msgstr "Insufficient - Dismissal"
+
+#~ msgid "Διατριβές"
+#~ msgstr "Theses"
+
+#~ msgid "Φοιτητές"
+#~ msgstr "Candidates"
+
+#~ msgid "Αναφορές"
+#~ msgstr "Reports"
+
+#~ msgid "Eισηγήσεις"
+#~ msgstr "Recommendations"
+
+#~ msgid "Δημιουργία Διδακτορικής Διατριβής"
+#~ msgstr "Create Doctoral Thesis"
+
+#~ msgid "Ενημέρωση Διδακτορικής Διατριβής"
+#~ msgstr "Update Doctoral Thesis"
+
+#~ msgid "Πορεία"
+#~ msgstr "Progress"
+
+#~ msgid "Δημιουργία Διδακτορικού Φοιτητή"
+#~ msgstr "Create Doctoral Student"
+
+#~ msgid "Ενημέρωση Στοιχείων Φοίτησης"
+#~ msgstr "Update Enrollment Information"
+
+#~ msgid "Για την ενημέρωση των προσωπικών στοιχείων πατήστε εδώ:"
+#~ msgstr "To update your personal information, click here:"
+
+#~ msgid "Επεξεργασία προσωπικών στοιχείων"
+#~ msgstr "Update personal information"
+
+#~ msgid "Διδακτορικοί Φοιτητές"
+#~ msgstr "Doctoral Candidates"
+
+#~ msgid "Προφίλ"
+#~ msgstr "Profile"
+
+#~ msgid "Ενημέρωση Προσωπικών Στοιχείων"
+#~ msgstr "Update Personal Information"
+
+#~ msgid "Δημιουργία Αναφοράς Υποψήφιου Διδάκτορα"
+#~ msgstr "Create Doctoral Candidate Report"
+
+#~ msgid "Ενημέρωση Αναφοράς Υποψήφιου Διδάκτορα"
+#~ msgstr "Update Doctoral Candidate Report"
+
+#~ msgid "Αναφορές Υποψήφιων Διδακτόρων"
+#~ msgstr "Doctoral Candidate Reports`"
+
+#~ msgid "Δημιουργία Εισήγησης Προόδου"
+#~ msgstr "Create Progress Recommendation"
+
+#~ msgid "Ενημέρωση Εισήγησης Προόδου"
+#~ msgstr "Update Progress Recommendation Information"
+
+#~ msgid "Εισηγήσεις Προόδου"
+#~ msgstr "Progress Recommendations"
+
+#~ msgid "Δημιουργία Δημοσιεύσης"
+#~ msgstr "Create Publication"
+
+#~ msgid "Ενημέρωση Δημοσίευσης"
+#~ msgstr "Update Publication Info"
+
+#~ msgid "Δημιουργία Επικουρικού Διδακτικού Έργου"
+#~ msgstr "New Teaching Assistance Task"
+
+#~ msgid "Ενημέρωση Επικουρικού Διδακτικού Έργου"
+#~ msgstr "Update Teaching Assistance Task"
+
+#~ msgid "Υπεύθυνος Καθηγητής"
+#~ msgstr "Supervisor"
+
+#~ msgid "Επικουργικό Διδακτικό Έργο"
+#~ msgstr "Teaching Assistance Tasks"
+
+#~ msgid "Στοιχεία Διδακτορικής Διατριβής"
+#~ msgstr "Doctoral Thesis Information"
+
+#~ msgid "Υποψήφιος Διδάκτορας: "
+#~ msgstr "Doctoral Candidate: "
+
+#~ msgid "Αναφορές Διδακτορικής Διατριβής"
+#~ msgstr "Doctoral Thesis Progress Reports"
+
+#~ msgid "Εισηγήσεις Επιβλέποντα"
+#~ msgstr "Supervisor Recommendations"
+
+#~ msgid "Επικουρικό Διδακτικό Έργο"
+#~ msgstr "Teaching Assistance Tasks"
+
+#~ msgid "Διδακτορικές Διατριβές στις οποίες είστε επιβλέπων"
+#~ msgstr "Doctoral Theses that your are supervising"
+
+#~ msgid ""
+#~ "Διδακτορικές Διατριβές στις οποίες είστε στην επιτροπή παρακολούθησης"
+#~ msgstr "Doctoral Theses you are co-supervising"
+
+#~ msgid "Εισηγήσεις Διδακτορικών Διατριβών"
+#~ msgstr "Recommendation for Doctoral Theses"
+
+#~ msgid "Νέα Εισήγηση"
+#~ msgstr "New Recommendation"
+
+#~ msgid "Αναφορά Πορείας Διδακτορικής Διατριβής"
+#~ msgstr "Doctroral Thesis Progress Report"
+
+#~ msgid "Εισήγηση Πορείας Διδακτορικής Διατριβής"
+#~ msgstr "Doctroal Thesis Progress Recommendation"
+
+#~ msgid "Δημιουργία Εισήγησης Πορείας Διδακτορικής Διατριβής"
+#~ msgstr "Create a new PhD progress recommendation"
+
+#~ msgid "Δημοσίευση σε Περιοδικό"
+#~ msgstr "Journal Publication"
+
+#~ msgid "Δημοσίευση σε Συνέδριο"
+#~ msgstr "Conference Publication"
+
+#~ msgid "Επικουρικό Έργο"
+#~ msgstr "My teaching assistance tasks"
+
+#~ msgid "Βεβαιωθείτε ότι τα προσωπικά σας στοιχεία είναι ενημερώμενα"
+#~ msgstr "Make sure that your personal information is accurate"
+
+#~ msgid "Νέα Αναφορά"
+#~ msgstr "New Report"
+
+#~ msgid "Νέα Συνέδριο"
+#~ msgstr "New conference"
+
+#~ msgid "Προβολή"
+#~ msgstr "View"
+
+#~ msgid "Νέο Επικουρικό Έργο"
+#~ msgstr "New Teaching Assistance"
+
+#~ msgid "Ενημέρωση προσωπικών στοιχείων"
+#~ msgstr "Update personal data"
+
+#~ msgid "Αίτηση για Διδακτορική Διατριβή"
+#~ msgstr "Doctorate Application"
+
+#~ msgid "Αναφορά Προόδου Διδακτορικής Διατριβής"
+#~ msgstr "Doctoral Dissertation Progress"
