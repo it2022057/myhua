@@ -34,6 +34,10 @@ def create_user_if_required(email):
 
 
 class PersonalInfo(ScopedModelDep):
+    class Meta:
+        verbose_name = _('Προσωπικά Στοιχεία')
+        verbose_name_plural = _('Προσωπικά Στοιχεία')
+
     GENDER_MALE = "M"
     GENDER_FEMALE = "F"
     GENDER_OTHER = "O"
@@ -123,17 +127,20 @@ class StaffMember(PersonStrMixin, ScopedModelDep):
     """
     The basic staff member class. Stores information related to faculty members
     """
+    class Meta:
+        verbose_name = _('Μέλος Προσωπικού')
+        verbose_name_plural = _('Μέλη Προσωπικού')
 
     user = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True)
     email = models.EmailField(null=True)
     given_name = models.CharField(max_length=50)
-    surname = models.CharField(max_length=70)
     given_name_en = models.CharField(null=True, max_length=50)
+    surname = models.CharField(max_length=70)
     surname_en = models.CharField(null=True, max_length=70)
 
     display_name = models.CharField(max_length=150, null=True, blank=True)
-    display_name_full = models.CharField(max_length=200, null=True, blank=True)
     display_name_en = models.CharField(max_length=150, null=True, blank=True)
+    display_name_full = models.CharField(max_length=200, null=True, blank=True)
 
     is_internal = models.BooleanField(null=True, default=True)
     institution = models.CharField(max_length=100, blank=True, null=True)
@@ -170,6 +177,8 @@ class StaffMember(PersonStrMixin, ScopedModelDep):
 
 class CustomUserPermissions(models.Model):
     class Meta:
+        verbose_name = _('Προσαρμοσμένο Δικαίωμα Χρήστη')
+        verbose_name_plural = _('Προσαρμοσμένα Δικαιώματα Χρήστη')
         permissions = (
             ("is_secretariat", "Is a secretariat user"),
         )

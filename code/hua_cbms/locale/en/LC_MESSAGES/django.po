@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-01 15:05+0300\n"
+"POT-Creation-Date: 2026-04-03 18:38+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,25 +17,36 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: accounts/app_landings.py:45
-#: subjects/views.py:
+#: accounts/admin.py:9
+msgid "Διαχείριση HUA"
+msgstr "HUA Administration"
+
+#: accounts/admin.py:10
+msgid "Ιστότοπος διαχείρισης HUA"
+msgstr "HUA site admin"
+
+#: accounts/app_landings.py:7 subjects/models.py:39 subjects/views.py:67
 msgid "Θέματα"
 msgstr "Subjects"
 
-#: accounts/app_landings.py:139
+#: accounts/app_landings.py:15 bodies/models.py:20 bodies/views.py:21
+msgid "Συλλογικά Όργανα"
+msgstr "Collective Bodies"
+
+#: accounts/app_landings.py:45
 msgid "Διαχείριση συνθηματικού"
 msgstr "Password management"
 
-#: accounts/checks.py:167
+#: accounts/checks.py:165
 #, python-format
 msgid "Πρέπει να χρησιμοποιήσετε τουλάχιστον %d χαρακτήρες για κωδικό"
 msgstr "You must use at least %d characters for the password"
 
-#: accounts/checks.py:170
+#: accounts/checks.py:168
 msgid "Οι δύο κωδικοί δεν ταιριάζουν!"
 msgstr "The two passwords do not match!"
 
-#: accounts/checks.py:186
+#: accounts/checks.py:184
 msgid ""
 "Χρησιμοποιήστε μόνο ψηφία από 0 εώς 9, λατινικούς ή τους ειδικούς χαρακτήρες "
 "που αναφέρονται παραπάνω."
@@ -43,19 +54,19 @@ msgstr ""
 "Use only digits from 0 to 9, Latin letters, or the special characters listed "
 "above."
 
-#: accounts/checks.py:189
+#: accounts/checks.py:187
 msgid "Δεν έχετε χρησιμοποιήσει τουλάχιστον ένα ψηφίο από 0 εώς 9"
 msgstr "You have not used at least one digit from 0 to 9"
 
-#: accounts/checks.py:192
+#: accounts/checks.py:190
 msgid "Δεν έχετε χρησιμοποιήσει τουλάχιστον ένα λατινικό κεφαλαίο γράμμα"
 msgstr "You have not used at least one uppercase Latin letter"
 
-#: accounts/checks.py:195
+#: accounts/checks.py:193
 msgid "Δεν έχετε χρησιμοποιήσει τουλάχιστον ένα λατινικό πεζό γράμμα"
 msgstr "You have not used at least one lowercase Latin letter"
 
-#: accounts/checks.py:198
+#: accounts/checks.py:196
 msgid "Δεν έχετε χρησιμοποιήσει τουλάχιστον δύο ειδικούς χαρακτήρες"
 msgstr "You have not used at least two special characters"
 
@@ -131,17 +142,37 @@ msgstr "New password"
 msgid "Νέος κωδικός πρόσβασης (επανάληψη)"
 msgstr "New password (repeat)"
 
-#: accounts/models.py:42
+#: accounts/models.py:38 core/views.py:34
+msgid "Προσωπικά Στοιχεία"
+msgstr "Personal Information"
+
+#: accounts/models.py:45
 msgid "Άρρεν"
 msgstr "Male"
 
-#: accounts/models.py:43
+#: accounts/models.py:46
 msgid "Θήλυ"
 msgstr "Female"
 
-#: accounts/models.py:44
+#: accounts/models.py:47
 msgid "Άλλο"
 msgstr "Other"
+
+#: accounts/models.py:130
+msgid "Μέλος Προσωπικού"
+msgstr "Staff Member"
+
+#: accounts/models.py:131
+msgid "Μέλη Προσωπικού"
+msgstr "Staff Members"
+
+#: accounts/models.py:179
+msgid "Προσαρμοσμένο Δικαίωμα Χρήστη"
+msgstr "Custom User Permission"
+
+#: accounts/models.py:180
+msgid "Προσαρμοσμένα Δικαιώματα Χρήστη"
+msgstr "Custom User Permissions"
 
 #: accounts/templates/accounts/changepassword.html:6
 msgid "Αλλαγή Κωδικού"
@@ -375,13 +406,37 @@ msgstr "Please check the email address you provided to proceed."
 msgid "Ο σύνδεσμος αυτός έχει λήξει."
 msgstr "This link has expired."
 
-#: bodies/models.py:11 subjects/views.py:
+#: attachments/models.py:8
+msgid "Επισυναπτόμενο"
+msgstr "Attachment"
+
+#: attachments/models.py:9
+msgid "Επισυναπτόμενα"
+msgstr "Attachments"
+
+#: attachments/models.py:17
+msgid "Επισυναπτόμενο Απόφασης"
+msgstr "Decision Attachment"
+
+#: attachments/models.py:18
+msgid "Επισυναπτόμενα Αποφάσεων"
+msgstr "Decision Attachment"
+
+#: bodies/models.py:19 subjects/forms.py:18 subjects/views.py:64
 msgid "Συλλογικό Όργανο"
 msgstr "Collective Body"
 
-#: bodies/models.py:12
-msgid "Συλλογικά Όργανα"
-msgstr "Collective Bodies"
+#: bodies/views.py:17
+msgid "Τίτλος"
+msgstr "Title"
+
+#: bodies/views.py:18
+msgid "Ημερομηνία Έναρξης"
+msgstr "Start Date"
+
+#: bodies/views.py:19
+msgid "Ημερομηνία Λήξης"
+msgstr "End Date"
 
 #: core/forms.py:14
 msgid "Κάντε click στο πεδίο και επιλέξτε."
@@ -465,10 +520,6 @@ msgstr "Entries"
 msgid "Νέα καταχώρηση"
 msgstr "New entry"
 
-#: core/views.py:34
-msgid "Προσωπικά Στοιχεία"
-msgstr "Personal Information"
-
 #: core/views.py:40
 msgid "Επιβεβαίωση"
 msgstr "Confirm"
@@ -513,25 +564,109 @@ msgstr "Update data"
 msgid "Επιλέξτε"
 msgstr "Select"
 
+#: curricula/models.py:15
+msgid "Ίδρυμα"
+msgstr "Institution"
+
+#: curricula/models.py:16
+msgid "Ιδρύματα"
+msgstr "Institutions"
+
+#: curricula/models.py:28 subjects/forms.py:17
+msgid "Σχολή"
+msgstr "School"
+
+#: curricula/models.py:29
+msgid "Σχολές"
+msgstr "Schools"
+
+#: curricula/models.py:46 subjects/forms.py:16
+msgid "Τμήμα"
+msgstr "Department"
+
+#: curricula/models.py:47
+msgid "Τμήματα"
+msgstr "Departments"
+
+#: curricula/models.py:69 subjects/forms.py:15
+msgid "Πρόγραμμα Σπουδών"
+msgstr "Study Program"
+
+#: curricula/models.py:70
+msgid "Προγράμματα Σπουδών"
+msgstr "Study Programs"
+
+#: meetings/models.py:8
+msgid "Συνεδρίαση"
+msgstr "Meeting"
+
+#: meetings/models.py:9
+msgid "Συνεδριάσεις"
+msgstr "Meetings"
+
+#: scopes/models.py:12
+msgid "Γραμματεία"
+msgstr "Secretariat"
+
+#: scopes/models.py:13
+msgid "Γραμματείες"
+msgstr "Secretariats"
+
+#: subjects/forms.py:11 subjects/views.py:61
+msgid "Δείκτης"
+msgstr "Index"
+
+#: subjects/forms.py:12 subjects/views.py:62
+msgid "Τύπος"
+msgstr "Type"
+
+#: subjects/forms.py:13 subjects/views.py:63
+msgid "Κατηγορία"
+msgstr "Category"
+
+#: subjects/forms.py:14
+msgid "Αιτών"
+msgstr "Applicant"
+
+#: subjects/forms.py:19 subjects/views.py:65
+msgid "Σημειώσεις"
+msgstr "Notes"
+
+#: subjects/models.py:14
+msgid "Τύπος Θέματος"
+msgstr "Subject Type"
+
+#: subjects/models.py:15
+msgid "Τύποι Θεμάτων"
+msgstr "Subject Types"
+
+#: subjects/models.py:23
+msgid "Κατηγορία Θέματος"
+msgstr "Subject Category"
+
+#: subjects/models.py:24
+msgid "Κατηγορίες Θεμάτων"
+msgstr "Subject Categories"
+
+#: subjects/models.py:38
+msgid "Θέμα"
+msgstr "Subject"
+
+#: subjects/models.py:62
+msgid "Απόφαση"
+msgstr "Decision"
+
+#: subjects/models.py:63
+msgid "Αποφάσεις"
+msgstr "Decisions"
+
 #: subjects/templates/subjects/show_object.html:101
 msgid "Είστε σίγουροι;"
 msgstr "Are you sure?"
 
-#: subjects/views.py:
-msgid "Δείκτης"
-msgstr "Index"
-
-#: subjects/views.py:
-msgid "Τύπος"
-msgstr "Type"
-
-#: subjects/views.py:
-msgid "Κατηγορία"
-msgstr "Category"
-
-#: subjects/views.py:
-msgid "Σημειώσεις"
-msgstr "Notes"
+#: subjects/views.py:46
+msgid "Δημιουργία Θέματος"
+msgstr "Create Subject"
 
 #~ msgid "Timesheets"
 #~ msgstr "Timesheets"
@@ -541,15 +676,6 @@ msgstr "Notes"
 
 #~ msgid "Έργα"
 #~ msgstr "Projects"
-
-#~ msgid "Αποφάσεις"
-#~ msgstr "Decisions"
-
-#~ msgid "Συνεργάτες"
-#~ msgstr "Associates"
-
-#~ msgid "Προσωπικό"
-#~ msgstr "Staff"
 
 #~ msgid "Προκλήσεις Διδακτορικών"
 #~ msgstr "Doctoral Calls"
@@ -590,9 +716,6 @@ msgstr "Notes"
 #~ msgid "Φορεάς"
 #~ msgstr "Organization"
 
-#~ msgid "Σχολή"
-#~ msgstr "School"
-
 #~ msgid "Τμήμα εντός του ιδρύματος"
 #~ msgstr "Department within the institution"
 
@@ -628,9 +751,6 @@ msgstr "Notes"
 
 #~ msgid "Αριθμός Κάρτας"
 #~ msgstr "Card Number"
-
-#~ msgid "Πρόγραμμα Σπουδών"
-#~ msgstr "Study Program"
 
 #~ msgid "Αριθμός Μητρώου"
 #~ msgstr "Registration Number"
@@ -677,20 +797,11 @@ msgstr "Notes"
 #~ msgid "Θέση Εργασίας"
 #~ msgstr "Job Position"
 
-#~ msgid "Τίτλος"
-#~ msgstr "Title"
-
 #~ msgid "Τίτλος (Αγγλικά)"
 #~ msgstr "Title (English)"
 
 #~ msgid "Περιγραφή"
 #~ msgstr "Description"
-
-#~ msgid "Ημερομηνία Έναρξης"
-#~ msgstr "Start Date"
-
-#~ msgid "Ημερομηνία Λήξης"
-#~ msgstr "End Date"
 
 #~ msgid "Επιβλέπων"
 #~ msgstr "Supervisor"
@@ -785,14 +896,8 @@ msgstr "Notes"
 #~ msgid "Τελευταία Ενημέρωση"
 #~ msgstr "Last Updated"
 
-#~ msgid "Τύπος Πτυχίου"
-#~ msgstr "Degree Type"
-
 #~ msgid "Πανεπιστήμιο"
 #~ msgstr "University"
-
-#~ msgid "Τμήμα"
-#~ msgstr "Department"
 
 #~ msgid "Βαθμός"
 #~ msgstr "Grade"
@@ -815,14 +920,8 @@ msgstr "Notes"
 #~ msgid "Συστατική Επιστολή"
 #~ msgstr "Reference Letter"
 
-#~ msgid "Ίδρυμα/Φορέας"
-#~ msgstr "Institution/Body"
-
 #~ msgid "Στοιχεία Επαφής"
 #~ msgstr "Contact Information"
-
-#~ msgid "Τίτλος Περιοδικού"
-#~ msgstr "Journal Title"
 
 #~ msgid "Συγγραφείς"
 #~ msgstr "Authors"
@@ -1116,9 +1215,6 @@ msgstr "Notes"
 #~ "the application to the system. You can make changes to your application "
 #~ "until the call deadline."
 
-#~ msgid "Επισυναπτόμενα"
-#~ msgstr "Attachments"
-
 #~ msgid "Εδώ μπορείτε να υποβάλλετε τα επισυναπτόμενα για την αίτηση σας."
 #~ msgstr "Here you can submit the attachments for your application."
 
@@ -1200,9 +1296,6 @@ msgstr "Notes"
 
 #~ msgid "Άκυρο!"
 #~ msgstr "Cancel!"
-
-#~ msgid "Διαχείριση Υποψηφίων"
-#~ msgstr "Applicant Management"
 
 #~ msgid "Διαχείριση Προσκλήσεων"
 #~ msgstr "Call Management"
@@ -1319,9 +1412,6 @@ msgstr "Notes"
 
 #~ msgid "Ανοιχτές Προσκλήσεις"
 #~ msgstr "Open Calls"
-
-#~ msgid "Θέμα"
-#~ msgstr "Subject"
 
 #~ msgid "Λεπτομέρειες"
 #~ msgstr "Details"
@@ -1520,9 +1610,6 @@ msgstr "Notes"
 #~ msgid "Εισήγηση"
 #~ msgstr "Recommendation"
 
-#~ msgid "Επισυναπτόμενο έγγραφο"
-#~ msgstr "Attached document"
-
 #~ msgid "Χρήστης"
 #~ msgstr "User"
 
@@ -1642,9 +1729,6 @@ msgstr "Notes"
 
 #~ msgid "Εισηγήσεις Προόδου"
 #~ msgstr "Progress Recommendations"
-
-#~ msgid "Δημιουργία Δημοσιεύσης"
-#~ msgstr "Create Publication"
 
 #~ msgid "Ενημέρωση Δημοσίευσης"
 #~ msgstr "Update Publication Info"

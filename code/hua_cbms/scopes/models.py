@@ -1,3 +1,4 @@
+from django.utils.translation import gettext_lazy as _
 from django.db import models
 from django.contrib.auth import get_user_model
 from scopes.utils import get_secretariat_scope
@@ -7,6 +8,10 @@ User = get_user_model()
 # Create your models here.
 
 class Secretariat(models.Model):
+    class Meta:
+        verbose_name = _('Γραμματεία')
+        verbose_name_plural = _('Γραμματείες')
+
     user = models.ForeignKey(User, null=True, blank=True, on_delete=models.CASCADE)
     programs = models.ManyToManyField('curricula.StudyProgram', blank=True)
     departments = models.ManyToManyField('curricula.Department', blank=True)

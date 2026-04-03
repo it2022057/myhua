@@ -1,3 +1,4 @@
+from django.utils.translation import gettext_lazy as _
 from django.contrib.auth import get_user_model
 from django.db import models
 
@@ -9,11 +10,19 @@ User = get_user_model()
 # Create your models here.
 
 class SubjectType(TitleStrMixin, models.Model):
+    class Meta:
+        verbose_name = _('Τύπος Θέματος')
+        verbose_name_plural = _('Τύποι Θεμάτων')
+
     title_gr = models.CharField(max_length=100)
     title_en = models.CharField(max_length=100)
 
 
 class SubjectCategory(TitleStrMixin, models.Model):
+    class Meta:
+        verbose_name = _('Κατηγορία Θέματος')
+        verbose_name_plural = _('Κατηγορίες Θεμάτων')
+
     title_gr = models.CharField(max_length=100)
     title_en = models.CharField(max_length=100)
 
@@ -25,6 +34,10 @@ class SubjectQuery(ScopedQueryPrg):
 
 
 class Subject(TrackedScopedProgramModel):
+    class Meta:
+        verbose_name = _('Θέμα')
+        verbose_name_plural = _('Θέματα')
+
     index = models.IntegerField()
     type = models.ForeignKey(SubjectType, null=True, blank=True, on_delete=models.CASCADE)
     category = models.ForeignKey(SubjectCategory, null=True, blank=True, on_delete=models.CASCADE)
@@ -45,6 +58,10 @@ class Subject(TrackedScopedProgramModel):
 
 
 class Decision(TitleStrMixin, models.Model):
+    class Meta:
+        verbose_name = _('Απόφαση')
+        verbose_name_plural = _('Αποφάσεις')
+
     title_gr = models.CharField(max_length=100)
     title_en = models.CharField(max_length=100)
     subject = models.ForeignKey(Subject, null=True, on_delete=models.SET_NULL)

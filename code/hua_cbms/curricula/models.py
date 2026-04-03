@@ -1,3 +1,4 @@
+from django.utils.translation import gettext_lazy as _
 from django.contrib.auth import get_user_model
 from django.db import models
 
@@ -10,6 +11,10 @@ User = get_user_model()
 
 
 class Institution(TitleStrMixin, models.Model):
+    class Meta:
+        verbose_name = _('Ίδρυμα')
+        verbose_name_plural = _('Ιδρύματα')
+
     title_gr = models.CharField(max_length=100)
     title_en = models.CharField(max_length=100)
     short_gr = models.CharField(max_length=20, null=True, blank=True)
@@ -19,6 +24,9 @@ class Institution(TitleStrMixin, models.Model):
 
     
 class School(TitleStrMixin, models.Model):
+    class Meta:
+        verbose_name = _('Σχολή')
+        verbose_name_plural = _('Σχολές')
 
     title_gr = models.CharField(max_length=100)
     title_en = models.CharField(max_length=100)
@@ -34,6 +42,10 @@ class DepartmentQuery(ScopedQueryPrg):
         return self.filter(id__in = scope['departments'].values_list('id') )
         
 class Department(TitleStrMixin, ScopedModelPrg):
+    class Meta:
+        verbose_name = _('Τμήμα')
+        verbose_name_plural = _('Τμήματα')
+
     title_gr = models.CharField(max_length=100)
     title_en = models.CharField(max_length=100)
     short_gr = models.CharField(max_length=20, null=True, blank=True)
@@ -53,6 +65,10 @@ class StudyProgramQuery(ScopedQueryPrg):
         return self.filter(id__in = scope['programs'].values_list('id') )
         
 class StudyProgram(TitleStrMixin, ScopedModelPrg):
+    class Meta:
+        verbose_name = _('Πρόγραμμα Σπουδών')
+        verbose_name_plural = _('Προγράμματα Σπουδών')
+
     UNDERGRADUATE = "Προπτυχιακό"
     POSTGRADUATE = "Μεταπτυχιακό"
     DOCTORAL = "Διδακτορικό"
