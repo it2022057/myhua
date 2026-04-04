@@ -28,7 +28,7 @@
 
 <h4> {{ headline }} </h4>
 
-{% crispy form %} 
+{% crispy form %}
 
 {% if confirm_modal %}
 <div class="modal fade" id="updateConfirmModal" tabindex="-1">
@@ -80,7 +80,7 @@
     confirmUpdateBtn.addEventListener("click", function() {
         updateConfirmed = true;
         form.submit();
-    }); 
+    });
   });
 </script>
 {% endif %}
@@ -91,23 +91,23 @@
   <div class="col-sm-6">
     <button type="button" class="btn btn-danger" onclick="delete_obj()">
       <span class="mto">{{ delete_icon }}</span>{{ delete_text }}
-  </button>  
+  </button>
   </div>
   <div class="col-sm-6">
-  </div>  
+  </div>
 </div>
 <script>
     function delete_obj() {
     var result = confirm("{% trans 'Είστε σίγουροι;' %}");
     if (result) {
       {% if success_url %}
-      window.location.replace('{{ delete_url }}?next={{ success_url }}');      
+      window.location.replace('{{ delete_url }}?next={{ success_url }}');
       {% else %}
-      window.location.replace('{{ delete_url }}');      
+      window.location.replace('{{ delete_url }}');
       {% endif %}
     }
     }
-</script>  
+</script>
 {% endif %}
 {% endif %}
 

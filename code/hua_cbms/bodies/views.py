@@ -19,37 +19,14 @@ class SecListCollectiveBody(views.ScopedSecListView):
         'end_date': _('Ημερομηνία Λήξης')
     }
     table_title = _('Συλλογικά Όργανα')
+    #     create_url = 'bodies:sec_create_collective_body'
+    #     update_url = 'bodies:sec_update_collective_body'
 
 
+# class SecCreateCollectiveBody(views.ScopedSecCreateView):
+#     model = CollectiveBody
+#     form_class = forms.SecSubjectForm
+#     success_url = 'subjects:sec_list_subject'
+#     headline = _('Δημιουργία Θέματος')
+#     back_url = ''
 
-
-# class SecListSubject(SecList):
-#     model = Subject
-#     fields = ['index', 'type', 'category', 'collective_body', 'notes']
-#     headers = {
-#         'index': _('Δείκτης'),
-#         'type': _('Τύπος'),
-#         'category': _('Κατηγορία'),
-#         'collective_body': _('Συλλογικό Όργανο'),
-#         'notes': _('Σημειώσεις'),
-#     }
-#     table_title = _('Θέματα')
-#     create_url = 'subjects:sec_create_subject'
-#     update_url = 'subjects:sec_update_subject'
-#
-#
-# class SecCreate(views.ScopedSecCreateView):
-#     template_name = 'subjects/show_object.html'
-#
-#     def form_valid(self, form):
-#         form.instance.created_by = self.request.user
-#         form.instance.updated_by = self.request.user
-#         return super().form_valid(form)
-#
-#
-# class SecUpdate(views.ScopedSecUpdateView):
-#     template_name = 'subjects/show_object.html'
-#
-#     def form_valid(self, form):
-#         form.instance.updated_by = self.request.user
-#         return super().form_valid(form)

@@ -8,6 +8,8 @@ urlpatterns = [
     path('sec/', views.SecListSubject.as_view(), name='sec_list_subject'),
     path('sec/subject/<int:pk>/delete', views.SecDeleteSubject.as_view(), name='sec_delete_subject'),
     #path('sec/subject/<int:pk>/overview', views.SecSubjectOverviewList.as_view(), name='sec_overview_phd_student'),
+
     # URLs for Secretary autocomplete
-    #path('sec/subject/autocomplete', views.SecSubjectAutoComplete.as_view(), name='sec_subject_autocomplete'),
+    path('sec/subject-type/autocomplete', views.SecSubjectTypeAutoComplete.as_view(), name='subject-type-autocomplete'),
+    path('sec/subject-category/autocomplete', views.SecSubjectCategoryAutoComplete.as_view(), name='subject-category-autocomplete'),
 ]

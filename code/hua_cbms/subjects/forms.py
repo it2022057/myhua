@@ -20,18 +20,23 @@ FIELD_LABELS = {
 }
 
 WIDGETS = {
-    'type': autocomplete.ModelSelect2(url='subjects:type-autocomplete'),
-    'category': autocomplete.ModelSelect2(url='subjects:category-autocomplete'),
-    'applicant_user': autocomplete.ModelSelect2(url='accounts:user-autocomplete'),
-    'program': autocomplete.ModelSelect2(url='curricula:program-autocomplete'),
-    'department': autocomplete.ModelSelect2(url='curricula:department-autocomplete'),
-    'school': autocomplete.ModelSelect2(url='curricula:school-autocomplete'),
-    'collective_body': autocomplete.ModelSelect2(url='bodies:collective-body-autocomplete'),
+    'type': autocomplete.ModelSelect2(url='subjects:subject-type-autocomplete', attrs={
+        'data-placeholder': 'Select type',
+        'data-theme': 'bootstrap-5',
+        'data-allow-clear': 'false',
+        'class': 'bootstrap5-autocomplete'
+    }),
+    'category': autocomplete.ModelSelect2(url='subjects:subject-category-autocomplete'),
+    # 'applicant_user': autocomplete.ModelSelect2(url='accounts:user-autocomplete'),
+    # 'program': autocomplete.ModelSelect2(url='curricula:program-autocomplete'),
+    # 'department': autocomplete.ModelSelect2(url='curricula:department-autocomplete'),
+    # 'school': autocomplete.ModelSelect2(url='curricula:school-autocomplete'),
+    # 'collective_body': autocomplete.ModelSelect2(url='bodies:collective-body-autocomplete'),
     'notes': forms.Textarea(attrs={'rows': 4}),
 }
 
 class SecSubjectForm(GenericModelForm):
-    # scoped_fields = ['collective_body']
+    scoped_fields = ['collective_body']
 
     class Meta:
         fields = FIELDS

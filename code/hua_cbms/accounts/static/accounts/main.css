@@ -417,3 +417,13 @@ label {
   padding: 0;
   margin: 0;
   }
+
+  /* Styling for the autocomplete fields in forms */
+  .bootstrap5-autocomplete + .select2-container .select2-selection--single {
+    padding-left: 4px;
+  }
+
+  .bootstrap5-autocomplete + .select2-container .select2-selection--single .select2-selection__rendered {
+    padding-left: 4px;
+  }
+
