@@ -19,20 +19,42 @@ FIELD_LABELS = {
     'notes': _('Σημειώσεις'),
 }
 
+BASE_ATTRS = {
+    'data-theme': 'bootstrap-5',
+    'data-allow-clear': 'false',
+    'class': 'bootstrap5-autocomplete'
+}
+
 WIDGETS = {
-    'type': autocomplete.ModelSelect2(url='subjects:subject-type-autocomplete', attrs={
-        'data-placeholder': 'Select type',
-        'data-theme': 'bootstrap-5',
-        'data-allow-clear': 'false',
-        'class': 'bootstrap5-autocomplete'
-    }),
-    'category': autocomplete.ModelSelect2(url='subjects:subject-category-autocomplete'),
-    # 'applicant_user': autocomplete.ModelSelect2(url='accounts:user-autocomplete'),
-    # 'program': autocomplete.ModelSelect2(url='curricula:program-autocomplete'),
-    # 'department': autocomplete.ModelSelect2(url='curricula:department-autocomplete'),
-    # 'school': autocomplete.ModelSelect2(url='curricula:school-autocomplete'),
-    # 'collective_body': autocomplete.ModelSelect2(url='bodies:collective-body-autocomplete'),
-    'notes': forms.Textarea(attrs={'rows': 4}),
+    'type': autocomplete.ModelSelect2(
+        url='subjects:subject-type-autocomplete',
+        attrs={**BASE_ATTRS, 'data-placeholder': _('Επιλέξτε τύπο')}
+    ),
+    'category': autocomplete.ModelSelect2(
+        url='subjects:subject-category-autocomplete',
+        attrs={**BASE_ATTRS, 'data-placeholder': _('Επιλέξτε κατηγορία')}
+    ),
+    'applicant_user': autocomplete.ModelSelect2(
+        url='accounts:applicant-autocomplete',
+        attrs = {**BASE_ATTRS, 'data-placeholder': _('Επιλέξτε αιτών')}
+    ),
+    'program': autocomplete.ModelSelect2(
+        url='curricula:program-autocomplete',
+        attrs = {**BASE_ATTRS, 'data-placeholder': _('Επιλέξτε πρόγραμμα σπουδών')}
+    ),
+    'department': autocomplete.ModelSelect2(
+        url='curricula:department-autocomplete',
+        attrs={**BASE_ATTRS, 'data-placeholder': _('Επιλέξτε τμήμα')}
+    ),
+    'school': autocomplete.ModelSelect2(
+        url='curricula:school-autocomplete',
+        attrs={**BASE_ATTRS, 'data-placeholder': _('Επιλέξτε σχολή')}
+    ),
+    'collective_body': autocomplete.ModelSelect2(
+        url='bodies:collectivebody-autocomplete',
+        attrs={**BASE_ATTRS, 'data-placeholder': _('Επιλέξτε συλλογικό όργανο')}
+    ),
+    'notes': forms.Textarea(attrs={'rows': 4})
 }
 
 class SecSubjectForm(GenericModelForm):

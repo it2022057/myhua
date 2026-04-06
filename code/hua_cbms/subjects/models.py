@@ -37,6 +37,7 @@ class Subject(TrackedScopedProgramModel):
     class Meta:
         verbose_name = _('Θέμα')
         verbose_name_plural = _('Θέματα')
+        ordering = ['type']
 
     index = models.IntegerField()
     type = models.ForeignKey(SubjectType, null=True, blank=True, on_delete=models.CASCADE)

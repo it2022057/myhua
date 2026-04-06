@@ -1,5 +1,7 @@
+from dal import autocomplete
 from django.contrib.auth import get_user_model, logout, update_session_auth_hash
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.signing import TimestampSigner, SignatureExpired, BadSignature
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
@@ -244,3 +246,11 @@ def password_token(request, token):
                   {"form": form, "password_policy": mark_safe(complexity_message()), "alertclass": "alert alert-info"})
 
 
+class ApplicantAutocomplete(LoginRequiredMixin, autocomplete.Select2QuerySetView):
+    def get_queryset(self):
+        User = get_user_model()
+        qs = User.objects.all()
+        if self.q:
+            qs = qs.filter(username__icontains=self.q)
+
+        return qs.order_by('username')[:10]

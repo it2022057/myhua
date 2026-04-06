@@ -17,4 +17,7 @@ urlpatterns = [
     path('password/reset/info', views.password_reset_choice, name='password_reset_choice'),
     path('password/forgot', views.forgot_password, name='forgot_password'),
     path('password/token/<str:token>', views.password_token, name='password_token'),
+
+    # URL for Applicant autocomplete
+    path('applicant/autocomplete', views.ApplicantAutocomplete.as_view(), name='applicant-autocomplete'),
 ]
