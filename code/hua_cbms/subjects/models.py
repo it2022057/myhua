@@ -58,7 +58,13 @@ class Subject(TrackedScopedProgramModel):
         return f"{self.index} - {self.type} - {self.category}"
 
 
-class Decision(TitleStrMixin, models.Model):
+class DecisionQuery(ScopedQueryPrg):
+
+    def scope_filter(self, scope):
+        return self.filter(subject__collective_body__in=scope["collective_bodies"])
+
+
+class Decision(TitleStrMixin, TrackedScopedProgramModel):
     class Meta:
         verbose_name = _('Απόφαση')
         verbose_name_plural = _('Αποφάσεις')
@@ -66,4 +72,9 @@ class Decision(TitleStrMixin, models.Model):
     title_gr = models.CharField(max_length=100)
     title_en = models.CharField(max_length=100)
     subject = models.ForeignKey(Subject, null=True, on_delete=models.SET_NULL)
+
+    objects = DecisionQuery.as_manager()
+
+    def scope_query(self, scope):
+        return scope['collective_bodies'].filter(id=self.subject.collective_body.id).exists()
 

@@ -6,13 +6,14 @@ from django.utils.translation import gettext_lazy as _
 from accounts.checks import is_secretariat
 from core import views
 from core.utils import get_order_by_title
-from subjects.models import Subject, SubjectType, SubjectCategory
+from scopes.utils import get_secretariat_scope
+from subjects.models import Subject, SubjectType, SubjectCategory, Decision
 from . import forms
 
 # Create your views here.
 
 """
-Generic subjects Views
+Generic Subjects Views
 """
 
 class SecCreate(views.ScopedSecCreateView):
@@ -44,6 +45,11 @@ class SecDelete(views.ScopedDeleteView):
     template_name = 'subjects/show_object.html'
 
 
+"""
+Secretariat Subject Views
+"""
+
+
 class SecCreateSubject(SecCreate):
     model = Subject
     form_class = forms.SecSubjectForm
@@ -57,6 +63,7 @@ class SecUpdateSubject(SecUpdate):
     form_class = forms.SecSubjectForm
     success_url = 'subjects:sec_list_subject'
     delete_url = 'subjects:sec_delete_subject'
+    confirm_modal = True
 
 
 class SecListSubject(SecList):
@@ -80,13 +87,52 @@ class SecDeleteSubject(SecDelete):
 
 
 """
+Secretariat Decision Views
+"""
+
+
+class SecCreateDecision(SecCreate):
+    model = Decision
+    form_class = forms.SecDecisionForm
+    success_url = 'subjects:sec_list_decision'
+    headline = _('Δημιουργία Απόφασης')
+    back_url = ''
+
+
+class SecUpdateDecision(SecUpdate):
+    model = Decision
+    form_class = forms.SecDecisionForm
+    success_url = 'subjects:sec_list_decision'
+    delete_url = 'subjects:sec_delete_decision'
+    confirm_modal = True
+
+
+class SecListDecision(SecList):
+    model = Decision
+    fields = ['title_gr', 'subject']
+    headers = {
+        'title_gr': _('Τίτλος'),
+        'subject': _('Θέμα')
+    }
+    table_title = _('Αποφάσεις')
+    create_url = 'subjects:sec_create_decision'
+    update_url = 'subjects:sec_update_decision'
+
+
+class SecDeleteDecision(SecDelete):
+    model = Decision
+    success_url = 'subjects:sec_list_decision'
+
+
+"""
 Subject AutoComplete forms
 """
 
 
-class SecSubjectTypeAutoComplete(LoginRequiredMixin, UserPassesTestMixin, autocomplete.Select2QuerySetView):
+class SecSubjectAutoComplete(LoginRequiredMixin, UserPassesTestMixin, autocomplete.Select2QuerySetView):
     def get_queryset(self):
-        qs = SubjectType.objects.all()
+        scopes = get_secretariat_scope(self.request.user)
+        qs = scopes['collective_bodies']
 
         if self.q:
             qs = qs.filter(Q(title_gr__icontains=self.q) | Q(title_en__icontains=self.q))
@@ -97,7 +143,17 @@ class SecSubjectTypeAutoComplete(LoginRequiredMixin, UserPassesTestMixin, autoco
         return is_secretariat(self.request.user)
 
 
-class SecSubjectCategoryAutoComplete(SecSubjectTypeAutoComplete):
+class SecSubjectTypeAutoComplete(SecSubjectAutoComplete):
+    def get_queryset(self):
+        qs = SubjectType.objects.all()
+
+        if self.q:
+            qs = qs.filter(Q(title_gr__icontains=self.q) | Q(title_en__icontains=self.q))
+
+        return qs.order_by(get_order_by_title())[:10]
+
+
+class SecSubjectCategoryAutoComplete(SecSubjectAutoComplete):
     def get_queryset(self):
         qs = SubjectCategory.objects.all()
 

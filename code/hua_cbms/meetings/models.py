@@ -1,9 +1,12 @@
 from django.utils.translation import  gettext_lazy as _
 from django.db import models
 
+from core.models import TrackedModel
+
+
 # Create your models here.
 
-class Meeting(models.Model):
+class Meeting(TrackedModel):
     class Meta:
         verbose_name = _('Συνεδρίαση')
         verbose_name_plural = _('Συνεδριάσεις')

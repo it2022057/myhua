@@ -7,10 +7,10 @@ APPS = {
             'title': _('Θέματα'),
             'url': reverse_lazy('subjects:sec_list_subject'),
         },
-        # {
-        #     'title': _('Αποφάσεις'),
-        #     'url': reverse_lazy('subjects:missing'),
-        # },
+        {
+            'title': _('Αποφάσεις'),
+            'url': reverse_lazy('subjects:sec_list_decision'),
+        },
         {
             'title': _('Συλλογικά Όργανα'),
             'url': reverse_lazy('bodies:sec_list_collective_body'),
