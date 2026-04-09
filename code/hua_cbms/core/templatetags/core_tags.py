@@ -1,5 +1,6 @@
 
 from django import template
+from django.db.models.manager import BaseManager
 from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
 from django.utils.safestring import mark_safe
@@ -26,7 +27,11 @@ def get_attr(obj, attr):
 
         prev_obj = obj
         obj = getattr(obj, part, "")
-        
+
+        # Handle ManyToMany / related managers
+        # if isinstance(obj, BaseManager):
+        #     return ", ".join(str(x) for x in obj.all())
+
         if callable(obj):
             obj = obj()
 

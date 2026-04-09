@@ -10,6 +10,18 @@ urlpatterns = [
     path('sec/subject/<int:pk>/delete', views.SecDeleteSubject.as_view(), name='sec_delete_subject'),
     #path('sec/subject/<int:pk>/overview', views.SecSubjectOverviewList.as_view(), name='sec_overview_phd_student'),
 
+    # URLs for SubjectTypes
+    path('sec/subject-type/new', views.SecCreateSubjectType.as_view(), name='sec_create_subject-type'),
+    path('sec/subject-type/<int:pk>', views.SecUpdateSubjectType.as_view(), name='sec_update_subject-type'),
+    path('sec/subject-types', views.SecListSubjectType.as_view(), name='sec_list_subject-type'),
+    path('sec/subject-type/<int:pk>/delete', views.SecDeleteSubjectType.as_view(), name='sec_delete_subject-type'),
+
+    # URLs for SubjectCategories
+    path('sec/subject-category/new', views.SecCreateSubjectCategory.as_view(), name='sec_create_subject-category'),
+    path('sec/subject-category/<int:pk>', views.SecUpdateSubjectCategory.as_view(), name='sec_update_subject-category'),
+    path('sec/subject-categories', views.SecListSubjectCategory.as_view(), name='sec_list_subject-category'),
+    path('sec/subject-category/<int:pk>/delete', views.SecDeleteSubjectCategory.as_view(), name='sec_delete_subject-category'),
+
     # URLs for Decisions
     path('sec/decision/new', views.SecCreateDecision.as_view(), name='sec_create_decision'),
     path('sec/decision/<int:pk>', views.SecUpdateDecision.as_view(), name='sec_update_decision'),

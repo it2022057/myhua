@@ -3,11 +3,13 @@ from django import forms
 from django.utils.translation import gettext_lazy as _
 
 from core.forms import GenericModelForm
-from subjects.models import Subject, Decision
+from subjects.models import Subject, Decision, SubjectType, SubjectCategory
 
 SUBJECT_FIELDS = ['index', 'type', 'category', 'applicant_user', 'program', 'department', 'school', 'collective_body', 'notes']
 
 DECISION_FIELDS = ['title_gr', 'title_en', 'subject']
+
+SUBJECT_TYPE_FIELDS = ['title_gr', 'title_en']
 
 FIELD_LABELS = {
     'index': _('Δείκτης'),
@@ -79,6 +81,22 @@ class SecSubjectForm(GenericModelForm):
         model = Subject
         labels = FIELD_LABELS
         widgets = SUBJECT_WIDGETS
+
+
+class SecSubjectTypeForm(GenericModelForm):
+
+    class Meta:
+        fields = SUBJECT_TYPE_FIELDS
+        model = SubjectType
+        labels = FIELD_LABELS
+
+
+class SecSubjectCategoryForm(GenericModelForm):
+
+    class Meta:
+        fields = SUBJECT_TYPE_FIELDS
+        model = SubjectCategory
+        labels = FIELD_LABELS
 
 
 class SecDecisionForm(GenericModelForm):

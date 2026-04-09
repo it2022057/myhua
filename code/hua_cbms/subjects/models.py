@@ -2,14 +2,21 @@ from django.utils.translation import gettext_lazy as _
 from django.contrib.auth import get_user_model
 from django.db import models
 
-from core.models import TitleStrMixin, TrackedScopedProgramModel
+from core.models import TitleStrMixin, TrackedScopedProgramModel, TrackedModel
 from curricula.models import Department
 from scopes.models import ScopedQueryPrg, ScopedModelPrg
 
 User = get_user_model()
 # Create your models here.
 
-class SubjectType(TitleStrMixin, models.Model):
+
+class SubjectTypeQuery(ScopedQueryPrg):
+
+    def scope_filter(self, scope):
+        return SubjectType.objects.all()
+
+
+class SubjectType(TitleStrMixin, TrackedScopedProgramModel):
     class Meta:
         verbose_name = _('Τύπος Θέματος')
         verbose_name_plural = _('Τύποι Θεμάτων')
@@ -17,14 +24,30 @@ class SubjectType(TitleStrMixin, models.Model):
     title_gr = models.CharField(max_length=100)
     title_en = models.CharField(max_length=100)
 
+    objects = SubjectTypeQuery.as_manager()
 
-class SubjectCategory(TitleStrMixin, models.Model):
+    def scope_query(self, scope):
+        return True
+
+
+class SubjectCategoryQuery(ScopedQueryPrg):
+
+    def scope_filter(self, scope):
+        return SubjectCategory.objects.all()
+
+
+class SubjectCategory(TitleStrMixin, TrackedScopedProgramModel):
     class Meta:
         verbose_name = _('Κατηγορία Θέματος')
         verbose_name_plural = _('Κατηγορίες Θεμάτων')
 
     title_gr = models.CharField(max_length=100)
     title_en = models.CharField(max_length=100)
+
+    objects = SubjectCategoryQuery.as_manager()
+
+    def scope_query(self, scope):
+        return True
 
 
 class SubjectQuery(ScopedQueryPrg):

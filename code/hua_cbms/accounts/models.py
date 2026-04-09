@@ -120,7 +120,7 @@ def create_personal_info_if_required(obj):
 
 class ScopedStaffMemberQuery(ScopedQueryDep):
     def scope_filter(self, scope):
-        return self.filter(internal_department__in=scope['departments'])
+        return self.filter(collectivebody_participants__in=scope['collective_bodies'])
 
 
 class StaffMember(PersonStrMixin, ScopedModelDep):

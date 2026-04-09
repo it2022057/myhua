@@ -1,11 +1,56 @@
+from dal import autocomplete
 from django import forms
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.utils.translation import gettext_lazy as _
-from django_recaptcha.fields import ReCaptchaField
-from django_recaptcha.widgets import ReCaptchaV2Checkbox
 
+from core.forms import GenericModelForm
 from .checks import validate_password
+from .models import StaffMember
+
+
+class StaffForm(GenericModelForm):
+    scoped_fields = ['internal_department']
+
+    class Meta:
+        fields = ['email', 'given_name', 'surname', 'institution', 'school',
+                  'department', 'title', 'is_internal', 'internal_department',
+                  'can_apply_for_phd', 'can_review_phd_apps', 'can_post_theses']
+        model = StaffMember
+        labels = {
+            'email': _('Ε-mail'),
+            'given_name': _('Όνομα'),
+            'surname': _('Επώνυμο'),
+            'institution': _('Ίδρυμα'),
+            'school': _('Σχολή'),
+            'department': _('Τμήμα'),
+            'internal_department' : _('Τμήμα εντός του ιδρύματος'),
+            'title': _('Ιδιότητα'),
+            'is_internal': _('Είναι εσωτερικός;'),
+            'can_apply_for_phd' : _('Μπορεί να κάνει αίτηση για διδακτορικό'),
+            'can_review_phd_apps' : _('Μπορεί να είναι αξιολογητής σε αιτήσεις διδακτορικού;'),
+            'can_post_theses' : _('Μπορεί να είναι επιβλέπων ή μέλος επιτροπής διπλωματικών;')
+        }
+        widgets = {'internal_department': autocomplete.ModelSelect2(
+            url='curricula:department-autocomplete',
+            attrs={
+                'data-theme': 'bootstrap-5',
+                'data-allow-clear': 'false',
+                'class': 'bootstrap5-autocomplete',
+                'data-placeholder': _('Επιλέξτε εσωτερικό τμήμα')}
+        )}
+
+    # def __init__(self, *args, **kwargs):
+    #     super().__init__(*args, **kwargs)
+    #
+    #     is_internal = self.data.get('is_internal')
+    #
+    #     if is_internal is None:
+    #         is_internal = self.initial.get('is_internal')
+    #
+    #     if not is_internal:
+    #         self.fields['internal_department'].widget = forms.HiddenInput()
+
 
 
 class SignUpForm(forms.Form):

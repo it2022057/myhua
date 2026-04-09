@@ -18,6 +18,11 @@ urlpatterns = [
     path('password/forgot', views.forgot_password, name='forgot_password'),
     path('password/token/<str:token>', views.password_token, name='password_token'),
 
+    path('sec/staff', views.SecListStaffMember.as_view(), name='sec_list_staff_member'),
+    path('sec/staff/<int:pk>', views.SecUpdateStaffMember.as_view(), name='sec_update_staff_member'),
+    path('sec/staff/<int:pk>/delete', views.SecDeleteStaffMember.as_view(), name='sec_delete_staff_member'),
+    path('sec/staff/new', views.SecCreateStaffMember.as_view(), name='sec_create_staff_member'),
+
     # URL for Applicant autocomplete
     path('applicant/autocomplete', views.ApplicantAutocomplete.as_view(), name='applicant-autocomplete'),
 ]

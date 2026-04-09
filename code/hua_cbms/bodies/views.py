@@ -18,9 +18,10 @@ Generic subjects Views
 
 class SecListCollectiveBody(views.ScopedSecListView):
     model = CollectiveBody
-    fields = ['title_gr', 'start_date', 'end_date']
+    fields = ['title_gr', 'participants', 'start_date', 'end_date']
     headers = {
         'title_gr': _('Τίτλος'),
+        'participants': _('Συμμετέχοντες'),
         'start_date': _('Ημερομηνία Έναρξης'),
         'end_date': _('Ημερομηνία Λήξης')
     }

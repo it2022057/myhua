@@ -1,16 +1,19 @@
 from dal import autocomplete
 from django.contrib.auth import get_user_model, logout, update_session_auth_hash
-from django.contrib.auth.decorators import login_required
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import login_required, user_passes_test
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.core.signing import TimestampSigner, SignatureExpired, BadSignature
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
+from django.views import generic
 
+from core import views
 from hua_cbms import settings
 from .checks import app_urls, is_secretariat, is_staff_member
-from .forms import SignUpForm, RegisterForm, PasswordForm, ForgotPasswordForm
+from .forms import SignUpForm, RegisterForm, PasswordForm, ForgotPasswordForm, StaffForm
+from .models import StaffMember
 from .utils import complexity_message, get_domain_uri, send_password_link
 
 
@@ -21,6 +24,43 @@ def render_unauthorized_staff(request):
     return render(request, 'accounts/message.html',
                   context={'message': msg1})
 
+
+"""
+Faculty CRUD views
+"""
+
+class SecCreateStaffMember(views.ScopedSecCreateView):
+    model = StaffMember
+    template_name = 'accounts/show_object.html'
+    form_class = StaffForm
+    success_url = 'accounts:sec_list_staff_member'
+    headline = _('Δημιουργία Μέλους Προσωπικού')
+    back_url = ''
+
+
+class SecUpdateStaffMember(views.ScopedSecUpdateView):
+    model = StaffMember
+    form_class = StaffForm
+    success_url = 'accounts:sec_list_staff_member'
+    delete_url = 'accounts:sec_delete_staff_member'
+    confirm_modal = True
+
+
+class SecListStaffMember(views.ScopedSecListView):
+    model = StaffMember
+    fields = ['display_name', 'email']
+    headers = {
+        'display_name': _('Ονοματεπώνυμο'),
+        'email': _('E-mail')
+    }
+    table_title = _('Μέλη Προσωπικού')
+    create_url = 'accounts:sec_create_staff_member'
+    update_url = 'accounts:sec_update_staff_member'
+
+
+class SecDeleteStaffMember(views.ScopedDeleteView):
+    model = StaffMember
+    success_url = 'subjects:sec_list_staff_member'
 
 
 @login_required
