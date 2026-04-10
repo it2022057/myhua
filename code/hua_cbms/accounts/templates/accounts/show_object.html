@@ -2,110 +2,117 @@
 {% load crispy_forms_tags %}
 {% load i18n %}
 {% block middle %}
-{% if headline_above %}
-<h5> {{ headline_above }}</h5>
-{% endif %}
-
-{% if above_p %}
-<div class="row text-center">
-<p> {{ above_p }} </p>
-</div>
-{% endif %}
-
-{% block alert %}
-{% if form.errors %}
-<div class="alert alert-danger" role="alert">
-<p> {% trans 'Παρακαλούμε διορθώστε τα σφάλματα στην φόρμα όπως εμφανίζονται παρακάτω.' %}</p>
-</div>
-{% endif %}
-{% endblock %}
-
-{% if button_above_text %}
-<div class="row text-center justify-content-center">
-  <div class="col-sm-6 text-center">
-    {% if button_above_next %}
-    <a href="{{ button_above_url }}?next={{ button_above_next }}" class="{{ button_above_classes }}"><span class="mto">{{ button_above_icon }} </span> {{ button_above_text }}</a>
-    {% else %}
-    <a href="{{ button_above_url }}" class="{{ button_above_classes }}"><span class="mto">{{ button_above_icon }} </span> {{ button_above_text }}</a>
+    {% if headline_above %}
+        <h5> {{ headline_above }}</h5>
     {% endif %}
-  </div>
-</div>
-</br>
-{% endif %}
 
-<h4> {{ headline }} </h4>
+    {% if above_p %}
+        <div class="row text-center">
+            <p> {{ above_p }} </p>
+        </div>
+    {% endif %}
 
-{% crispy form %} 
+    {% block alert %}
+        {% if form.errors %}
+            <div class="alert alert-danger" role="alert">
+                <p> {% trans 'Παρακαλούμε διορθώστε τα σφάλματα στην φόρμα όπως εμφανίζονται παρακάτω.' %}</p>
+            </div>
+        {% endif %}
+    {% endblock %}
 
-{% if delete_url %}
-{% if form.instance.pk %}
-<p></p>
-<div class="row">
-  <div class="col-sm-6">
-    <button type="button" class="btn btn-danger" onclick="delete_obj()">
-      <span class="mto">{{ delete_icon }}</span>{{ delete_text }}
-  </button>  
-  </div>
-  <div class="col-sm-6">
-  </div>  
-</div>
+    {% if button_above_text %}
+        <div class="row text-center justify-content-center">
+            <div class="col-sm-6 text-center">
+                {% if button_above_next %}
+                    <a href="{{ button_above_url }}?next={{ button_above_next }}"
+                       class="{{ button_above_classes }}"><span
+                            class="mto">{{ button_above_icon }} </span> {{ button_above_text }}</a>
+                {% else %}
+                    <a href="{{ button_above_url }}" class="{{ button_above_classes }}"><span
+                            class="mto">{{ button_above_icon }} </span> {{ button_above_text }}</a>
+                {% endif %}
+            </div>
+        </div>
+        </br>
+    {% endif %}
 
-<script>
-    function sweetConfirm(message, confirmText="{% trans 'Εντάξει' %}", cancelText="{% trans 'Άκυρο' %}") {
-    return Swal.fire({
-        text: message,
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonText: confirmText,
-        cancelButtonText: cancelText,
-        confirmButtonColor: "#d33",
-        reverseButtons: true
-    }).then((result) => {
-        return result.isConfirmed;
-    });
-    }
-    async function delete_obj() {
-    var result = await sweetConfirm(
-        "{% trans 'Είστε σίγουροι; ' %}",
-        "{% trans 'Διαγραφή!' %}",
-        "{% trans 'Άκυρο' %}"        
-    );
-if (result) {
-      {% if success_url %}
-      window.location.replace('{{ delete_url }}?next={{ success_url }}');      
-      {% else %}
-      window.location.replace('{{ delete_url }}');      
-      {% endif %}
-    }
-}
-</script>
+    <h4> {{ headline }} </h4>
+
+    {% crispy form %}
+
+    {% if delete_url %}
+        {% if form.instance.pk %}
+            <p></p>
+            <div class="row">
+                <div class="col-sm-6">
+                    <button type="button" class="btn btn-danger" onclick="delete_obj()">
+                        <span class="mto">{{ delete_icon }}</span>{{ delete_text }}
+                    </button>
+                </div>
+                <div class="col-sm-6">
+                </div>
+            </div>
+
+            <script>
+                function sweetConfirm(message, confirmText = "{% trans 'Εντάξει' %}", cancelText = "{% trans 'Άκυρο' %}") {
+                    return Swal.fire({
+                        text: message,
+                        icon: "warning",
+                        showCancelButton: true,
+                        confirmButtonText: confirmText,
+                        cancelButtonText: cancelText,
+                        confirmButtonColor: "#d33",
+                        reverseButtons: true
+                    }).then((result) => {
+                        return result.isConfirmed;
+                    });
+                }
+
+                async function delete_obj() {
+                    var result = await sweetConfirm(
+                        "{% trans 'Είστε σίγουροι; ' %}",
+                        "{% trans 'Διαγραφή!' %}",
+                        "{% trans 'Άκυρο' %}"
+                    );
+                    if (result) {
+                        {% if success_url %}
+                            window.location.replace('{{ delete_url }}?next={{ success_url }}');
+                        {% else %}
+                            window.location.replace('{{ delete_url }}');
+                        {% endif %}
+                    }
+                }
+            </script>
+        {% endif %}
+    {% endif %}
     <script>
-document.addEventListener("DOMContentLoaded", function () {
-    const isInternal = document.getElementById("id_is_internal");
-    const internalDepartment = document.getElementById("id_internal_department");
-    const wrapper = document.getElementById("div_id_internal_department");
+        const is_internal_select = document.getElementById('id_is_internal');
+        const internal_department_select = document.getElementById('id_internal_department');
 
-    if (!isInternal || !internalDepartment || !wrapper) return;
+        is_internal_select.addEventListener('change', showInternalDepartmentField);
 
-    function toggleInternalDepartment() {
-        const show = isInternal.value === "True";
+        function showInternalDepartmentField() {
+            if (!is_internal_select || !internal_department_select) return;
 
-        wrapper.style.display = show ? "" : "none";
+            const do_not_disable = is_internal_select.value === 'true';
 
-        if (!show) {
-            if (window.jQuery) {
-                $(internalDepartment).val(null).trigger("change");
-            } else {
-                internalDepartment.value = "";
-                internalDepartment.dispatchEvent(new Event("change"));
+            internal_department_select.disabled = !do_not_disable;
+
+            if (!do_not_disable) {
+                if (window.jQuery && $.fn && $.fn.select2) {
+                    $(internal_department_select).val(null).trigger("change");
+                } else {
+                    internal_department_select.value = "";
+                    triggerChange(internal_department_select)
+                }
             }
         }
-    }
 
-    toggleInternalDepartment();
-    isInternal.addEventListener("change", toggleInternalDepartment);
-});
-</script>
-{% endif %}
-{% endif %}
+        function triggerChange(element) {
+            element.dispatchEvent(new Event('change', {bubbles: true}));
+        }
+
+    // run on page load too
+    showInternalDepartmentField();
+    </script>
 {% endblock %}

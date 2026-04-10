@@ -146,7 +146,7 @@ class StaffMember(PersonStrMixin, ScopedModelDep):
     institution = models.CharField(max_length=100, blank=True, null=True)
     school = models.CharField(max_length=100, blank=True, null=True)
     department = models.CharField(max_length=100, blank=True, null=True)
-    internal_department = models.ForeignKey(Department, null=True, on_delete=models.SET_NULL)
+    internal_department = models.ForeignKey(Department, blank=True, null=True, on_delete=models.SET_NULL)
     title = models.CharField(max_length=200, null=True)
     personal_info = models.ForeignKey(PersonalInfo, blank=True, null=True, on_delete=models.SET_NULL)
 

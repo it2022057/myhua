@@ -40,17 +40,6 @@ class StaffForm(GenericModelForm):
                 'data-placeholder': _('Επιλέξτε εσωτερικό τμήμα')}
         )}
 
-    # def __init__(self, *args, **kwargs):
-    #     super().__init__(*args, **kwargs)
-    #
-    #     is_internal = self.data.get('is_internal')
-    #
-    #     if is_internal is None:
-    #         is_internal = self.initial.get('is_internal')
-    #
-    #     if not is_internal:
-    #         self.fields['internal_department'].widget = forms.HiddenInput()
-
 
 
 class SignUpForm(forms.Form):

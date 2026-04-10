@@ -84,7 +84,7 @@ class Migration(migrations.Migration):
                 ('can_apply_for_phd', models.BooleanField(default=False, null=True)),
                 ('can_review_phd_apps', models.BooleanField(default=True, null=True)),
                 ('can_post_theses', models.BooleanField(default=True, null=True)),
-                ('internal_department', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, to='curricula.department')),
+                ('internal_department', models.ForeignKey(null=True, blank=True, on_delete=django.db.models.deletion.SET_NULL, to='curricula.department')),
                 ('personal_info', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, to='accounts.personalinfo')),
                 ('user', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, to=settings.AUTH_USER_MODEL)),
             ],
