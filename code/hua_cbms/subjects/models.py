@@ -1,6 +1,7 @@
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth import get_user_model
 from django.db import models
+from romanize import romanize
 
 from core.models import TitleStrMixin, TrackedScopedProgramModel, TrackedModel
 from curricula.models import Department
@@ -22,12 +23,18 @@ class SubjectType(TitleStrMixin, TrackedScopedProgramModel):
         verbose_name_plural = _('Τύποι Θεμάτων')
 
     title_gr = models.CharField(max_length=100)
-    title_en = models.CharField(max_length=100)
+    title_en = models.CharField(null = True, blank = True, max_length=100)
 
     objects = SubjectTypeQuery.as_manager()
 
     def scope_query(self, scope):
         return True
+
+    def save(self, *args, **kwargs):
+        if not (self.title_en and (self.title_en != '')):
+            self.title_en = romanize(self.title_gr)
+
+        super().save(*args, **kwargs)
 
 
 class SubjectCategoryQuery(ScopedQueryPrg):
@@ -42,12 +49,18 @@ class SubjectCategory(TitleStrMixin, TrackedScopedProgramModel):
         verbose_name_plural = _('Κατηγορίες Θεμάτων')
 
     title_gr = models.CharField(max_length=100)
-    title_en = models.CharField(max_length=100)
+    title_en = models.CharField(null = True, blank = True, max_length=100)
 
     objects = SubjectCategoryQuery.as_manager()
 
     def scope_query(self, scope):
         return True
+
+    def save(self, *args, **kwargs):
+        if not (self.title_en and (self.title_en != '')):
+            self.title_en = romanize(self.title_gr)
+
+        super().save(*args, **kwargs)
 
 
 class SubjectQuery(ScopedQueryPrg):
@@ -93,11 +106,17 @@ class Decision(TitleStrMixin, TrackedScopedProgramModel):
         verbose_name_plural = _('Αποφάσεις')
 
     title_gr = models.CharField(max_length=100)
-    title_en = models.CharField(max_length=100)
+    title_en = models.CharField(null = True, blank = True, max_length=100)
     subject = models.ForeignKey(Subject, null=True, on_delete=models.SET_NULL)
 
     objects = DecisionQuery.as_manager()
 
     def scope_query(self, scope):
         return scope['collective_bodies'].filter(id=self.subject.collective_body.id).exists()
+
+    def save(self, *args, **kwargs):
+        if not (self.title_en and (self.title_en != '')):
+            self.title_en = romanize(self.title_gr)
+
+        super().save(*args, **kwargs)
 

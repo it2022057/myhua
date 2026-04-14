@@ -157,7 +157,7 @@ class StaffMember(PersonStrMixin, ScopedModelDep):
     can_post_theses = models.BooleanField(null=True, default=True)
 
     def scope_query(self, scope):
-        return scope['departments'].filter(id=self.internal_department.id).exists()
+        return scope['collective_bodies'].filter(id__in=self.collectivebody_participants.values('id')).exists()
 
     def save(self, *args, **kwargs):
         self.display_name = self.given_name + ' ' + self.surname
@@ -170,6 +170,9 @@ class StaffMember(PersonStrMixin, ScopedModelDep):
 
         if not (self.surname_en and (self.surname_en != '')):
             self.surname_en = romanize(self.surname)
+
+        if not self.is_internal:
+            self.internal_department = None
 
         self.display_name_en = self.given_name_en + ' ' + self.surname_en
 

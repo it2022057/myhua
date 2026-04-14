@@ -1,3 +1,4 @@
+from crispy_forms.helper import FormHelper
 from dal import autocomplete
 from django import forms
 from django.conf import settings
@@ -5,8 +6,59 @@ from django.contrib.auth import get_user_model
 from django.utils.translation import gettext_lazy as _
 
 from core.forms import GenericModelForm
+from scopes.utils import get_secretariat_scope
 from .checks import validate_password
 from .models import StaffMember
+from crispy_forms.layout import Layout, Submit, Row, Column, Div, Field, HTML
+
+profile_data = _('Στοιχεία Προφίλ')
+update = _('Υποβολή')
+home_address = _('Διεύθυνση Κατοικίας')
+work_address = _('Διεύθυνση Εργασίας ')
+work_no = _('Θέση Εργασίας')
+
+SEC_STAFF_MEMBER_LAYOUT = Layout(
+            Row(
+                Div(Field('given_name'),css_class = 'col-md-6'),
+                Div(Field('surname'),css_class = 'col-md-6'),
+                css_class="row"),
+            Row(
+                Div(Field('email')),
+                css_class="row"),
+            Row(
+                Div(Field('is_internal'),css_class = 'col-md-2'),
+                Div(Field('internal_department'),css_class = 'col-md-5'),
+                Div(Field('title'),css_class = 'col-md-5'),
+                css_class="row"),
+            Row(
+                Div(Field('institution'),css_class = 'col-md-4'),
+                Div(Field('school'),css_class = 'col-md-4'),
+                Div(Field('department'),css_class = 'col-md-4'),
+                css_class="row"),
+            Row(
+                Div(Field('can_apply_for_phd')),
+                css_class="row"),
+            Row(
+                Div(Field('can_review_phd_apps')),
+                css_class="row"),
+            Row(
+                Div(Field('can_post_theses')),
+                css_class="row"),
+            )
+
+STAFF_MEMBER_LAYOUT = Layout(
+            Row(
+               Div(HTML('<h4> %s </h4>' %profile_data),css_class = 'col-md-8'),
+               css_class="row"),
+            Row(
+                Div(Field('surname'),css_class = 'col-md-4'),
+                Div(Field('given_name'),css_class = 'col-md-4'),
+                Div(Field('email'),css_class = 'col-md-4'),
+                css_class="row"),
+            Row(
+                Div(Field('title'),css_class = 'col-md-4'),
+                css_class="row"),
+            )
 
 
 class StaffForm(GenericModelForm):
@@ -27,7 +79,7 @@ class StaffForm(GenericModelForm):
             'internal_department' : _('Τμήμα εντός του ιδρύματος'),
             'title': _('Ιδιότητα'),
             'is_internal': _('Είναι εσωτερικός;'),
-            'can_apply_for_phd' : _('Μπορεί να κάνει αίτηση για διδακτορικό'),
+            'can_apply_for_phd' : _('Μπορεί να κάνει αίτηση για διδακτορικό;'),
             'can_review_phd_apps' : _('Μπορεί να είναι αξιολογητής σε αιτήσεις διδακτορικού;'),
             'can_post_theses' : _('Μπορεί να είναι επιβλέπων ή μέλος επιτροπής διπλωματικών;')
         }
@@ -40,6 +92,18 @@ class StaffForm(GenericModelForm):
                 'data-placeholder': _('Επιλέξτε εσωτερικό τμήμα')}
         )}
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        parent_fields = list(self.helper.layout.fields)
+        button = self.button_element_html
+        # self.helper.layout = Layout(
+        #     *button,
+        #     *SEC_STAFF_MEMBER_LAYOUT.fields
+        # )
+        self.helper.layout.append(Row(self.button_element_html, css_class="row"))
+        SEC_STAFF_MEMBER_LAYOUT.append(button)
+        self.helper.add_layout(SEC_STAFF_MEMBER_LAYOUT)
 
 
 class SignUpForm(forms.Form):

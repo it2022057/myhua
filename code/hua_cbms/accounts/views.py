@@ -40,6 +40,7 @@ class SecCreateStaffMember(views.ScopedSecCreateView):
 
 class SecUpdateStaffMember(views.ScopedSecUpdateView):
     model = StaffMember
+    template_name = 'accounts/show_object.html'
     form_class = StaffForm
     success_url = 'accounts:sec_list_staff_member'
     delete_url = 'accounts:sec_delete_staff_member'
