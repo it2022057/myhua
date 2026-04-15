@@ -1,5 +1,6 @@
 from dal import autocomplete
 from django import forms
+from crispy_forms.layout import Layout, Row, Div, Field, HTML
 from django.utils.translation import gettext_lazy as _
 
 from core.forms import GenericModelForm
@@ -62,7 +63,7 @@ SUBJECT_WIDGETS = {
         url='bodies:collectivebody-autocomplete',
         attrs={**BASE_ATTRS, 'data-placeholder': _('Επιλέξτε συλλογικό όργανο')}
     ),
-    'notes': forms.Textarea(attrs={'rows': 4})
+    'notes': forms.Textarea(attrs={'rows': 6})
 }
 
 DECISION_WIDGETS = {
@@ -71,6 +72,32 @@ DECISION_WIDGETS = {
         attrs={**BASE_ATTRS, 'data-placeholder': _('Επιλέξτε θέμα')}
     )
 }
+
+button_element_html = HTML( GenericModelForm.button_element %(GenericModelForm.submit_button_icon, GenericModelForm.submit_button_text ) )
+
+SEC_SUBJECT_LAYOUT = Layout(
+            Row(button_element_html,
+                css_class="row"),
+            Row(
+                Div(Field('index'),css_class = 'col-md-2'),
+                Div(Field('type'),css_class = 'col-md-5'),
+                Div(Field('category'),css_class = 'col-md-5'),
+                css_class="row"),
+            Row(
+                Div(Field('applicant_user')),
+                css_class="row"),
+            Row(
+                Div(Field('program'),css_class = 'col-md-4'),
+                Div(Field('department'),css_class = 'col-md-4'),
+                Div(Field('school'),css_class = 'col-md-4'),
+                css_class="row"),
+            Row(
+                Div(Field('collective_body')),
+                css_class="row"),
+            Row(
+                Div(Field('notes')),
+                css_class="row"),
+            )
 
 
 class SecSubjectForm(GenericModelForm):
@@ -81,6 +108,11 @@ class SecSubjectForm(GenericModelForm):
         model = Subject
         labels = FIELD_LABELS
         widgets = SUBJECT_WIDGETS
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        self.helper.add_layout(SEC_SUBJECT_LAYOUT)
 
 
 class SecSubjectTypeForm(GenericModelForm):

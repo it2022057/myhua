@@ -1,4 +1,4 @@
-from crispy_forms.helper import FormHelper
+from crispy_forms.layout import Layout, Row, Div, Field, HTML
 from dal import autocomplete
 from django import forms
 from django.conf import settings
@@ -6,18 +6,15 @@ from django.contrib.auth import get_user_model
 from django.utils.translation import gettext_lazy as _
 
 from core.forms import GenericModelForm
-from scopes.utils import get_secretariat_scope
 from .checks import validate_password
 from .models import StaffMember
-from crispy_forms.layout import Layout, Submit, Row, Column, Div, Field, HTML
 
-profile_data = _('Στοιχεία Προφίλ')
-update = _('Υποβολή')
-home_address = _('Διεύθυνση Κατοικίας')
-work_address = _('Διεύθυνση Εργασίας ')
-work_no = _('Θέση Εργασίας')
+# Use the default button for create/update forms
+button_element_html = HTML( GenericModelForm.button_element %(GenericModelForm.submit_button_icon, GenericModelForm.submit_button_text ) )
 
 SEC_STAFF_MEMBER_LAYOUT = Layout(
+            Row(button_element_html,
+                css_class="row"),
             Row(
                 Div(Field('given_name'),css_class = 'col-md-6'),
                 Div(Field('surname'),css_class = 'col-md-6'),
@@ -43,20 +40,6 @@ SEC_STAFF_MEMBER_LAYOUT = Layout(
                 css_class="row"),
             Row(
                 Div(Field('can_post_theses')),
-                css_class="row"),
-            )
-
-STAFF_MEMBER_LAYOUT = Layout(
-            Row(
-               Div(HTML('<h4> %s </h4>' %profile_data),css_class = 'col-md-8'),
-               css_class="row"),
-            Row(
-                Div(Field('surname'),css_class = 'col-md-4'),
-                Div(Field('given_name'),css_class = 'col-md-4'),
-                Div(Field('email'),css_class = 'col-md-4'),
-                css_class="row"),
-            Row(
-                Div(Field('title'),css_class = 'col-md-4'),
                 css_class="row"),
             )
 
@@ -95,14 +78,6 @@ class StaffForm(GenericModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        parent_fields = list(self.helper.layout.fields)
-        button = self.button_element_html
-        # self.helper.layout = Layout(
-        #     *button,
-        #     *SEC_STAFF_MEMBER_LAYOUT.fields
-        # )
-        self.helper.layout.append(Row(self.button_element_html, css_class="row"))
-        SEC_STAFF_MEMBER_LAYOUT.append(button)
         self.helper.add_layout(SEC_STAFF_MEMBER_LAYOUT)
 
 

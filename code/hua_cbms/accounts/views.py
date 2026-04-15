@@ -13,7 +13,7 @@ from core import views
 from hua_cbms import settings
 from .checks import app_urls, is_secretariat, is_staff_member
 from .forms import SignUpForm, RegisterForm, PasswordForm, ForgotPasswordForm, StaffForm
-from .models import StaffMember
+from .models import StaffMember, PersonalInfo
 from .utils import complexity_message, get_domain_uri, send_password_link
 
 
@@ -49,19 +49,39 @@ class SecUpdateStaffMember(views.ScopedSecUpdateView):
 
 class SecListStaffMember(views.ScopedSecListView):
     model = StaffMember
-    fields = ['display_name', 'email']
+    fields = ['display_name', 'title', 'email']
     headers = {
         'display_name': _('Ονοματεπώνυμο'),
+        'title': _('Ιδιότητα'),
         'email': _('E-mail')
     }
     table_title = _('Μέλη Προσωπικού')
     create_url = 'accounts:sec_create_staff_member'
     update_url = 'accounts:sec_update_staff_member'
+    extra_buttons = True
+    extra_text = _('Προφίλ')
+    extra_button_icon = 'info'
+    extra_url = 'accounts:sec_overview_phd_student'
+
+    # def get_queryset(self):
+    #     return Student.objects.sc_filter(user=self.request.user, program__type=StudyProgram.DOCTORAL)
 
 
 class SecDeleteStaffMember(views.ScopedDeleteView):
     model = StaffMember
     success_url = 'subjects:sec_list_staff_member'
+
+
+class showPersonalInfo(views.ScopedSecListView):
+    model = PersonalInfo
+    fields = ['pic', 'display_name', 'title', 'email']
+    headers = {
+        'display_name': _('Ονοματεπώνυμο'),
+        'title': _('Ιδιότητα'),
+        'email': _('E-mail')
+    }
+    table_title = _('Μέλη Προσωπικού')
+    update_url = 'accounts:sec_update_staff_member'
 
 
 @login_required

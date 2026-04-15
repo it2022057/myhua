@@ -2,10 +2,11 @@ from datetime import datetime
 
 from django.contrib.auth import get_user_model
 from django.db import models
+from django.db.models import Q
 from django.utils.translation import gettext_lazy as _
 from romanize import romanize
 
-from core.models import PersonStrMixin
+from core.models import PersonStrMixin, TrackedScopedProgramModel
 from curricula.models import Department, StudyProgram
 from hua_cbms import settings
 from scopes.models import ScopedModelDep, ScopedQueryDep
@@ -33,7 +34,7 @@ def create_user_if_required(email):
     return user
 
 
-class PersonalInfo(ScopedModelDep):
+class PersonalInfo(TrackedScopedProgramModel):
     class Meta:
         verbose_name = _('Προσωπικά Στοιχεία')
         verbose_name_plural = _('Προσωπικά Στοιχεία')
@@ -77,23 +78,16 @@ class PersonalInfo(ScopedModelDep):
     work_address_country = models.CharField(max_length=70, null=True, default='Ελλάδα')
     work_phone = models.CharField(max_length=20, blank=True, null=True)
     pic = models.ImageField(null=True, blank=True)
-    last_update = models.DateTimeField(null=True, blank=True)
 
     def scope_query(self, scope):
         if self.staffmember_set.exists():
             staff_member = self.staffmember_set.first()
-            return scope['departments'].filter(id=staff_member.department.id).exists()
-        elif self.associate_set.exists():
-            associate = self.associate_set.first()
-            return scope['departments'].filter(id=associate.department.id).exists()
-        elif self.student_set.exists():
-            student = self.student_set.first()
-            return scope['programs'].filter(id=student.program.id).exists()
+            return scope['collective_bodies'].filter(Q(participants__in=staff_member)|
+                                                     Q(president=staff_member)).exists()
         else:
             return False
 
     def save(self, *args, **kwargs):
-        self.display_name = self.email
         user = create_user_if_required(self.email)
         if self.given_name:
             user.first_name = self.given_name
@@ -102,16 +96,16 @@ class PersonalInfo(ScopedModelDep):
             user.last_name = self.surname
 
         user.save()
-        self.user = user
-        self.last_update = datetime.now()
         super().save(*args, **kwargs)
 
 
 def create_personal_info_if_required(obj):
     email = obj.email
+    given_name = obj.given_name
+    surname = obj.surname
     pis = PersonalInfo.objects.filter(email=email)
     if not pis.exists():
-        pi = PersonalInfo(email=email)
+        pi = PersonalInfo(email=email, given_name=given_name, surname=surname)
         pi.save()
     else:
         pi = pis.first()
