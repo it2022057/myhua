@@ -82,7 +82,7 @@ class PersonalInfo(TrackedScopedProgramModel):
     def scope_query(self, scope):
         if self.staffmember_set.exists():
             staff_member = self.staffmember_set.first()
-            return scope['collective_bodies'].filter(Q(participants__in=staff_member)|
+            return scope['collective_bodies'].filter(Q(participants=staff_member)|
                                                      Q(president=staff_member)).exists()
         else:
             return False

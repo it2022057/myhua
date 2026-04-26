@@ -1,0 +1,61 @@
+{% load core_tags %}
+{% load i18n %}
+<script>
+    $(document).ready(function () {
+        $('#{{ section_id }}').DataTable({
+                "lengthChange": false,
+                "searching": false,
+                "info": false,
+                "paging": false,
+            }
+        );
+    });
+</script>
+
+
+<div class="row">
+    <div class="col">
+        <h3> {{ section_title }}</h3>
+    </div>
+</div>
+<br>
+{% if objects %}
+    <table id="{{ section_id }}">
+        <thead>
+        <tr>
+            {% for field in fields %}
+                <th>
+                    {{ headers|get_item:field }}
+                </th>
+            {% endfor %}
+            {% if update_buttons %}
+                <th></th>
+            {% endif %}
+        </tr>
+        </thead>
+        <tbody>
+        {% for object in objects %}
+            <tr>
+                {% for field in fields %}
+                    <td>
+                        {{ object|get_attr:field }}
+                    </td>
+                {% endfor %}
+                {% if update_buttons %}
+                    <td style="text-align: right;">
+                        {% if next %}
+                            <a href="{{ object.update_url }}?next={{ next }}" class="{{ update_button_class }}">
+                        {% else %}
+                            <a href="{{ object.update_url }}" class="{{ update_button_class }}">
+                        {% endif %}
+                        <span class="mto">{{ update_button_icon }}</span>
+                        {{ update_text }}</a>
+                    </td>
+                {% endif %}
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+    <p> {{ empty_text }}</p>
+{% endif %}

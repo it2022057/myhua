@@ -43,6 +43,14 @@ SEC_STAFF_MEMBER_LAYOUT = Layout(
                 css_class="row"),
             )
 
+# 'pic': _('Εικόνα'), 'email': _('E-mail'), 'secondary_email': _('2ο E-mail'), 'fathers_name': _('Όνομα Πατέρα'),
+#         'date_of_birth': _('Ημ/νία Γέννησης'), 'tin': _('ΑΦΜ'), 'ssn': _('ΑΜΚΑ'), 'gender': _('Φύλο'),
+#         'home_address_street': _('Οδός Κατοικίας'), 'home_address_no': _('Αριθμός Κατοικίας'),
+#         'home_address_po_box': _('Τ.Κ. Κατοικίας'), 'home_address_city': _('Πόλη Κατοικίας'), 'home_address_country': _('Χώρα Κατοικίας'),
+#         'mobile_phone': _('Κινητό Τηλέφωνο'), 'home_phone': _('Τηλέφωνο Οικίας'), 'work_phone': _('Τηλέφωνο Εργασίας'),
+#         'work_address_street': _('Οδός Εργασίας'), 'work_address_no': _('Αριθμός Εργασίας'), 'work_address_po_box': _('Τ.Κ. Εργασίας'),
+#         'work_address_city': _('Πόλη Εργασίας'), 'work_address_country': _('Χώρα Εργασίας')
+
 
 class StaffForm(GenericModelForm):
     scoped_fields = ['internal_department']

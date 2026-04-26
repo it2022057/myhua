@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-14 21:35+0300\n"
+"POT-Creation-Date: 2026-04-26 20:42+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -74,179 +74,160 @@ msgstr "You have not used at least one lowercase Latin letter"
 msgid "Δεν έχετε χρησιμοποιήσει τουλάχιστον δύο ειδικούς χαρακτήρες"
 msgstr "You have not used at least two special characters"
 
-#: accounts/forms.py:14
-msgid "Στοιχεία Προφίλ"
-msgstr "Profile Information"
-
-#: accounts/forms.py:15 core/forms.py:15
-msgid "Υποβολή"
-msgstr "Submission"
-
-#: accounts/forms.py:16
-msgid "Διεύθυνση Κατοικίας"
-msgstr "Home Address"
-
-#: accounts/forms.py:17
-msgid "Διεύθυνση Εργασίας "
-msgstr "Work Address"
-
-#: accounts/forms.py:18
-msgid "Θέση Εργασίας"
-msgstr "Job Position"
-
-#: accounts/forms.py:73
+#: accounts/forms.py:64
 msgid "Ε-mail"
 msgstr "E-mail"
 
-#: accounts/forms.py:74
+#: accounts/forms.py:65 accounts/views.py:98
 msgid "Όνομα"
 msgstr "First Name"
 
-#: accounts/forms.py:75
+#: accounts/forms.py:66 accounts/views.py:99
 msgid "Επώνυμο"
 msgstr "Last Name"
 
-#: accounts/forms.py:76 curricula/models.py:15
+#: accounts/forms.py:67 curricula/models.py:15
 msgid "Ίδρυμα"
 msgstr "Institution"
 
-#: accounts/forms.py:77 curricula/models.py:28 subjects/forms.py:21
+#: accounts/forms.py:68 curricula/models.py:28 subjects/forms.py:22
 msgid "Σχολή"
 msgstr "School"
 
-#: accounts/forms.py:78 curricula/models.py:46 subjects/forms.py:20
+#: accounts/forms.py:69 curricula/models.py:46 subjects/forms.py:21
 msgid "Τμήμα"
 msgstr "Department"
 
-#: accounts/forms.py:79
+#: accounts/forms.py:70
 msgid "Τμήμα εντός του ιδρύματος"
 msgstr "Department within the institution"
 
-#: accounts/forms.py:80
+#: accounts/forms.py:71 accounts/views.py:56
 msgid "Ιδιότητα"
 msgstr "Position"
 
-#: accounts/forms.py:81
+#: accounts/forms.py:72
 msgid "Είναι εσωτερικός;"
 msgstr "Is internal?"
 
-#: accounts/forms.py:82
+#: accounts/forms.py:73
 msgid "Μπορεί να κάνει αίτηση για διδακτορικό;"
 msgstr "Can apply for a PhD?"
 
-#: accounts/forms.py:83
+#: accounts/forms.py:74
 msgid "Μπορεί να είναι αξιολογητής σε αιτήσεις διδακτορικού;"
 msgstr "Can be an evaluator for PhD applications?"
 
-#: accounts/forms.py:84
+#: accounts/forms.py:75
 msgid "Μπορεί να είναι επιβλέπων ή μέλος επιτροπής διπλωματικών;"
 msgstr "Can be a supervisor or a member of a thesis committee?"
 
-#: accounts/forms.py:92
+#: accounts/forms.py:83
 msgid "Επιλέξτε εσωτερικό τμήμα"
 msgstr "Select internal department"
 
-#: accounts/forms.py:109
+#: accounts/forms.py:94
 msgid "Το email σας"
 msgstr "Your email"
 
-#: accounts/forms.py:110
+#: accounts/forms.py:95
 msgid "To μικρό σας όνομα"
 msgstr "Your first name"
 
-#: accounts/forms.py:111
+#: accounts/forms.py:96
 msgid "To επίθετο σας"
 msgstr "Your last name"
 
-#: accounts/forms.py:112
+#: accounts/forms.py:97
 msgid "Κωδικός πρόσβασης"
 msgstr "Password"
 
-#: accounts/forms.py:113
+#: accounts/forms.py:98
 msgid "Κωδικός πρόσβασης (επανάληψη)"
 msgstr "Password (confirmation)"
 
-#: accounts/forms.py:124
+#: accounts/forms.py:109
 msgid "Παρακαλούμε τηρήστε τις οδηγίες στην οθόνη για τον κωδικό σας!"
 msgstr "Please follow the on-screen instructions for your password!"
 
-#: accounts/forms.py:135
+#: accounts/forms.py:120
 msgid "Δεν μπορείτε να χρησιμοποιήσετε διεύθυνση ταχυδρομείου @"
 msgstr "You cannot use an email address with @"
 
-#: accounts/forms.py:140 accounts/forms.py:167
+#: accounts/forms.py:125 accounts/forms.py:152
 msgid "Υπάρχει ήδη χρήστης με αυτό το e-mail"
 msgstr "A user with this email already exists"
 
-#: accounts/forms.py:146 accounts/forms.py:170
+#: accounts/forms.py:131 accounts/forms.py:155
 msgid "Το e-mail σας:"
 msgstr "Your email:"
 
-#: accounts/forms.py:147 accounts/forms.py:171
+#: accounts/forms.py:132 accounts/forms.py:156
 msgid "Το e-mail σας (ξανά):"
 msgstr "Your email (again):"
 
-#: accounts/forms.py:153 accounts/forms.py:177
+#: accounts/forms.py:138 accounts/forms.py:162
 msgid "Εισάγετε μία έγκυρη διεύθυνση ηλεκτρονικού ταχυδρομείου"
 msgstr "Enter a valid email address"
 
-#: accounts/forms.py:159 accounts/forms.py:183
+#: accounts/forms.py:144 accounts/forms.py:168
 msgid "Τα email πρέπει να ταυτίζονται!"
 msgstr "The email addresses must match!"
 
-#: accounts/forms.py:162 accounts/forms.py:186
+#: accounts/forms.py:147 accounts/forms.py:171
 msgid "Αν έχετε ήδη email της μορφής @"
 msgstr "If you already have an email of the form @"
 
-#: accounts/forms.py:162
+#: accounts/forms.py:147
 msgid " δεν χρειάζεται να εγγραφείτε."
 msgstr " you do not need to register."
 
-#: accounts/forms.py:186
+#: accounts/forms.py:171
 msgid " δεν μπορείτε να επαναφέρετε τον κωδικό σας μέσω αυτού του συστήματος."
 msgstr " you cannot reset your password through this system."
 
-#: accounts/forms.py:191
+#: accounts/forms.py:176
 msgid "Δεν υπάρχει χρήστης με αυτό το e-mail"
 msgstr "There is no user with this email"
 
-#: accounts/forms.py:196
+#: accounts/forms.py:181
 msgid "Νέος κωδικός πρόσβασης"
 msgstr "New password"
 
-#: accounts/forms.py:197
+#: accounts/forms.py:182
 msgid "Νέος κωδικός πρόσβασης (επανάληψη)"
 msgstr "New password (repeat)"
 
-#: accounts/models.py:38 accounts/models.py:39 core/views.py:34
+#: accounts/models.py:39 accounts/models.py:40 accounts/views.py:75
+#: accounts/views.py:106 core/views.py:29
 msgid "Προσωπικά Στοιχεία"
 msgstr "Personal Information"
 
-#: accounts/models.py:46
+#: accounts/models.py:47
 msgid "Άρρεν"
 msgstr "Male"
 
-#: accounts/models.py:47
+#: accounts/models.py:48
 msgid "Θήλυ"
 msgstr "Female"
 
-#: accounts/models.py:48
+#: accounts/models.py:49
 msgid "Άλλο"
 msgstr "Other"
 
-#: accounts/models.py:131
+#: accounts/models.py:125
 msgid "Μέλος Προσωπικού"
 msgstr "Staff Member"
 
-#: accounts/models.py:132 accounts/views.py:57
+#: accounts/models.py:126 accounts/views.py:59
 msgid "Μέλη Προσωπικού"
 msgstr "Staff Members"
 
-#: accounts/models.py:183
+#: accounts/models.py:177
 msgid "Προσαρμοσμένο Δικαίωμα Χρήστη"
 msgstr "Custom User Permission"
 
-#: accounts/models.py:184
+#: accounts/models.py:178
 msgid "Προσαρμοσμένα Δικαιώματα Χρήστη"
 msgstr "Custom User Permissions"
 
@@ -285,8 +266,8 @@ msgid "Έξοδος"
 msgstr "Logout"
 
 #: accounts/templates/accounts/page.html:92
-#: accounts/templates/accounts/page.html:99 accounts/views.py:197
-#: accounts/views.py:212 accounts/views.py:276
+#: accounts/templates/accounts/page.html:99 accounts/views.py:301
+#: accounts/views.py:316 accounts/views.py:380
 msgid "Επιστροφή"
 msgstr "Back"
 
@@ -318,7 +299,7 @@ msgstr "Go to"
 
 #: accounts/templates/accounts/password_reset_choice.html:15
 #: accounts/templates/accounts/password_reset_choice.html:20
-#: accounts/views.py:83 accounts/views.py:140
+#: accounts/views.py:187 accounts/views.py:244
 msgid "εδώ"
 msgstr "here"
 
@@ -453,54 +434,160 @@ msgstr ""
 msgid "Δεν είστε δηλωμένος στο σύστημα ως μέλος του ιδρύματος."
 msgstr "You are not registered in the system as a member of the institution."
 
-#: accounts/views.py:37
+#: accounts/views.py:38
 msgid "Δημιουργία Μέλους Προσωπικού"
 msgstr "Create Staff Member"
 
-#: accounts/views.py:54
+#: accounts/views.py:55
 msgid "Ονοματεπώνυμο"
 msgstr "Full Name"
 
-#: accounts/views.py:55
+#: accounts/views.py:57 accounts/views.py:100
 msgid "E-mail"
 msgstr "E-mail"
 
-#: accounts/views.py:81
+#: accounts/views.py:63
+msgid "Προφίλ"
+msgstr "Profile"
+
+#: accounts/views.py:76
+msgid ""
+"Παρακάτω ακολουθούν τα προσωπικά στοιχεία του χρήστη, χωρισμένα σε "
+"κατηγορίες..."
+msgstr ""
+
+#: accounts/views.py:85
+msgid "Προσωπικά Στοιχεία: "
+msgstr "Personal Info: "
+
+#: accounts/views.py:93
+msgid "Βασικά Στοιχεία"
+msgstr "Basic Information"
+
+#: accounts/views.py:97 core/views.py:54
+msgid "Εικόνα"
+msgstr "Picture"
+
+#: accounts/views.py:101
+msgid "2ο E-mail"
+msgstr "2nd E-mail"
+
+#: accounts/views.py:110
+msgid "Όνομα Πατέρα"
+msgstr "Father's Name"
+
+#: accounts/views.py:111
+msgid "Ημ/νία Γέννησης"
+msgstr "Date of Birth"
+
+#: accounts/views.py:112
+msgid "Φύλο"
+msgstr "Gender"
+
+#: accounts/views.py:113
+msgid "Κινητό Τηλέφωνο"
+msgstr "Mobile Phone"
+
+#: accounts/views.py:114
+msgid "ΑΦΜ"
+msgstr "Tax Identification Number"
+
+#: accounts/views.py:115
+msgid "ΑΜΚΑ"
+msgstr "Social Security Number"
+
+#: accounts/views.py:120
+msgid "Στοιχεία Κατοικίας"
+msgstr "Home Information"
+
+#: accounts/views.py:131
+msgid "Οδός Κατοικίας"
+msgstr "Home Street Address"
+
+#: accounts/views.py:132
+msgid "Αριθμός Κατοικίας"
+msgstr "Home Address Number"
+
+#: accounts/views.py:133
+msgid "Τ.Κ. Κατοικίας"
+msgstr "Home Street Address"
+
+#: accounts/views.py:134
+msgid "Πόλη Κατοικίας"
+msgstr "Home City"
+
+#: accounts/views.py:135
+msgid "Χώρα Κατοικίας"
+msgstr "Home Country"
+
+#: accounts/views.py:136
+msgid "Τηλέφωνο Κατοικίας"
+msgstr "Home Phone"
+
+#: accounts/views.py:141
+msgid "Στοιχεία Εργασίας"
+msgstr "Work Information"
+
+#: accounts/views.py:152
+msgid "Οδός Εργασίας"
+msgstr "Work Street Address"
+
+#: accounts/views.py:153
+msgid "Αριθμός Εργασίας"
+msgstr "Work Address Number"
+
+#: accounts/views.py:154
+msgid "Τ.Κ. Εργασίας"
+msgstr "Work Postal Code"
+
+#: accounts/views.py:155
+msgid "Πόλη Εργασίας"
+msgstr "Work City"
+
+#: accounts/views.py:156
+msgid "Χώρα Εργασίας"
+msgstr "Work Country"
+
+#: accounts/views.py:157
+msgid "Τηλέφωνο Εργασίας"
+msgstr "Work Phone"
+
+#: accounts/views.py:185
 msgid ""
 "Αποσυνδεθήκατε από το σύστημα. Ευχαριστούμε που χρησιμοποιήσατε την υπηρεσία "
 "μας. "
 msgstr "You have been logged out. Thank you for using our service."
 
-#: accounts/views.py:82 accounts/views.py:139
+#: accounts/views.py:186 accounts/views.py:243
 msgid "Συνδεθείτε ξανά"
 msgstr "Log in again"
 
-#: accounts/views.py:100
+#: accounts/views.py:204
 msgid ""
 "H πρόκληση να εγγραφείτε έχει λήξει. Θα πρέπει να επαναλάβετε την διαδικασία."
 msgstr ""
 "The invitation to register has expired. You will need to repeat the process."
 
-#: accounts/views.py:104 accounts/views.py:263
+#: accounts/views.py:208 accounts/views.py:367
 msgid "O σύνδεσμος δεν είναι σωστός!"
 msgstr "The link is invalid!"
 
-#: accounts/views.py:110
+#: accounts/views.py:214
 msgid "Έχετε ήδη εγγραφεί στο σύστημα!"
 msgstr "You are already registered in the system!"
 
-#: accounts/views.py:138
+#: accounts/views.py:242
 msgid "Εγγραφήκατε επιτυχώς στο σύστημα!"
 msgstr "You have successfully registered in the system!"
 
-#: accounts/views.py:175
+#: accounts/views.py:279
 msgid ""
 "Έχει αποσταλλεί e-mail στην διεύθυνση που δηλώσατε για να ενεργοποιήσετε το "
 "λογαριασμό σας"
 msgstr ""
 "An email has been sent to the address you provided to activate your account"
 
-#: accounts/views.py:196
+#: accounts/views.py:300
 msgid ""
 "Είστε ιδρυματικός χρήστης. Θα πρέπει να αλλάξετε τον κωδικό χρησιμοποιώντας "
 "τα κεντρικά συστήματα του ιδρύματος"
@@ -508,17 +595,17 @@ msgstr ""
 "You are an institutional user. You must change your password using the "
 "institution’s central systems."
 
-#: accounts/views.py:211 accounts/views.py:275
+#: accounts/views.py:315 accounts/views.py:379
 msgid "Ο κωδικός σας έχει αλλάξει."
 msgstr "Your password has been changed."
 
-#: accounts/views.py:238
+#: accounts/views.py:342
 msgid ""
 "Παρακαλούμε ελέγξτε την διεύθυνση ηλεκτρονικού ταχυδρομείου που καταχωρήσατε "
 "για την συνέχεια."
 msgstr "Please check the email address you provided to proceed."
 
-#: accounts/views.py:260
+#: accounts/views.py:364
 msgid "Ο σύνδεσμος αυτός έχει λήξει."
 msgstr "This link has expired."
 
@@ -538,7 +625,7 @@ msgstr "Decision Attachment"
 msgid "Επισυναπτόμενα Αποφάσεων"
 msgstr "Decision Attachment"
 
-#: bodies/models.py:19 subjects/forms.py:22 subjects/views.py:76
+#: bodies/models.py:19 subjects/forms.py:23 subjects/views.py:76
 msgid "Συλλογικό Όργανο"
 msgstr "Collective Body"
 
@@ -562,6 +649,10 @@ msgstr "End Date"
 #: core/forms.py:14
 msgid "Κάντε click στο πεδίο και επιλέξτε."
 msgstr "Click on the field and select."
+
+#: core/forms.py:15
+msgid "Υποβολή"
+msgstr "Submission"
 
 #: core/templates/core/partials/file_input.html:20
 #: core/templates/core/partials/file_input_old.html:20
@@ -587,71 +678,72 @@ msgstr "The file to be used is: "
 msgid "Θα αντικατασταθεί με:"
 msgstr "Will be replaced with:"
 
-#: core/templates/core/partials/table.html:11
+#: core/templates/core/partials/section.html:10
+#: core/templates/core/partials/table.html:10
 msgid "Αναζήτηση"
 msgstr "Search"
 
-#: core/templates/core/partials/table.html:12
+#: core/templates/core/partials/section.html:11
+#: core/templates/core/partials/table.html:11
 msgid "σύνολο:"
 msgstr "total:"
 
-#: core/templates/core/partials/table.html:12
+#: core/templates/core/partials/section.html:11
+#: core/templates/core/partials/table.html:11
 msgid "εγγραφές"
 msgstr "records"
 
-#: core/templates/core/partials/table.html:14
+#: core/templates/core/partials/section.html:13
+#: core/templates/core/partials/table.html:13
 msgid "Προηγούμενο"
 msgstr "Previous"
 
-#: core/templates/core/partials/table.html:15
+#: core/templates/core/partials/section.html:14
+#: core/templates/core/partials/table.html:14
 msgid "Επόμενο"
 msgstr "Next"
 
-#: core/views.py:24
+#: core/views.py:19
 msgid "Καταχωρήσεις"
 msgstr "Entries"
 
-#: core/views.py:29 core/views.py:229
+#: core/views.py:24 core/views.py:290
 msgid "Νέα καταχώρηση"
 msgstr "New entry"
 
-#: core/views.py:40
+#: core/views.py:35
 msgid "Επιβεβαίωση"
 msgstr "Confirm"
 
-#: core/views.py:41
+#: core/views.py:36
 msgid "Είστε σίγουροι ότι θέλετε να αποθηκεύσετε τις αλλαγές;"
 msgstr "Are you sure you want to save the changes?"
 
-#: core/views.py:42
+#: core/views.py:37
 msgid "Όχι"
 msgstr "No"
 
-#: core/views.py:43
+#: core/views.py:38
 msgid "Ναι"
 msgstr "Yes"
 
-#: core/views.py:52
+#: core/views.py:47
 msgid "Ενημέρωση"
 msgstr "Update"
 
-#: core/views.py:59
-msgid "Εικόνα"
-msgstr "Overview"
-
-#: core/views.py:65
-msgid "Στοχεία"
+#: core/views.py:60
+msgid "Στοιχεία"
 msgstr "Info"
 
-#: core/views.py:71
+#: core/views.py:66
 msgid "Διαγραφή"
 msgstr "Delete"
 
-#: core/views.py:74
+#: core/views.py:69
 msgid "Δεν υπάρχουν καταχωρήσεις"
 msgstr "No entries found"
 
-#: core/views.py:80
+#: core/views.py:75
 msgid "Ενημέρωση στοιχείων"
 msgstr "Update data"
 
@@ -671,7 +763,7 @@ msgstr "Schools"
 msgid "Τμήματα"
 msgstr "Departments"
 
-#: curricula/models.py:69 subjects/forms.py:19
+#: curricula/models.py:69 subjects/forms.py:20
 msgid "Πρόγραμμα Σπουδών"
 msgstr "Study Program"
 
@@ -695,67 +787,67 @@ msgstr "Secretariat"
 msgid "Γραμματείες"
 msgstr "Secretariats"
 
-#: subjects/forms.py:15 subjects/views.py:73
+#: subjects/forms.py:16 subjects/views.py:73
 msgid "Δείκτης"
 msgstr "Index"
 
-#: subjects/forms.py:16 subjects/views.py:74
+#: subjects/forms.py:17 subjects/views.py:74
 msgid "Τύπος"
 msgstr "Type"
 
-#: subjects/forms.py:17 subjects/views.py:75
+#: subjects/forms.py:18 subjects/views.py:75
 msgid "Κατηγορία"
 msgstr "Category"
 
-#: subjects/forms.py:18
+#: subjects/forms.py:19
 msgid "Αιτών"
 msgstr "Applicant"
 
-#: subjects/forms.py:23 subjects/views.py:77
+#: subjects/forms.py:24 subjects/views.py:77
 msgid "Σημειώσεις"
 msgstr "Notes"
 
-#: subjects/forms.py:25
+#: subjects/forms.py:26
 msgid "Τίτλος (Ελληνικά)"
 msgstr "Title (Greek)"
 
-#: subjects/forms.py:26
+#: subjects/forms.py:27
 msgid "Τίτλος (Αγγλικά)"
 msgstr "Title (English)"
 
-#: subjects/forms.py:27 subjects/models.py:74 subjects/views.py:289
+#: subjects/forms.py:28 subjects/models.py:74 subjects/views.py:289
 msgid "Θέμα"
 msgstr "Subject"
 
-#: subjects/forms.py:39
+#: subjects/forms.py:40
 msgid "Επιλέξτε τύπο"
 msgstr "Select type"
 
-#: subjects/forms.py:43
+#: subjects/forms.py:44
 msgid "Επιλέξτε κατηγορία"
 msgstr "Select category"
 
-#: subjects/forms.py:47
+#: subjects/forms.py:48
 msgid "Επιλέξτε αιτών"
 msgstr "Select applicant"
 
-#: subjects/forms.py:51
+#: subjects/forms.py:52
 msgid "Επιλέξτε πρόγραμμα σπουδών"
 msgstr "Select study program"
 
-#: subjects/forms.py:55
+#: subjects/forms.py:56
 msgid "Επιλέξτε τμήμα"
 msgstr "Select department"
 
-#: subjects/forms.py:59
+#: subjects/forms.py:60
 msgid "Επιλέξτε σχολή"
 msgstr "Select school"
 
-#: subjects/forms.py:63
+#: subjects/forms.py:64
 msgid "Επιλέξτε συλλογικό όργανο"
 msgstr "Select collective body"
 
-#: subjects/forms.py:71
+#: subjects/forms.py:72
 msgid "Επιλέξτε θέμα"
 msgstr "Select subject"
 
@@ -803,17 +895,20 @@ msgstr "Create Subject Category"
 msgid "Δημιουργία Απόφασης"
 msgstr "Create Decision"
 
+#~ msgid "Στοιχεία Προφίλ"
+#~ msgstr "Profile Information"
+
+#~ msgid "Διεύθυνση Κατοικίας"
+#~ msgstr "Home Address"
+
+#~ msgid "Διεύθυνση Εργασίας "
+#~ msgstr "Work Address"
+
+#~ msgid "Θέση Εργασίας"
+#~ msgstr "Job Position"
+
 #~ msgid "Όνομα Πατρός"
 #~ msgstr "Father’s Name"
-
-#~ msgid "Ημερομηνία Γέννησης"
-#~ msgstr "Date of Birth"
-
-#~ msgid "ΑΦΜ"
-#~ msgstr "Tax Identification Number"
-
-#~ msgid "ΑΜΚΑ"
-#~ msgstr "Social Security Number"
 
 #~ msgid "Φορεάς"
 #~ msgstr "Organization"
@@ -829,15 +924,6 @@ msgstr "Create Decision"
 
 #~ msgid "Χώρα"
 #~ msgstr "Country"
-
-#~ msgid "Κινητό Τηλέφωνο"
-#~ msgstr "Mobile Phone"
-
-#~ msgid "Τηλέφωνο Οικίας"
-#~ msgstr "Home Phone"
-
-#~ msgid "Τηλέφωνο Εργασίας"
-#~ msgstr "Work Phone"
 
 #~ msgid "Αριθμός Θέσης"
 #~ msgstr "Seat Number"
@@ -944,44 +1030,11 @@ msgstr "Create Decision"
 #~ msgid "Αριθμός Ιδρυματικού Πρωτοκόλλου"
 #~ msgstr "Institutional Protocol Number"
 
-#~ msgid "Όνομα Πατέρα"
-#~ msgstr "Father's Name"
-
-#~ msgid "Φύλο"
-#~ msgstr "Gender"
-
-#~ msgid "Οδός Κατοικίας"
-#~ msgstr "Home Street Address"
-
-#~ msgid "Αριθμός Κατοικίας"
-#~ msgstr "Home Address Number"
-
 #~ msgid "Ταχυδρομικός Κώδικας Κατοικίας"
 #~ msgstr "Home Postal Code"
 
-#~ msgid "Πόλη Κατοικίας"
-#~ msgstr "Home City"
-
-#~ msgid "Χώρα Κατοικίας"
-#~ msgstr "Home Country"
-
 #~ msgid "Σταθερό Τηλέφωνο"
 #~ msgstr "Landline Phone"
-
-#~ msgid "Οδός Εργασίας"
-#~ msgstr "Work Street Address"
-
-#~ msgid "Αριθμός Εργασίας"
-#~ msgstr "Work Address Number"
-
-#~ msgid "Τ.Κ. Εργασίας"
-#~ msgstr "Work Postal Code"
-
-#~ msgid "Πόλη Εργασίας"
-#~ msgstr "Work City"
-
-#~ msgid "Χώρα Εργασίας"
-#~ msgstr "Work Country"
 
 #~ msgid "Φωτογραφία"
 #~ msgstr "Photo"
@@ -1012,9 +1065,6 @@ msgstr "Create Decision"
 
 #~ msgid "Συστατική Επιστολή"
 #~ msgstr "Reference Letter"
-
-#~ msgid "Στοιχεία Επαφής"
-#~ msgstr "Contact Information"
 
 #~ msgid "Συγγραφείς"
 #~ msgstr "Authors"
@@ -1718,9 +1768,6 @@ msgstr "Create Decision"
 #~ msgid "Αριθμός Μητρώου Κοινωνικής Ασφάλισης (ΑΜΚΑ)"
 #~ msgstr "Social Security Number"
 
-#~ msgid "Τηλέφωνο Κατοικίας"
-#~ msgstr "Home Phone"
-
 #~ msgid "Ταχυδρομικός Κώδικας Εργασίας"
 #~ msgstr "Work Address Postal Code"
 
@@ -1798,9 +1845,6 @@ msgstr "Create Decision"
 
 #~ msgid "Διδακτορικοί Φοιτητές"
 #~ msgstr "Doctoral Candidates"
-
-#~ msgid "Προφίλ"
-#~ msgstr "Profile"
 
 #~ msgid "Ενημέρωση Προσωπικών Στοιχείων"
 #~ msgstr "Update Personal Information"

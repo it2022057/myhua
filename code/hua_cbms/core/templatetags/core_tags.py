@@ -66,6 +66,14 @@ def render_table(table):
         context[key] = table.get(key, '')
     return context
 
+@register.inclusion_tag("core/partials/section.html")
+def render_section(section):
+    context = {}
+    for key in section.keys():
+        context[key] = section.get(key, '')
+
+    return context
+
 @register.filter
 def get_filename(s):
     filename = str(s.value()).split('/')[-1]

@@ -1,15 +1,15 @@
 from dal import autocomplete
 from django.contrib.auth import get_user_model, logout, update_session_auth_hash
-from django.contrib.auth.decorators import login_required, user_passes_test
-from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.signing import TimestampSigner, SignatureExpired, BadSignature
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
-from django.views import generic
 
 from core import views
+from core.views import Section, Table
 from hua_cbms import settings
 from .checks import app_urls, is_secretariat, is_staff_member
 from .forms import SignUpForm, RegisterForm, PasswordForm, ForgotPasswordForm, StaffForm
@@ -28,6 +28,7 @@ def render_unauthorized_staff(request):
 """
 Faculty CRUD views
 """
+
 
 class SecCreateStaffMember(views.ScopedSecCreateView):
     model = StaffMember
@@ -53,18 +54,14 @@ class SecListStaffMember(views.ScopedSecListView):
     headers = {
         'display_name': _('Ονοματεπώνυμο'),
         'title': _('Ιδιότητα'),
-        'email': _('E-mail')
+        'email': _('E-mail'),
     }
     table_title = _('Μέλη Προσωπικού')
     create_url = 'accounts:sec_create_staff_member'
     update_url = 'accounts:sec_update_staff_member'
-    extra_buttons = True
-    extra_text = _('Προφίλ')
-    extra_button_icon = 'info'
-    extra_url = 'accounts:sec_overview_phd_student'
-
-    # def get_queryset(self):
-    #     return Student.objects.sc_filter(user=self.request.user, program__type=StudyProgram.DOCTORAL)
+    extra_buttons2 = True
+    extra_text2 = _('Προφίλ')
+    extra_url2 = 'accounts:sec_personal_info_overview'
 
 
 class SecDeleteStaffMember(views.ScopedDeleteView):
@@ -72,21 +69,109 @@ class SecDeleteStaffMember(views.ScopedDeleteView):
     success_url = 'subjects:sec_list_staff_member'
 
 
-class showPersonalInfo(views.ScopedSecListView):
-    model = PersonalInfo
-    fields = ['pic', 'display_name', 'title', 'email']
-    headers = {
-        'display_name': _('Ονοματεπώνυμο'),
-        'title': _('Ιδιότητα'),
-        'email': _('E-mail')
-    }
-    table_title = _('Μέλη Προσωπικού')
-    update_url = 'accounts:sec_update_staff_member'
+class SecPersonalInfoOverviewList(views.SecMultipleSectionView):
+    model = StaffMember
+    template_name = 'core/multiple_sections.html'
+    master_headline = _('Προσωπικά Στοιχεία')
+    master_p = _('Παρακάτω ακολουθούν τα προσωπικά στοιχεία του χρήστη, χωρισμένα σε κατηγορίες...')
+
+    def setup(self, *args, **kwargs):
+        super().setup(*args, **kwargs)
+        staff_member = StaffMember.objects.get(pk = self.kwargs['pk'])
+
+        obj = PersonalInfo.objects.get(id=staff_member.personal_info_id)
+
+        if staff_member:
+            self.master_headline = _('Προσωπικά Στοιχεία: ') + '%s' %str(staff_member)
+
+        # DetailView still works with one object...it only shapes the context
+        # so the list_objects template can render it and save code
+        self.objects = [obj]
+
+        self.sections = [
+            Section(
+                section_title = _('Βασικά Στοιχεία'),
+                section_id = 'section-1',
+                fields = ['pic', 'given_name', 'surname', 'email', 'secondary_email'],
+                headers = {
+                    'pic': _('Εικόνα'),
+                    'given_name': _('Όνομα'),
+                    'surname': _('Επώνυμο'),
+                    'email': _('E-mail'),
+                    'secondary_email': _('2ο E-mail')
+                },
+                objects = self.objects,
+                update_url='accounts:sec_personal_info_overview'
+            ),
+            Section(
+                section_title = _('Προσωπικά Στοιχεία'),
+                section_id = 'section-2',
+                fields = ['fathers_name', 'date_of_birth', 'gender', 'mobile_phone', 'tin', 'ssn'],
+                headers = {
+                    'fathers_name': _('Όνομα Πατέρα'),
+                    'date_of_birth': _('Ημ/νία Γέννησης'),
+                    'gender': _('Φύλο'),
+                    'mobile_phone': _('Κινητό Τηλέφωνο'),
+                    'tin': _('ΑΦΜ'),
+                    'ssn': _('ΑΜΚΑ')
+                },
+                objects = self.objects
+            ),
+            Section(
+                section_title = _('Στοιχεία Κατοικίας'),
+                section_id = 'section-3',
+                fields = [
+                    'home_address_street',
+                    'home_address_no',
+                    'home_address_po_box',
+                    'home_address_city',
+                    'home_address_country',
+                    'home_phone'
+                ],
+                headers = {
+                    'home_address_street': _('Οδός Κατοικίας'),
+                    'home_address_no': _('Αριθμός Κατοικίας'),
+                    'home_address_po_box': _('Τ.Κ. Κατοικίας'),
+                    'home_address_city': _('Πόλη Κατοικίας'),
+                    'home_address_country': _('Χώρα Κατοικίας'),
+                    'home_phone': _('Τηλέφωνο Κατοικίας')
+                },
+                objects = self.objects
+            ),
+            Section(
+                section_title = _('Στοιχεία Εργασίας'),
+                section_id = 'section-4',
+                fields = [
+                    'work_address_street',
+                    'work_address_no',
+                    'work_address_po_box',
+                    'work_address_city',
+                    'work_address_country',
+                    'work_phone'
+                ],
+                headers = {
+                    'work_address_street': _('Οδός Εργασίας'),
+                    'work_address_no': _('Αριθμός Εργασίας'),
+                    'work_address_po_box': _('Τ.Κ. Εργασίας'),
+                    'work_address_city': _('Πόλη Εργασίας'),
+                    'work_address_country': _('Χώρα Εργασίας'),
+                    'work_phone': _('Τηλέφωνο Εργασίας')
+                },
+                objects = self.objects
+            ),
+        ]
+
+
+# class updatePersonalInfo(views.ScopedSecUpdateView):
+#     model = PersonalInfo
+#     form_class = StaffForm
+#     success_url = 'accounts:sec_list_personal_info'
+#     delete_url = 'accounts:sec_delete_personal_info'
+#     confirm_modal = True
 
 
 @login_required
 def index(request):
-    # return HttpResponse("This is index view")
     if is_secretariat(request.user):
         return redirect('accounts:dashboard')
     elif is_staff_member(request.user):
