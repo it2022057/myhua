@@ -26,7 +26,20 @@
             </div>
         </div>
         </br></br></br>
-
+    {% endif %}
+    {% if update_buttons %}
+        <div class="row justify-content-end">
+            <div class="col-sm-12 text-end">
+                {% if next %}
+                    <a href="{{ object.update_url }}?next={{ next }}" class="{{ update_button_class }}"><span
+                            class="mto">{{ update_button_icon }}</span>{{ update_text }}</a>
+                {% else %}
+                    <a href="{{ object.update_url }}" class="{{ update_button_class }}"><span
+                            class="mto">{{ update_button_icon }}</span>{{ update_text }}</a>
+                {% endif %}
+            </div>
+        </div>
+        </br></br></br>
     {% endif %}
 
     {% if sections %}

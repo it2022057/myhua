@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-26 20:42+0300\n"
+"POT-Creation-Date: 2026-05-01 13:42+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -78,11 +78,11 @@ msgstr "You have not used at least two special characters"
 msgid "Ε-mail"
 msgstr "E-mail"
 
-#: accounts/forms.py:65 accounts/views.py:98
+#: accounts/forms.py:65 accounts/views.py:132
 msgid "Όνομα"
 msgstr "First Name"
 
-#: accounts/forms.py:66 accounts/views.py:99
+#: accounts/forms.py:66 accounts/views.py:133
 msgid "Επώνυμο"
 msgstr "Last Name"
 
@@ -198,8 +198,8 @@ msgstr "New password"
 msgid "Νέος κωδικός πρόσβασης (επανάληψη)"
 msgstr "New password (repeat)"
 
-#: accounts/models.py:39 accounts/models.py:40 accounts/views.py:75
-#: accounts/views.py:106 core/views.py:29
+#: accounts/models.py:39 accounts/models.py:40 accounts/views.py:101
+#: accounts/views.py:140 core/views.py:29
 msgid "Προσωπικά Στοιχεία"
 msgstr "Personal Information"
 
@@ -266,8 +266,8 @@ msgid "Έξοδος"
 msgstr "Logout"
 
 #: accounts/templates/accounts/page.html:92
-#: accounts/templates/accounts/page.html:99 accounts/views.py:301
-#: accounts/views.py:316 accounts/views.py:380
+#: accounts/templates/accounts/page.html:99 accounts/views.py:327
+#: accounts/views.py:342 accounts/views.py:406
 msgid "Επιστροφή"
 msgstr "Back"
 
@@ -299,7 +299,7 @@ msgstr "Go to"
 
 #: accounts/templates/accounts/password_reset_choice.html:15
 #: accounts/templates/accounts/password_reset_choice.html:20
-#: accounts/views.py:187 accounts/views.py:244
+#: accounts/views.py:213 accounts/views.py:270
 msgid "εδώ"
 msgstr "here"
 
@@ -442,7 +442,7 @@ msgstr "Create Staff Member"
 msgid "Ονοματεπώνυμο"
 msgstr "Full Name"
 
-#: accounts/views.py:57 accounts/views.py:100
+#: accounts/views.py:57 accounts/views.py:134
 msgid "E-mail"
 msgstr "E-mail"
 
@@ -450,144 +450,144 @@ msgstr "E-mail"
 msgid "Προφίλ"
 msgstr "Profile"
 
-#: accounts/views.py:76
+#: accounts/views.py:102
 msgid ""
 "Παρακάτω ακολουθούν τα προσωπικά στοιχεία του χρήστη, χωρισμένα σε "
 "κατηγορίες..."
 msgstr ""
 
-#: accounts/views.py:85
+#: accounts/views.py:123
 msgid "Προσωπικά Στοιχεία: "
 msgstr "Personal Info: "
 
-#: accounts/views.py:93
+#: accounts/views.py:127
 msgid "Βασικά Στοιχεία"
 msgstr "Basic Information"
 
-#: accounts/views.py:97 core/views.py:54
+#: accounts/views.py:131 core/views.py:54
 msgid "Εικόνα"
 msgstr "Picture"
 
-#: accounts/views.py:101
+#: accounts/views.py:135
 msgid "2ο E-mail"
 msgstr "2nd E-mail"
 
-#: accounts/views.py:110
+#: accounts/views.py:144
 msgid "Όνομα Πατέρα"
 msgstr "Father's Name"
 
-#: accounts/views.py:111
+#: accounts/views.py:145
 msgid "Ημ/νία Γέννησης"
 msgstr "Date of Birth"
 
-#: accounts/views.py:112
+#: accounts/views.py:146
 msgid "Φύλο"
 msgstr "Gender"
 
-#: accounts/views.py:113
+#: accounts/views.py:147
 msgid "Κινητό Τηλέφωνο"
 msgstr "Mobile Phone"
 
-#: accounts/views.py:114
+#: accounts/views.py:148
 msgid "ΑΦΜ"
 msgstr "Tax Identification Number"
 
-#: accounts/views.py:115
+#: accounts/views.py:149
 msgid "ΑΜΚΑ"
 msgstr "Social Security Number"
 
-#: accounts/views.py:120
+#: accounts/views.py:154
 msgid "Στοιχεία Κατοικίας"
 msgstr "Home Information"
 
-#: accounts/views.py:131
+#: accounts/views.py:165
 msgid "Οδός Κατοικίας"
 msgstr "Home Street Address"
 
-#: accounts/views.py:132
+#: accounts/views.py:166
 msgid "Αριθμός Κατοικίας"
 msgstr "Home Address Number"
 
-#: accounts/views.py:133
+#: accounts/views.py:167
 msgid "Τ.Κ. Κατοικίας"
 msgstr "Home Street Address"
 
-#: accounts/views.py:134
+#: accounts/views.py:168
 msgid "Πόλη Κατοικίας"
 msgstr "Home City"
 
-#: accounts/views.py:135
+#: accounts/views.py:169
 msgid "Χώρα Κατοικίας"
 msgstr "Home Country"
 
-#: accounts/views.py:136
+#: accounts/views.py:170
 msgid "Τηλέφωνο Κατοικίας"
 msgstr "Home Phone"
 
-#: accounts/views.py:141
+#: accounts/views.py:175
 msgid "Στοιχεία Εργασίας"
 msgstr "Work Information"
 
-#: accounts/views.py:152
+#: accounts/views.py:186
 msgid "Οδός Εργασίας"
 msgstr "Work Street Address"
 
-#: accounts/views.py:153
+#: accounts/views.py:187
 msgid "Αριθμός Εργασίας"
 msgstr "Work Address Number"
 
-#: accounts/views.py:154
+#: accounts/views.py:188
 msgid "Τ.Κ. Εργασίας"
 msgstr "Work Postal Code"
 
-#: accounts/views.py:155
+#: accounts/views.py:189
 msgid "Πόλη Εργασίας"
 msgstr "Work City"
 
-#: accounts/views.py:156
+#: accounts/views.py:190
 msgid "Χώρα Εργασίας"
 msgstr "Work Country"
 
-#: accounts/views.py:157
+#: accounts/views.py:191
 msgid "Τηλέφωνο Εργασίας"
 msgstr "Work Phone"
 
-#: accounts/views.py:185
+#: accounts/views.py:211
 msgid ""
 "Αποσυνδεθήκατε από το σύστημα. Ευχαριστούμε που χρησιμοποιήσατε την υπηρεσία "
 "μας. "
 msgstr "You have been logged out. Thank you for using our service."
 
-#: accounts/views.py:186 accounts/views.py:243
+#: accounts/views.py:212 accounts/views.py:269
 msgid "Συνδεθείτε ξανά"
 msgstr "Log in again"
 
-#: accounts/views.py:204
+#: accounts/views.py:230
 msgid ""
 "H πρόκληση να εγγραφείτε έχει λήξει. Θα πρέπει να επαναλάβετε την διαδικασία."
 msgstr ""
 "The invitation to register has expired. You will need to repeat the process."
 
-#: accounts/views.py:208 accounts/views.py:367
+#: accounts/views.py:234 accounts/views.py:393
 msgid "O σύνδεσμος δεν είναι σωστός!"
 msgstr "The link is invalid!"
 
-#: accounts/views.py:214
+#: accounts/views.py:240
 msgid "Έχετε ήδη εγγραφεί στο σύστημα!"
 msgstr "You are already registered in the system!"
 
-#: accounts/views.py:242
+#: accounts/views.py:268
 msgid "Εγγραφήκατε επιτυχώς στο σύστημα!"
 msgstr "You have successfully registered in the system!"
 
-#: accounts/views.py:279
+#: accounts/views.py:305
 msgid ""
 "Έχει αποσταλλεί e-mail στην διεύθυνση που δηλώσατε για να ενεργοποιήσετε το "
 "λογαριασμό σας"
 msgstr ""
 "An email has been sent to the address you provided to activate your account"
 
-#: accounts/views.py:300
+#: accounts/views.py:326
 msgid ""
 "Είστε ιδρυματικός χρήστης. Θα πρέπει να αλλάξετε τον κωδικό χρησιμοποιώντας "
 "τα κεντρικά συστήματα του ιδρύματος"
@@ -595,17 +595,17 @@ msgstr ""
 "You are an institutional user. You must change your password using the "
 "institution’s central systems."
 
-#: accounts/views.py:315 accounts/views.py:379
+#: accounts/views.py:341 accounts/views.py:405
 msgid "Ο κωδικός σας έχει αλλάξει."
 msgstr "Your password has been changed."
 
-#: accounts/views.py:342
+#: accounts/views.py:368
 msgid ""
 "Παρακαλούμε ελέγξτε την διεύθυνση ηλεκτρονικού ταχυδρομείου που καταχωρήσατε "
 "για την συνέχεια."
 msgstr "Please check the email address you provided to proceed."
 
-#: accounts/views.py:364
+#: accounts/views.py:390
 msgid "Ο σύνδεσμος αυτός έχει λήξει."
 msgstr "This link has expired."
 
@@ -652,7 +652,7 @@ msgstr "Click on the field and select."
 
 #: core/forms.py:15
 msgid "Υποβολή"
-msgstr "Submission"
+msgstr "Submit"
 
 #: core/templates/core/partials/file_input.html:20
 #: core/templates/core/partials/file_input_old.html:20
@@ -678,27 +678,22 @@ msgstr "The file to be used is: "
 msgid "Θα αντικατασταθεί με:"
 msgstr "Will be replaced with:"
 
-#: core/templates/core/partials/section.html:10
 #: core/templates/core/partials/table.html:10
 msgid "Αναζήτηση"
 msgstr "Search"
 
-#: core/templates/core/partials/section.html:11
 #: core/templates/core/partials/table.html:11
 msgid "σύνολο:"
 msgstr "total:"
 
-#: core/templates/core/partials/section.html:11
 #: core/templates/core/partials/table.html:11
 msgid "εγγραφές"
 msgstr "records"
 
-#: core/templates/core/partials/section.html:13
 #: core/templates/core/partials/table.html:13
 msgid "Προηγούμενο"
 msgstr "Previous"
 
-#: core/templates/core/partials/section.html:14
 #: core/templates/core/partials/table.html:14
 msgid "Επόμενο"
 msgstr "Next"

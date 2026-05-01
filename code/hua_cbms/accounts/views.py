@@ -9,10 +9,10 @@ from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
 
 from core import views
-from core.views import Section, Table
+from core.views import Section
 from hua_cbms import settings
 from .checks import app_urls, is_secretariat, is_staff_member
-from .forms import SignUpForm, RegisterForm, PasswordForm, ForgotPasswordForm, StaffForm
+from .forms import SignUpForm, RegisterForm, PasswordForm, ForgotPasswordForm, StaffForm, PersonalInfoForm
 from .models import StaffMember, PersonalInfo
 from .utils import complexity_message, get_domain_uri, send_password_link
 
@@ -59,9 +59,10 @@ class SecListStaffMember(views.ScopedSecListView):
     table_title = _('Μέλη Προσωπικού')
     create_url = 'accounts:sec_create_staff_member'
     update_url = 'accounts:sec_update_staff_member'
-    extra_buttons2 = True
-    extra_text2 = _('Προφίλ')
-    extra_url2 = 'accounts:sec_personal_info_overview'
+    extra_buttons = True
+    extra_text = _('Προφίλ')
+    extra_button_icon = 'person'
+    extra_url = 'accounts:sec_personal_info_overview'
 
 
 class SecDeleteStaffMember(views.ScopedDeleteView):
@@ -69,45 +70,77 @@ class SecDeleteStaffMember(views.ScopedDeleteView):
     success_url = 'subjects:sec_list_staff_member'
 
 
+class SecUpdatePersonalInfo(views.ScopedSecUpdateView):
+    model = PersonalInfo
+    form_class = PersonalInfoForm
+    success_url = 'accounts:sec_personal_info_overview'
+    delete_url = 'accounts:sec_delete_personal_info'
+    confirm_modal = True
+
+    def get_delete_url(self, obj):
+        if isinstance(self.delete_url, str):
+            return reverse_lazy(
+                self.delete_url,
+                kwargs={
+                    'pi_pk': obj.pk,
+                    'pk': obj.staffmember_set.first().pk
+                }
+            )
+        else:
+            return self.delete_url
+
+
+class SecDeletePersonalInfo(views.ScopedDeleteView):
+    model = PersonalInfo
+    success_url = 'accounts:sec_personal_info_overview'
+
+
 class SecPersonalInfoOverviewList(views.SecMultipleSectionView):
     model = StaffMember
     template_name = 'core/multiple_sections.html'
     master_headline = _('Προσωπικά Στοιχεία')
     master_p = _('Παρακάτω ακολουθούν τα προσωπικά στοιχεία του χρήστη, χωρισμένα σε κατηγορίες...')
+    update_url = 'accounts:sec_update_personal_info'
+    back_url = reverse_lazy('accounts:sec_list_staff_member')
+
+    def get_update_url(self, obj):
+        if self.update_url:
+            return reverse_lazy(
+                self.update_url,
+                kwargs={
+                    'pi_pk': obj.personal_info.pk,
+                    'pk': obj.pk
+                }
+            )
+        return None
 
     def setup(self, *args, **kwargs):
         super().setup(*args, **kwargs)
-        staff_member = StaffMember.objects.get(pk = self.kwargs['pk'])
-
+        staff_member = StaffMember.objects.get(pk=self.kwargs['pk'])
         obj = PersonalInfo.objects.get(id=staff_member.personal_info_id)
 
         if staff_member:
-            self.master_headline = _('Προσωπικά Στοιχεία: ') + '%s' %str(staff_member)
-
-        # DetailView still works with one object...it only shapes the context
-        # so the list_objects template can render it and save code
-        self.objects = [obj]
+            self.master_headline = _('Προσωπικά Στοιχεία: ') + '%s' % str(staff_member)
 
         self.sections = [
             Section(
-                section_title = _('Βασικά Στοιχεία'),
-                section_id = 'section-1',
-                fields = ['pic', 'given_name', 'surname', 'email', 'secondary_email'],
-                headers = {
+                section_title=_('Βασικά Στοιχεία'),
+                section_id='section-1',
+                fields=['pic', 'given_name', 'surname', 'email', 'secondary_email'],
+                headers={
                     'pic': _('Εικόνα'),
                     'given_name': _('Όνομα'),
                     'surname': _('Επώνυμο'),
                     'email': _('E-mail'),
                     'secondary_email': _('2ο E-mail')
                 },
-                objects = self.objects,
-                update_url='accounts:sec_personal_info_overview'
+                object=obj,
             ),
             Section(
-                section_title = _('Προσωπικά Στοιχεία'),
-                section_id = 'section-2',
-                fields = ['fathers_name', 'date_of_birth', 'gender', 'mobile_phone', 'tin', 'ssn'],
-                headers = {
+                section_title=_('Προσωπικά Στοιχεία'),
+                section_id='section-2',
+                fields=['fathers_name', 'date_of_birth', 'gender', 'mobile_phone', 'tin', 'ssn'],
+                headers={
                     'fathers_name': _('Όνομα Πατέρα'),
                     'date_of_birth': _('Ημ/νία Γέννησης'),
                     'gender': _('Φύλο'),
@@ -115,12 +148,12 @@ class SecPersonalInfoOverviewList(views.SecMultipleSectionView):
                     'tin': _('ΑΦΜ'),
                     'ssn': _('ΑΜΚΑ')
                 },
-                objects = self.objects
+                object=obj,
             ),
             Section(
-                section_title = _('Στοιχεία Κατοικίας'),
-                section_id = 'section-3',
-                fields = [
+                section_title=_('Στοιχεία Κατοικίας'),
+                section_id='section-3',
+                fields=[
                     'home_address_street',
                     'home_address_no',
                     'home_address_po_box',
@@ -128,7 +161,7 @@ class SecPersonalInfoOverviewList(views.SecMultipleSectionView):
                     'home_address_country',
                     'home_phone'
                 ],
-                headers = {
+                headers={
                     'home_address_street': _('Οδός Κατοικίας'),
                     'home_address_no': _('Αριθμός Κατοικίας'),
                     'home_address_po_box': _('Τ.Κ. Κατοικίας'),
@@ -136,12 +169,12 @@ class SecPersonalInfoOverviewList(views.SecMultipleSectionView):
                     'home_address_country': _('Χώρα Κατοικίας'),
                     'home_phone': _('Τηλέφωνο Κατοικίας')
                 },
-                objects = self.objects
+                object=obj,
             ),
             Section(
-                section_title = _('Στοιχεία Εργασίας'),
-                section_id = 'section-4',
-                fields = [
+                section_title=_('Στοιχεία Εργασίας'),
+                section_id='section-4',
+                fields=[
                     'work_address_street',
                     'work_address_no',
                     'work_address_po_box',
@@ -149,7 +182,7 @@ class SecPersonalInfoOverviewList(views.SecMultipleSectionView):
                     'work_address_country',
                     'work_phone'
                 ],
-                headers = {
+                headers={
                     'work_address_street': _('Οδός Εργασίας'),
                     'work_address_no': _('Αριθμός Εργασίας'),
                     'work_address_po_box': _('Τ.Κ. Εργασίας'),
@@ -157,17 +190,9 @@ class SecPersonalInfoOverviewList(views.SecMultipleSectionView):
                     'work_address_country': _('Χώρα Εργασίας'),
                     'work_phone': _('Τηλέφωνο Εργασίας')
                 },
-                objects = self.objects
+                object=obj,
             ),
         ]
-
-
-# class updatePersonalInfo(views.ScopedSecUpdateView):
-#     model = PersonalInfo
-#     form_class = StaffForm
-#     success_url = 'accounts:sec_list_personal_info'
-#     delete_url = 'accounts:sec_delete_personal_info'
-#     confirm_modal = True
 
 
 @login_required
@@ -263,8 +288,8 @@ def register(request):
             email = form.cleaned_data['email1']
             signed_data = signer.sign_object({'email': email})
             url = domain + reverse_lazy('accounts:signup', kwargs={'token': signed_data})
-            #message_body = settings.REGISTRATION_MESSAGE.format(url=url)
-            #notify.delay(email, settings.REGISTRATION_SUBJECT, message_body)
+            # message_body = settings.REGISTRATION_MESSAGE.format(url=url)
+            # notify.delay(email, settings.REGISTRATION_SUBJECT, message_body)
             return redirect('accounts:register_success')
         else:
             return render(request, "accounts/register.html", {"form": form, "back_url": back_url})

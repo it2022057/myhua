@@ -23,9 +23,9 @@ urlpatterns = [
     path('sec/staff/<int:pk>/delete', views.SecDeleteStaffMember.as_view(), name='sec_delete_staff_member'),
     path('sec/staff/new', views.SecCreateStaffMember.as_view(), name='sec_create_staff_member'),
 
-    # path('sec/staff', views.showPersonalInfo.as_view(), name='sec_show_personal_info'),
     path('sec/staff/<int:pk>/personal-info', views.SecPersonalInfoOverviewList.as_view(), name='sec_personal_info_overview'),
-    # path('sec/staff/<int:pk>/personal-info/<int:pk>/delete', views.SecDeleteStaffMember.as_view(), name='sec_delete_staff_member'),
+    path('sec/staff/<int:pk>/personal-info/<int:pi_pk>', views.SecUpdatePersonalInfo.as_view(), name='sec_update_personal_info'),
+    path('sec/staff/<int:pk>/personal-info/<int:pi_pk>/delete', views.SecDeleteStaffMember.as_view(), name='sec_delete_personal_info'),
 
     # URL for Applicant autocomplete
     path('applicant/autocomplete', views.ApplicantAutocomplete.as_view(), name='applicant-autocomplete'),

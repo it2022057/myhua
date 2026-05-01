@@ -77,7 +77,7 @@ class PersonalInfo(TrackedScopedProgramModel):
     work_address_city = models.CharField(max_length=70, null=True, default='Αθήνα')
     work_address_country = models.CharField(max_length=70, null=True, default='Ελλάδα')
     work_phone = models.CharField(max_length=20, blank=True, null=True)
-    pic = models.ImageField(null=True, blank=True)
+    pic = models.ImageField(null=True, blank=True, upload_to='images/')
 
     def scope_query(self, scope):
         if self.staffmember_set.exists():

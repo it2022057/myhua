@@ -23,8 +23,8 @@ FIELD_LABELS = {
     'collective_body': _('Συλλογικό Όργανο'),
     'notes': _('Σημειώσεις'),
 
-    'title_gr' : _('Τίτλος (Ελληνικά)'),
-    'title_en' : _('Τίτλος (Αγγλικά)'),
+    'title_gr': _('Τίτλος (Ελληνικά)'),
+    'title_en': _('Τίτλος (Αγγλικά)'),
     'subject': _('Θέμα')
 }
 
@@ -45,11 +45,11 @@ SUBJECT_WIDGETS = {
     ),
     'applicant_user': autocomplete.ModelSelect2(
         url='accounts:applicant-autocomplete',
-        attrs = {**BASE_ATTRS, 'data-placeholder': _('Επιλέξτε αιτών')}
+        attrs={**BASE_ATTRS, 'data-placeholder': _('Επιλέξτε αιτών')}
     ),
     'program': autocomplete.ModelSelect2(
         url='curricula:program-autocomplete',
-        attrs = {**BASE_ATTRS, 'data-placeholder': _('Επιλέξτε πρόγραμμα σπουδών')}
+        attrs={**BASE_ATTRS, 'data-placeholder': _('Επιλέξτε πρόγραμμα σπουδών')}
     ),
     'department': autocomplete.ModelSelect2(
         url='curricula:department-autocomplete',
@@ -73,32 +73,6 @@ DECISION_WIDGETS = {
     )
 }
 
-button_element_html = HTML( GenericModelForm.button_element %(GenericModelForm.submit_button_icon, GenericModelForm.submit_button_text ) )
-
-SEC_SUBJECT_LAYOUT = Layout(
-            Row(button_element_html,
-                css_class="row"),
-            Row(
-                Div(Field('index'),css_class = 'col-md-2'),
-                Div(Field('type'),css_class = 'col-md-5'),
-                Div(Field('category'),css_class = 'col-md-5'),
-                css_class="row"),
-            Row(
-                Div(Field('applicant_user')),
-                css_class="row"),
-            Row(
-                Div(Field('program'),css_class = 'col-md-4'),
-                Div(Field('department'),css_class = 'col-md-4'),
-                Div(Field('school'),css_class = 'col-md-4'),
-                css_class="row"),
-            Row(
-                Div(Field('collective_body')),
-                css_class="row"),
-            Row(
-                Div(Field('notes')),
-                css_class="row"),
-            )
-
 
 class SecSubjectForm(GenericModelForm):
     scoped_fields = ['collective_body']
@@ -112,11 +86,32 @@ class SecSubjectForm(GenericModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        self.helper.add_layout(SEC_SUBJECT_LAYOUT)
+        self.helper.layout = Layout(
+            Row(self.button_element_html,
+                css_class="row"),
+            Row(
+                Div(Field('index'), css_class='col-md-2'),
+                Div(Field('type'), css_class='col-md-5'),
+                Div(Field('category'), css_class='col-md-5'),
+                css_class="row"),
+            Row(
+                Div(Field('applicant_user')),
+                css_class="row"),
+            Row(
+                Div(Field('program'), css_class='col-md-4'),
+                Div(Field('department'), css_class='col-md-4'),
+                Div(Field('school'), css_class='col-md-4'),
+                css_class="row"),
+            Row(
+                Div(Field('collective_body')),
+                css_class="row"),
+            Row(
+                Div(Field('notes')),
+                css_class="row"),
+        )
 
 
 class SecSubjectTypeForm(GenericModelForm):
-
     class Meta:
         fields = SUBJECT_TYPE_FIELDS
         model = SubjectType
@@ -124,7 +119,6 @@ class SecSubjectTypeForm(GenericModelForm):
 
 
 class SecSubjectCategoryForm(GenericModelForm):
-
     class Meta:
         fields = SUBJECT_TYPE_FIELDS
         model = SubjectCategory

@@ -421,14 +421,8 @@ class Table:
 class Section:
 
     def __init__(self, **kwargs):
-        for k, v in DEFAULT_CONTEXT_VALUES.items():
-            setattr(self, k, kwargs.get(k, v))
-
         for k, v in kwargs.items():
             setattr(self, k, v)
-
-        for object in self.objects:
-            object.update_url = self.get_update_url(object)
 
     def to_context(self):
         context = {
@@ -436,19 +430,10 @@ class Section:
             'section_id': self.section_id,
             'fields': self.fields,
             'headers': self.headers,
-            'objects': self.objects
+            'object': self.object
         }
 
         return context
-
-    def get_update_url(self, obj):
-        if self.update_url_callable:
-            return self.update_url_callable(obj)
-
-        if isinstance(self.update_url, str):
-            return reverse_lazy(self.update_url, kwargs={'pk': obj.pk})
-        else:
-            return self.update_url
 
 
 class MultipleListView(GenericListView):
