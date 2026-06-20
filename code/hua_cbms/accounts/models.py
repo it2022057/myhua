@@ -95,6 +95,29 @@ class PersonalInfo(TrackedScopedProgramModel):
         if self.surname:
             user.last_name = self.surname
 
+        default_pics = {
+            self.GENDER_MALE: 'images/default_man.png',
+            self.GENDER_FEMALE: 'images/default_woman.png',
+            self.GENDER_OTHER: 'images/default_other.png',
+        }
+
+        # User has no image at all --> assign the default image based on gender
+        if not self.pic:
+            self.pic = default_pics[self.gender]
+
+        # User already has one of the system default images,
+        # although if the gender changes, update the image accordingly
+        elif self.pic.name in default_pics.values():
+            # Get the correct default image for the current gender
+            new_default = default_pics[self.gender]
+
+            # Only update if the current default image is not the same with the new one
+            if self.pic.name != new_default:
+                self.pic = new_default
+
+        # User has a custom uploaded image
+        # Do nothing, even if the gender changes
+
         user.save()
         super().save(*args, **kwargs)
 

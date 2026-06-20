@@ -1,5 +1,4 @@
-from crispy_forms.layout import Layout, Row, Div, Field, HTML
-from crispy_forms.templatetags.crispy_forms_field import css_class
+from crispy_forms.layout import Layout, Row, Div, Field
 from dal import autocomplete
 from django import forms
 from django.conf import settings
@@ -7,6 +6,7 @@ from django.contrib.auth import get_user_model
 from django.utils.translation import gettext_lazy as _
 
 from core.forms import GenericModelForm
+from core.widgets import ImageInput, CustomFileInput
 from .checks import validate_password
 from .models import StaffMember, PersonalInfo
 
@@ -121,6 +121,7 @@ class PersonalInfoForm(GenericModelForm):
                 url='curricula:program-autocomplete',
                 attrs={**BASE_ATTRS, 'data-placeholder': _('Επιλέξτε πρόγραμμα σπουδών')}
             ),
+            'pic': ImageInput()
         }
 
     def __init__(self, *args, **kwargs):

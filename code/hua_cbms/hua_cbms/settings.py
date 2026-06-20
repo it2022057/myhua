@@ -36,6 +36,8 @@ if DUMMY_EMAILS:
     print('Outputting email messages to console because env variable DUMMY_EMAILS is set to True.')
 
 ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+CSRF_TRUSTED_ORIGINS = ['https://mydep.ditapps.hua.gr', 'https://myfaculty-dev.ditapps.hua.gr', 'http://localhost:8080', 'http://127.0.0.1:8080']
+
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 MEDIA_TMP_EXPORT = BASE_DIR / 'media/export/tmp'
@@ -147,8 +149,8 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 AUTHENTICATION_BACKENDS = [
-    "django_auth_ldap.backend.LDAPBackend",
-    "hua_cbms.auth.CustomAuthBackend",
+    # "django_auth_ldap.backend.LDAPBackend",
+    # "hua_cbms.auth.CustomAuthBackend",
     "django.contrib.auth.backends.ModelBackend",
 ]
 
@@ -221,7 +223,7 @@ LOGGING = {
 # AUTH_LDAP_BIND_PASSWORD = os.environ.get('AUTH_LDAP_BIND_PASSWORD')
 AUTH_LDAP_SERVER_URI = "ldap://10.100.51.117"
 AUTH_LDAP_BIND_DN = "uid=it2022057,ou=People,dc=hua,dc=gr"
-AUTH_LDAP_BIND_PASSWORD = "origin@l21!"
+AUTH_LDAP_BIND_PASSWORD = "go&U2E5$U$"
 AUTH_LDAP_USER_SEARCH = LDAPSearch(
     "dc=hua,dc=gr",
     ldap.SCOPE_SUBTREE,

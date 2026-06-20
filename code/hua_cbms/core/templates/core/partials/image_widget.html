@@ -1,0 +1,70 @@
+<div class="d-flex align-items-top gap-5">
+
+    {% if widget.is_initial %}
+        <div class="mb-3">
+            <img src="{{ widget.image.url|default:'' }}"
+                 class="img-thumbnail rounded-circle"
+                 style="width: 100px; height: 100px; object-fit: cover;"
+                 alt="{{ widget.image.name }}">
+        </div>
+    {% else %}
+        <div class="mb-2 text-muted small">
+            {{ widget.input_text }}
+        </div>
+    {% endif %}
+
+    <div class="col-md-4">
+        <div class="mb-3">
+            <label class="form-label">{{ widget.initial_text }}:</label>
+
+            <input type="{{ widget.type }}"
+                   name="{{ widget.name }}"
+                   class="textinput form-control"
+                    {% include "core/partials/attrs.html" %}>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    document.addEventListener("change", function (event) {
+        if (!event.target.classList.contains("form-control d-flex h-auto")) return;
+
+        const input = event.target;
+        const wrapper = input.closest(".d-flex align-items-top gap-5");
+        const preview = wrapper.querySelector(".image-live-preview");
+
+        const file = input.files[0];
+
+        if (!file) {
+            preview.classList.add("d-none");
+            preview.removeAttribute("src");
+            return;
+        }
+
+        preview.src = URL.createObjectURL(file);
+        preview.classList.remove("d-none");
+    });
+</script>
+
+{#{% if widget.is_initial %}#}
+{#    {{ widget.initial_text }}:#}
+{#    <div class="mb-2">#}
+{#        <img src="{{ widget.value.url }}"#}
+{#             class="img-fluid rounded border"#}
+{#             style="max-height: 180px;" alt="{{ widget.value.name }}">#}
+{#    </div>#}
+{##}
+{#    {% if not widget.required %}#}
+{#        <input type="checkbox" name="{{ widget.checkbox_name }}" id="{{ widget.checkbox_id }}"#}
+{##}
+{#                {% if widget.attrs.disabled %} disabled {% endif %}#}
+{#                {% if widget.attrs.checked %} checked {% endif %}>#}
+{##}
+{#        <label for="{{ widget.checkbox_id }}">{{ widget.clear_checkbox_label }}</label>#}
+{#    {% endif %}#}
+{#    <br>#}
+{#    {{ widget.input_text }}:#}
+{#{% endif %}#}
+{##}
+{#<input type="{{ widget.type }}" name="{{ widget.name }}"{% include "core/partials/attrs.html" %}>#}
