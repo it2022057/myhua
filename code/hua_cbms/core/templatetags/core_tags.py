@@ -1,16 +1,8 @@
-
 from django import template
-from django.db.models.manager import BaseManager
-from django.urls import reverse_lazy
-from django.utils.translation import gettext_lazy as _
-from django.utils.safestring import mark_safe
-from ldap import logger
+from django.db.models.fields.files import ImageFieldFile
+from django.utils.translation import get_language
 
 from core.views import DEFAULT_CONTEXT_VALUES
-from pathlib import Path
-from django.utils.translation import get_language
-from django.db.models import CharField, TextField
-from core.utils import get_lang
 
 register = template.Library()
 
@@ -80,6 +72,15 @@ def get_filename(s):
     if len(filename) > 20:
         filename = filename[0:16] + '...'
     return filename
+
+@register.filter
+def is_image(obj):
+    return isinstance(obj, ImageFieldFile)
+
+@register.filter
+def has_image(obj):
+    return bool(obj.name)
+
 # def render_table(table):
 
 #     objects = table['objects']

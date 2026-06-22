@@ -6,7 +6,7 @@ from django.contrib.auth import get_user_model
 from django.utils.translation import gettext_lazy as _
 
 from core.forms import GenericModelForm
-from core.widgets import ImageInput, CustomFileInput
+from core.widgets import ImageInput
 from .checks import validate_password
 from .models import StaffMember, PersonalInfo
 
@@ -126,6 +126,12 @@ class PersonalInfoForm(GenericModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+
+        # Pass the PersonalInfo instance to the image widget.
+        # Used to determine which default profile image to display,
+        # when the user has not uploaded a custom picture
+        pi = kwargs.get('instance')
+        self.fields['pic'].widget.pi = pi
 
         self.helper.layout = Layout(
             Row(self.button_element_html,

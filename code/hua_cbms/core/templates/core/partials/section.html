@@ -1,4 +1,5 @@
 {% load core_tags %}
+{% load static %}
 {% load i18n %}
 <script>
     $(document).ready(function () {
@@ -11,7 +12,6 @@
         );
     });
 </script>
-
 
 <div class="row">
     <div class="col">
@@ -33,9 +33,25 @@
         <tbody>
         <tr>
             {% for field in fields %}
-                <td>
-                    {{ object|get_attr:field }}
-                </td>
+                {% with value=object|get_attr:field %}
+                    <td>
+                        {% if value|is_image %}
+                            {% if value|has_image %}
+                                <img src="{{ value.url|default:'' }}"
+                                     class="img-thumbnail rounded-circle"
+                                     style="width: 100px; height: 100px;"
+                                     alt="{{ value.name }}">
+                            {% else %}
+                                <img src="{% static 'accounts/images/no_pic.png' %}"
+                                     class="img-thumbnail rounded-circle"
+                                     style="width: 50px; height: 50px;"
+                                     alt="images/add_pic.png">
+                            {% endif %}
+                        {% else %}
+                            {{ value }}
+                        {% endif %}
+                    </td>
+                {% endwith %}
             {% endfor %}
         </tr>
         </tbody>
@@ -43,3 +59,12 @@
 {% else %}
     <p> {{ empty_text }}</p>
 {% endif %}
+
+<style>
+    .img-thumbnail {
+        object-fit: cover;
+        margin-bottom: 0 !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+    }
+</style>

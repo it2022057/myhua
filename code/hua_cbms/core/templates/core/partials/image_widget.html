@@ -1,70 +1,122 @@
-<div class="d-flex align-items-top gap-5">
+{% load static %}
+
+<div class="d-flex align-items-top gap-4 image-widget">
 
     {% if widget.is_initial %}
-        <div class="mb-3">
-            <img src="{{ widget.image.url|default:'' }}"
-                 class="img-thumbnail rounded-circle"
-                 style="width: 100px; height: 100px; object-fit: cover;"
-                 alt="{{ widget.image.name }}">
-        </div>
+        <img id="preview_{{ widget.name }}"
+             src="{{ widget.image.url|default:'' }}"
+             class="img-thumbnail rounded-circle"
+             alt="{{ widget.image.name }}">
     {% else %}
-        <div class="mb-2 text-muted small">
-            {{ widget.input_text }}
-        </div>
+        {# If no image is selected, put a default pic based on gender #}
+        <img id="preview_{{ widget.name }}"
+             src="{% static widget.default_pic %}"
+             class="img-thumbnail rounded-circle"
+             alt="default_pic">
     {% endif %}
 
-    <div class="col-md-4">
-        <div class="mb-3">
-            <label class="form-label">{{ widget.initial_text }}:</label>
+    <div class="flex-grow-1">
+        <input id="input_{{ widget.name }}"
+               type="{{ widget.type }}"
+               name="{{ widget.name }}"
+               maxlength="200"
+                {% include "core/partials/attrs.html" %}>
 
-            <input type="{{ widget.type }}"
-                   name="{{ widget.name }}"
-                   class="textinput form-control"
-                    {% include "core/partials/attrs.html" %}>
-        </div>
+        {% if widget.is_initial %}
+            <div class="small text-muted">
+                {{ widget.initial_text }}:
+                <a href="{{ widget.image.url }}" class="text-decoration-none">{{ widget.image.name }}</a>
+            </div>
+        {% endif %}
+
+        {% if not widget.required %}
+            <div class="form-check mt-2">
+                <input type="checkbox"
+                       name="{{ widget.checkbox_name }}"
+                       id="{{ widget.checkbox_id }}"
+                       class="form-check-input image-clear-checkbox">
+
+                <label class="form-check-label" for="{{ widget.checkbox_id }}">
+                    {{ widget.clear_checkbox_label }}
+                </label>
+            </div>
+        {% endif %}
     </div>
 
 </div>
 
+<style>
+    .img-thumbnail {
+        width: 100px !important;
+        height: 100px !important;
+        flex: 0 0 100px;
+        object-fit: cover;
+        margin-bottom: 0 !important;
+    }
+
+    .form-check-label {
+        padding-top: 0;
+        color: #212529;
+    }
+
+    .form-check-input:checked + .form-check-label {
+        color: #0d6efd;
+    }
+</style>
+
 <script>
-    document.addEventListener("change", function (event) {
-        if (!event.target.classList.contains("form-control d-flex h-auto")) return;
+    const img_preview = document.getElementById('preview_{{ widget.name }}');
+    const img_input = document.getElementById('input_{{ widget.name }}');
+    const previous_src = img_preview.src;
 
-        const input = event.target;
-        const wrapper = input.closest(".d-flex align-items-top gap-5");
-        const preview = wrapper.querySelector(".image-live-preview");
+    document.addEventListener('DOMContentLoaded', function () {
+        const clear_checkbox = document.getElementById('{{ widget.checkbox_id }}');
 
-        const file = input.files[0];
-
-        if (!file) {
-            preview.classList.add("d-none");
-            preview.removeAttribute("src");
-            return;
+        {# When refreshing the page with the clear_checkbox checked, it is better to keep the default preview image #}
+        if (clear_checkbox && clear_checkbox.checked) {
+            img_preview.src = '{% static widget.default_pic %}';
         }
-
-        preview.src = URL.createObjectURL(file);
-        preview.classList.remove("d-none");
+        img_input.value = '';
     });
-</script>
 
-{#{% if widget.is_initial %}#}
-{#    {{ widget.initial_text }}:#}
-{#    <div class="mb-2">#}
-{#        <img src="{{ widget.value.url }}"#}
-{#             class="img-fluid rounded border"#}
-{#             style="max-height: 180px;" alt="{{ widget.value.name }}">#}
-{#    </div>#}
-{##}
-{#    {% if not widget.required %}#}
-{#        <input type="checkbox" name="{{ widget.checkbox_name }}" id="{{ widget.checkbox_id }}"#}
-{##}
-{#                {% if widget.attrs.disabled %} disabled {% endif %}#}
-{#                {% if widget.attrs.checked %} checked {% endif %}>#}
-{##}
-{#        <label for="{{ widget.checkbox_id }}">{{ widget.clear_checkbox_label }}</label>#}
-{#    {% endif %}#}
-{#    <br>#}
-{#    {{ widget.input_text }}:#}
-{#{% endif %}#}
-{##}
-{#<input type="{{ widget.type }}" name="{{ widget.name }}"{% include "core/partials/attrs.html" %}>#}
+    document.addEventListener('change', function (event) {
+            const target = event.target;
+
+            if (target.classList.contains('imageinput')) {
+                const file = target.files[0];
+
+                if (!img_preview) return;
+
+                if (file) {
+                    img_preview.src = URL.createObjectURL(file);
+
+                    const clear_checkbox = target
+                        .closest('.image-widget')
+                        .querySelector('.image-clear-checkbox');
+
+                    if (clear_checkbox) {
+                        clear_checkbox.checked = false;
+                    }
+                }
+
+                return;
+            }
+
+            if (target.classList.contains('image-clear-checkbox')) {
+
+                if (!img_preview) return;
+
+                if (target.checked) {
+                    img_preview.src = '{% static widget.default_pic %}';
+
+                    if (img_input) {
+                        img_input.value = '';
+                    }
+                } else {
+                    img_preview.src = previous_src;
+                }
+            }
+        }
+    )
+    ;
+</script>
