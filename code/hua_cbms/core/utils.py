@@ -10,3 +10,8 @@ def get_order_by_title():
     else:
         return 'title_en'
 
+def get_order_by_display_name():
+    if get_lang() == 'el':
+        return 'display_name'
+    else:
+        return 'display_name_en'

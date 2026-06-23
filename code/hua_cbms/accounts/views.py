@@ -1,7 +1,7 @@
 from dal import autocomplete
 from django.contrib.auth import get_user_model, logout, update_session_auth_hash
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.core.signing import TimestampSigner, SignatureExpired, BadSignature
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
@@ -9,8 +9,10 @@ from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
 
 from core import views
+from core.utils import get_order_by_display_name
 from core.views import Section
 from hua_cbms import settings
+from scopes.models import Secretariat
 from .checks import app_urls, is_secretariat, is_staff_member
 from .forms import SignUpForm, RegisterForm, PasswordForm, ForgotPasswordForm, StaffForm, PersonalInfoForm
 from .models import StaffMember, PersonalInfo
@@ -425,3 +427,27 @@ class ApplicantAutocomplete(LoginRequiredMixin, autocomplete.Select2QuerySetView
             qs = qs.filter(username__icontains=self.q)
 
         return qs.order_by('username')[:10]
+
+
+class StaffMemberAutocomplete(LoginRequiredMixin, UserPassesTestMixin, autocomplete.Select2QuerySetView):
+    def get_queryset(self):
+        qs = StaffMember.objects.all()
+        if self.q:
+            qs = qs.filter(display_name__icontains=self.q) | qs.filter(display_name_en__icontains=self.q)
+
+        return qs.order_by(get_order_by_display_name())[:10]
+
+    def test_func(self):
+        return is_staff_member(self.request.user) or is_secretariat(self.request.user)
+
+
+class SecretariatAutocomplete(LoginRequiredMixin, UserPassesTestMixin, autocomplete.Select2QuerySetView):
+    def get_queryset(self):
+        qs = Secretariat.objects.all()
+        if self.q:
+            qs = qs.filter(user__username__icontains=self.q)
+
+        return qs.order_by('user')[:10]
+
+    def test_func(self):
+        return is_secretariat(self.request.user)

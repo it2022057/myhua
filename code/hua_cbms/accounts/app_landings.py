@@ -13,7 +13,7 @@ APPS = {
         },
         {
             'title': _('Συλλογικά Όργανα'),
-            'url': reverse_lazy('bodies:sec_list_collective_body'),
+            'url': reverse_lazy('bodies:sec_list_collectivebody'),
         },
     ],
     # 'participant': [

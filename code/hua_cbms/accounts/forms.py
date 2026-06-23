@@ -42,7 +42,7 @@ FIELD_LABELS = {
     'can_post_theses': _('Μπορεί να είναι επιβλέπων ή μέλος επιτροπής διπλωματικών;'),
     'pic': _('Εικόνα'),
     'fathers_name': _('Όνομα Πατέρα'), 'date_of_birth': _('Ημ/νία Γέννησης'), 'tin': _('ΑΦΜ'), 'ssn': _('ΑΜΚΑ'), 'gender': _('Φύλο'),
-    'mobile_phone': _('Κινητό Τηλέφωνο'), 'home_phone': _('Τηλέφωνο Οικίας'), 'work_phone': _('Τηλέφωνο Εργασίας'),
+    'mobile_phone': _('Κινητό Τηλέφωνο'), 'home_phone': _('Τηλέφωνο Κατοικίας'), 'work_phone': _('Τηλέφωνο Εργασίας'),
     'home_address_street': _('Οδός Κατοικίας'), 'home_address_no': _('Αριθμός Κατοικίας'),
     'home_address_po_box': _('Τ.Κ. Κατοικίας'), 'home_address_city': _('Πόλη Κατοικίας'),
     'home_address_country': _('Χώρα Κατοικίας'),

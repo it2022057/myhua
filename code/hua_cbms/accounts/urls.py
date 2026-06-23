@@ -29,4 +29,9 @@ urlpatterns = [
 
     # URL for Applicant autocomplete
     path('applicant/autocomplete', views.ApplicantAutocomplete.as_view(), name='applicant-autocomplete'),
+    # URL for StaffMember autocomplete
+    path('staff/autocomplete', views.StaffMemberAutocomplete.as_view(), name='staff-autocomplete'),
+    # URL for Secretariat autocomplete
+    path('sec/autocomplete', views.SecretariatAutocomplete.as_view(), name='sec-autocomplete')
+
 ]

@@ -18,7 +18,7 @@ class Secretariat(models.Model):
 
     def __str__(self):
         if self.user:
-            return 'Secretariat user %s' % self.user.username
+            return 'Secretariat user: %s' % self.user.username
         else:
             return 'Secretariat user'
         

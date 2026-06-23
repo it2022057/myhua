@@ -8,36 +8,47 @@ from bodies.models import CollectiveBody
 from core import views
 from core.models import TitleStrMixin
 from core.utils import get_order_by_title
+from bodies import forms
 from scopes.utils import get_secretariat_scope
 
 # Create your views here.
 
-"""
-Generic subjects Views
-"""
+
+class SecCreateCollectiveBody(views.ScopedSecCreateView):
+    model = CollectiveBody
+    form_class = forms.SecCollectiveBodyForm
+    success_url = 'bodies:sec_list_collectivebody'
+    headline = _('Δημιουργία Συλλογικού Πανεπιστημιακού Οργάνου')
+    back_url = ''
+
+
+class SecUpdateCollectiveBody(views.ScopedSecUpdateView):
+    model = CollectiveBody
+    form_class = forms.SecCollectiveBodyForm
+    success_url = 'bodies:sec_list_collectivebody'
+    delete_url = 'bodies:sec_delete_collectivebody'
+    confirm_modal = True
+
 
 class SecListCollectiveBody(views.ScopedSecListView):
     model = CollectiveBody
-    fields = ['title_gr', 'participants', 'start_date', 'end_date']
+    fields = ['title_gr', 'president', 'secretariat', 'start_date', 'end_date']
     headers = {
         'title_gr': _('Τίτλος'),
         'participants': _('Συμμετέχοντες'),
+        'president': _('Πρόεδρος'),
+        'secretariat': _('Γραμματεία'),
         'start_date': _('Ημερομηνία Έναρξης'),
         'end_date': _('Ημερομηνία Λήξης')
     }
     table_title = _('Συλλογικά Όργανα')
-    create_button = False
-    update_buttons = False
-    #     create_url = 'bodies:sec_create_collective_body'
-    #     update_url = 'bodies:sec_update_collective_body'
+    create_url = 'bodies:sec_create_collectivebody'
+    update_url = 'bodies:sec_update_collectivebody'
 
 
-# class SecCreateCollectiveBody(views.ScopedSecCreateView):
-#     model = CollectiveBody
-#     form_class = forms.SecSubjectForm
-#     success_url = 'subjects:sec_list_subject'
-#     headline = _('Δημιουργία Θέματος')
-#     back_url = ''
+class SecDeleteCollectiveBody(views.ScopedDeleteView):
+    model = CollectiveBody
+    success_url = 'bodies:sec_list_collectivebody'
 
 
 class SecCollectiveBodyAutoComplete(TitleStrMixin, LoginRequiredMixin, UserPassesTestMixin, autocomplete.Select2QuerySetView):
