@@ -18,6 +18,19 @@ class DatePickerInput(forms.DateInput):
         super().__init__(attrs=default_attrs)
 
 
+class DateTimePickerInput(forms.DateTimeInput):
+    input_type = 'datetime-local'
+
+    def __init__(self, attrs=None):
+        default_attrs = {
+            'class': 'datetimepicker',
+            'placeholder': _('Επιλέξτε')
+        }
+        if attrs:
+            default_attrs.update(attrs)
+        super().__init__(attrs=default_attrs)
+
+
 class ImageInput(forms.widgets.Input):
     input_type = 'file'
     needs_multipart_form = True

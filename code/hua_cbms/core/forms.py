@@ -1,17 +1,19 @@
-from django import forms
-from django.utils.translation import gettext_lazy as _
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Submit, Row, Column, Div, Field, HTML
-from datetime import date
-from .widgets import DatePickerInput
+from crispy_forms.layout import Layout, Row, Div, Field, HTML
+from django import forms
+from hua_cbms import settings
+from django.utils.translation import gettext_lazy as _
+
+from .widgets import DatePickerInput, DateTimePickerInput
 
 
 class GenericModelForm(forms.ModelForm):
     scoped_fields = []
     disabled_fields = []
     disabled = False
-    date_format = '%d/%m/%Y'
-    date_help_text = _('Κάντε click στο πεδίο και επιλέξτε.')
+    date_format = '%Y-%m-%d'
+    datetime_format = '%Y-%m-%d %H:%M'
+    date_help_text = _('Κάντε click στο πεδίο και επιλέξτε')
     submit_button_text = _('Υποβολή')
     submit_button_icon = 'save'
     submit_button = True
@@ -64,11 +66,17 @@ class GenericModelForm(forms.ModelForm):
         self.disable_form_fields(fields=self.disabled_fields)
 
         for field_name, field in self.fields.items():
+            # Check whether the current model field accepts date input
             if isinstance(field, forms.DateField):
                 field.input_formats = [self.date_format]
                 # field.widget.format = self.date_format
                 field.help_text = self.date_help_text
                 field.widget = DatePickerInput()
+            # Check whether the current model field accepts date-time input
+            if isinstance(field, forms.DateTimeField):
+                field.input_formats = [self.datetime_format]
+                field.help_text = self.date_help_text
+                field.widget = DateTimePickerInput()
 
         for field_name in self.scoped_fields:
             form_model = self._meta.model

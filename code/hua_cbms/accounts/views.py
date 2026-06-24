@@ -61,6 +61,7 @@ class SecListStaffMember(views.ScopedSecListView):
     table_title = _('Μέλη Προσωπικού')
     create_url = 'accounts:sec_create_staff_member'
     update_url = 'accounts:sec_update_staff_member'
+    back_url = reverse_lazy('bodies:sec_list_collectivebody')
     extra_buttons = True
     extra_text = _('Προφίλ')
     extra_button_icon = 'person'

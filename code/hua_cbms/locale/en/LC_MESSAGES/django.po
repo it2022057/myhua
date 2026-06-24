@@ -691,8 +691,8 @@ msgid "Τίτλος"
 msgstr "Title"
 
 #: core/forms.py:14
-msgid "Κάντε click στο πεδίο και επιλέξτε."
-msgstr "Click on the field and select."
+msgid "Κάντε click στο πεδίο και επιλέξτε"
+msgstr "Click on the field and select"
 
 #: core/forms.py:15
 msgid "Υποβολή"

@@ -1,9 +1,13 @@
+from multiprocessing import context
+
 from dal import autocomplete
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.db.models import Q
+from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
 
 from accounts.checks import is_secretariat
+from accounts.models import StaffMember
 from bodies.models import CollectiveBody
 from core import views
 from core.models import TitleStrMixin
@@ -44,6 +48,13 @@ class SecListCollectiveBody(views.ScopedSecListView):
     table_title = _('Συλλογικά Όργανα')
     create_url = 'bodies:sec_create_collectivebody'
     update_url = 'bodies:sec_update_collectivebody'
+    extra_buttons = True
+    extra_text = _('Συμμετέχοντες')
+    extra_button_icon = 'people'
+    extra_url = 'accounts:sec_list_staff_member'
+
+    def get_extra_url(self, obj):
+        return reverse_lazy(self.extra_url)
 
 
 class SecDeleteCollectiveBody(views.ScopedDeleteView):

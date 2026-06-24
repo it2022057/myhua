@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=GFS+Neohellenic:wght@400;700&display=swap');
 
-.datepicker[readonly] {
+.datepicker[readonly], .datetimepicker[readonly] {
     background-color: #fff !important;
     opacity: 1 !important;
     cursor: pointer;

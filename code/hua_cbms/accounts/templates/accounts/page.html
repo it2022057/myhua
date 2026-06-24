@@ -109,8 +109,17 @@
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script>
     flatpickr('.datepicker', {
-        dateFormat: 'd/m/Y',
+        dateFormat: 'Y-m-d',
         altFormat: 'd/m/Y',
+        altInput: true,
+    });
+
+    flatpickr('.datetimepicker', {
+        enableTime: true,
+        time_24hr: true,
+        minuteIncrement: 1,
+        dateFormat: 'Y-m-d H:i',
+        altFormat: 'd/m/Y H:i',
         altInput: true,
     });
   </script>
