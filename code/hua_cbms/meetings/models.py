@@ -19,3 +19,9 @@ class Meeting(TrackedModel):
     notes = models.TextField(null=True, blank=True)
     index = models.IntegerField()
 
+    # def save(self, *args, **kwargs):
+    #     if not (self.title_en and (self.title_en != '')):
+    #         self.title_en = romanize(self.title_gr)
+    #
+    #     super().save(*args, update_user = self.updated_by, **kwargs)
+

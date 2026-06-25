@@ -1,5 +1,3 @@
-from multiprocessing import context
-
 from dal import autocomplete
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.db.models import Q
@@ -7,12 +5,11 @@ from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
 
 from accounts.checks import is_secretariat
-from accounts.models import StaffMember
+from bodies import forms
 from bodies.models import CollectiveBody
 from core import views
 from core.models import TitleStrMixin
 from core.utils import get_order_by_title
-from bodies import forms
 from scopes.utils import get_secretariat_scope
 
 # Create your views here.

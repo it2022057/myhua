@@ -28,9 +28,9 @@ class SecCreate(views.ScopedSecCreateView):
 class SecUpdate(views.ScopedSecUpdateView):
     template_name = 'subjects/show_object.html'
 
-    def form_valid(self, form):
-        form.instance.updated_by = self.request.user
-        return super().form_valid(form)
+    # def form_valid(self, form):
+    #     form.instance.updated_by = self.request.user
+    #     return super().form_valid(form)
 
 
 class SecList(views.ScopedSecListView):

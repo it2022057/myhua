@@ -34,7 +34,7 @@ class SubjectType(TitleStrMixin, TrackedScopedProgramModel):
         if not (self.title_en and (self.title_en != '')):
             self.title_en = romanize(self.title_gr)
 
-        super().save(*args, **kwargs)
+        super().save(*args, update_user = self.updated_by, **kwargs)
 
 
 class SubjectCategoryQuery(ScopedQueryPrg):
@@ -60,7 +60,7 @@ class SubjectCategory(TitleStrMixin, TrackedScopedProgramModel):
         if not (self.title_en and (self.title_en != '')):
             self.title_en = romanize(self.title_gr)
 
-        super().save(*args, **kwargs)
+        super().save(*args, update_user = self.updated_by,  **kwargs)
 
 
 class SubjectQuery(ScopedQueryPrg):
@@ -93,6 +93,9 @@ class Subject(TrackedScopedProgramModel):
     def __str__(self):
         return f"{self.index} - {self.type} - {self.category}"
 
+    def save(self, *args, **kwargs):
+        super().save(*args, update_user = self.updated_by,  **kwargs)
+
 
 class DecisionQuery(ScopedQueryPrg):
 
@@ -118,5 +121,5 @@ class Decision(TitleStrMixin, TrackedScopedProgramModel):
         if not (self.title_en and (self.title_en != '')):
             self.title_en = romanize(self.title_gr)
 
-        super().save(*args, **kwargs)
+        super().save(*args, update_user = self.updated_by, **kwargs)
 

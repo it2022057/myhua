@@ -1,6 +1,7 @@
 from django.contrib.auth import get_user_model
 from django.db import models
 from django.utils.translation import gettext_lazy as _
+from romanize import romanize
 
 from core.models import TitleStrMixin, TrackedScopedProgramModel
 from scopes.models import ScopedModelPrg, ScopedQueryPrg
@@ -31,3 +32,9 @@ class CollectiveBody(TitleStrMixin, TrackedScopedProgramModel):
 
     def scope_query(self, scope):
         return scope['collective_bodies'].filter(id=self.id).exists()
+
+    def save(self, *args, **kwargs):
+        if not (self.title_en and (self.title_en != '')):
+            self.title_en = romanize(self.title_gr)
+
+        super().save(*args, update_user = self.updated_by,  **kwargs)

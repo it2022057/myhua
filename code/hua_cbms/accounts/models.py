@@ -94,7 +94,7 @@ class PersonalInfo(TrackedScopedProgramModel):
             user.last_name = self.surname
 
         user.save()
-        super().save(*args, **kwargs)
+        super().save(*args, update_user = self.updated_by, **kwargs)
 
 
 def create_personal_info_if_required(obj):
