@@ -36,7 +36,7 @@ class SecCreateStaffMember(views.ScopedSecCreateView):
     model = StaffMember
     template_name = 'accounts/show_object.html'
     form_class = StaffForm
-    success_url = 'accounts:sec_list_staff_member'
+    success_url = 'accounts:sec_list_staff_members'
     headline = _('Δημιουργία Μέλους Προσωπικού')
     back_url = ''
 
@@ -45,7 +45,7 @@ class SecUpdateStaffMember(views.ScopedSecUpdateView):
     model = StaffMember
     template_name = 'accounts/show_object.html'
     form_class = StaffForm
-    success_url = 'accounts:sec_list_staff_member'
+    success_url = 'accounts:sec_list_staff_members'
     delete_url = 'accounts:sec_delete_staff_member'
     confirm_modal = True
 
@@ -61,7 +61,7 @@ class SecListStaffMember(views.ScopedSecListView):
     table_title = _('Μέλη Προσωπικού')
     create_url = 'accounts:sec_create_staff_member'
     update_url = 'accounts:sec_update_staff_member'
-    back_url = reverse_lazy('bodies:sec_list_collectivebody')
+    back_url = reverse_lazy('bodies:sec_list_collectivebodies')
     extra_buttons = True
     extra_text = _('Προφίλ')
     extra_button_icon = 'person'
@@ -70,7 +70,7 @@ class SecListStaffMember(views.ScopedSecListView):
 
 class SecDeleteStaffMember(views.ScopedDeleteView):
     model = StaffMember
-    success_url = 'subjects:sec_list_staff_member'
+    success_url = 'subjects:sec_list_staff_members'
 
 
 class SecUpdatePersonalInfo(views.ScopedSecUpdateView):
@@ -104,7 +104,7 @@ class SecPersonalInfoOverviewList(views.SecMultipleSectionView):
     master_headline = _('Προσωπικά Στοιχεία')
     master_p = _('Παρακάτω ακολουθούν τα προσωπικά στοιχεία του χρήστη, χωρισμένα σε κατηγορίες...')
     update_url = 'accounts:sec_update_personal_info'
-    back_url = reverse_lazy('accounts:sec_list_staff_member')
+    back_url = reverse_lazy('accounts:sec_list_staff_members')
 
     def get_update_url(self, obj):
         if self.update_url:

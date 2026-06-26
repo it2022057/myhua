@@ -13,7 +13,7 @@ DECISION_FIELDS = ['title_gr', 'title_en', 'subject']
 SUBJECT_TYPE_FIELDS = ['title_gr', 'title_en']
 
 FIELD_LABELS = {
-    'index': _('Δείκτης'),
+    'index': _('Θέση'),
     'type': _('Τύπος'),
     'category': _('Κατηγορία'),
     'applicant_user': _('Αιτών'),

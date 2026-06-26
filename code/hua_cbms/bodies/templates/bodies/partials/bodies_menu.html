@@ -1,0 +1,29 @@
+{% load profile_tags %}
+{% load i18n %}
+{% if request.user|is_secretariat %}
+    <div class="row">
+        <div class="col d-flex justify-content-center">
+            <a href="{% url 'subjects:sec_list_subjects' %}" class="btn btn-primary me-3"><span
+                    class="mto">subject</span>{% trans 'Θέματα' %}</a>
+            <a href="{% url 'subjects:sec_list_decisions' %}" class="btn btn-primary me-3"><span
+                    class="mto">gavel</span>{% trans 'Αποφάσεις' %}</a>
+            <a href="{% url 'subjects:sec_list_subject-types' %}" class="btn btn-primary me-3"><span class="mto">list_alt</span>{% trans 'Τύποι Θεμάτων' %}
+            </a>
+            <a href="{% url 'subjects:sec_list_subject-categories' %}" class="btn btn-primary me-3"><span class="mto">category</span>{% trans 'Κατηγορίες Θεμάτων' %}
+            </a>
+        </div>
+    </div>
+    </br></br>
+{% elif request.user|is_staff_member %}
+    <div class="row">
+        <div class="col d-flex justify-content-center">
+            <a class="btn btn-primary me-3"><span class="mto">docs</span>{% trans 'Όλα' %}</a>
+            <a class="btn btn-primary me-3"><span class="mto">docs</span>{% trans 'Τρέχων' %}</a>
+            <a class="btn btn-primary me-3"><span class="mto">docs</span>{% trans 'Παρελθόν' %}</a>
+            {#    <a href={% url 'subjects:staff_list_theses' %} class="btn btn-primary me-3"><span class="mto">docs</span>{% trans 'Διατριβές' %}</a>#}
+            {#    <a href={% url 'subjects:staff_list_recommendations' %} class="btn btn-primary me-3"><span class="mto">check_box</span>{% trans 'Eισηγήσεις' %}</a>#}
+        </div>
+    </div>
+    </br></br>
+
+{% endif %}

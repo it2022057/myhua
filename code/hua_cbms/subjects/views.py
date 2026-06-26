@@ -10,67 +10,32 @@ from scopes.utils import get_secretariat_scope
 from subjects.models import Subject, SubjectType, SubjectCategory, Decision
 from . import forms
 
-# Create your views here.
-
-"""
-Generic Subjects Views
-"""
-
-class SecCreate(views.ScopedSecCreateView):
-    template_name = 'subjects/show_object.html'
-
-    def form_valid(self, form):
-        form.instance.created_by = self.request.user
-        form.instance.updated_by = self.request.user
-        return super().form_valid(form)
-
-
-class SecUpdate(views.ScopedSecUpdateView):
-    template_name = 'subjects/show_object.html'
-
-    # def form_valid(self, form):
-    #     form.instance.updated_by = self.request.user
-    #     return super().form_valid(form)
-
-
-class SecList(views.ScopedSecListView):
-    template_name = 'subjects/list_objects.html'
-
-
-class SecMultipleList(views.SecMultipleListView):
-    template_name = 'subjects/list_objects.html'
-
-
-class SecDelete(views.ScopedDeleteView):
-    template_name = 'subjects/show_object.html'
-
-
 """
 Secretariat Subject Views
 """
 
 
-class SecCreateSubject(SecCreate):
+class SecCreateSubject(views.ScopedSecCreateView):
     model = Subject
     form_class = forms.SecSubjectForm
-    success_url = 'subjects:sec_list_subject'
+    success_url = 'subjects:sec_list_subjects'
     headline = _('Δημιουργία Θέματος')
     back_url = ''
 
 
-class SecUpdateSubject(SecUpdate):
+class SecUpdateSubject(views.ScopedSecUpdateView):
     model = Subject
     form_class = forms.SecSubjectForm
-    success_url = 'subjects:sec_list_subject'
+    success_url = 'subjects:sec_list_subjects'
     delete_url = 'subjects:sec_delete_subject'
     confirm_modal = True
 
 
-class SecListSubject(SecList):
+class SecListSubject(views.ScopedSecListView):
     model = Subject
     fields = ['index', 'type', 'category', 'collective_body', 'notes']
     headers = {
-        'index': _('Δείκτης'),
+        'index': _('Θέση'),
         'type': _('Τύπος'),
         'category': _('Κατηγορία'),
         'collective_body': _('Συλλογικό Όργανο'),
@@ -81,109 +46,9 @@ class SecListSubject(SecList):
     update_url = 'subjects:sec_update_subject'
 
 
-# class StaffStudentOverviewList(StaffMultipleList):
-#     model = Student
-#     template_name = 'phdstuds/multiple_tables.html'
-#     master_headline = _('Στοιχεία Διδακτορικής Διατριβής')
-#
-#     def test_func(self):
-#         return is_staff_member(self.request.user)
-#
-#     def setup(self, *args, **kwargs):
-#         super().setup(*args, **kwargs)
-#         staff_member = get_object_or_404(StaffMember, user=self.request.user)
-#         phd_thesis = get_object_or_404(PhdThesis, pk=self.kwargs['pk'])
-#         if (phd_thesis.supervisor != staff_member) and not (staff_member in phd_thesis.committee.all()):
-#             raise PermissionDenied
-#
-#         create_new_recommendation = (phd_thesis.supervisor == staff_member)
-#
-#         student = phd_thesis.candidate
-#         self.master_p = _('Υποψήφιος Διδάκτορας: ') + '%s %s' % (student.surname, student.given_name)
-#         self.tables = [
-#             Table(
-#                 fields=['thesis', 'year'],
-#                 table_title=_('Αναφορές Διδακτορικής Διατριβής'),
-#                 headers={
-#                     'thesis': _('Θέμα'),
-#                     'year': _('Έτος'),
-#                 },
-#                 table_id='progress',
-#                 create_button=False,
-#                 update_url='phdstuds:staff_update_progress',
-#                 update_button_icon='info',
-#                 update_text=_('Λεπτομέρειες'),
-#                 objects=ThesisProgress.objects.filter(thesis__candidate=student),
-#                 next=self.request.path,
-#             ),
-#             Table(
-#                 fields=['thesis', 'year'],
-#                 table_title=_('Εισηγήσεις Επιβλέποντα'),
-#                 headers={
-#                     'thesis': _('Θέμα'),
-#                     'year': _('Έτος'),
-#                 },
-#                 table_id='recommendations',
-#                 update_url='phdstuds:staff_update_recommendation',
-#                 update_button_icon='info',
-#                 update_text=_('Λεπτομέρειες'),
-#                 create_button=create_new_recommendation,
-#                 create_url=reverse_lazy('phdstuds:staff_create_recommendation', kwargs={'pk': phd_thesis.pk}),
-#                 create_text='Νέα εισήγηση',
-#                 objects=Recommendation.objects.filter(thesis__candidate=student),
-#                 next=self.request.path,
-#             ),
-#             Table(
-#                 fields=['title', 'journal_title', 'year'],
-#                 table_title=_('Δημοσιεύσεις σε Περιοδικά'),
-#                 headers={
-#                     'title': _('Τίτλος'),
-#                     'journal_title': _('Περιοδικό'),
-#                     'year': _('Έτος'),
-#                 },
-#                 table_id='journals',
-#                 create_button=False,
-#                 update_button_icon='info',
-#                 update_text=_('Λεπτομέρειες'),
-#                 update_url='phdstuds:staff_update_journal',
-#                 objects=JournalPublication.objects.filter(thesis__candidate=student),
-#                 next=self.request.path,
-#             ),
-#             Table(
-#                 fields=['title', 'conference_title', 'year'],
-#                 table_title=_('Δημοσιεύσεις σε Συνέδρια'),
-#                 headers={
-#                     'title': _('Τίτλος'),
-#                     'conference_title': _('Συνέδριο'),
-#                     'year': _('Έτος'),
-#                 },
-#                 table_id='conferences',
-#                 create_button=False,
-#                 update_url='phdstuds:staff_update_conference',
-#                 update_button_icon='info',
-#                 update_text=_('Λεπτομέρειες'),
-#                 objects=ConferencePublication.objects.filter(thesis__candidate=student),
-#                 next=self.request.path,
-#             ),
-#             Table(
-#                 fields=['year', 'course_name', 'faculty'],
-#                 headers={
-#                     'year': _('Έτος'),
-#                     'course_name': _('Μάθημα'),
-#                     'faculty': _('Υπεύθυνος Καθηγητής'),
-#                 },
-#                 table_title=_('Επικουρικό Διδακτικό Έργο'),
-#                 update_url='phdstuds:staff_update_teachingtask',
-#                 create_button=False,
-#                 objects=TeachingTask.objects.filter(thesis__candidate=student),
-#                 next=self.request.path,
-#             )
-#         ]
-
-
-class SecDeleteSubject(SecDelete):
+class SecDeleteSubject(views.ScopedDeleteView):
     model = Subject
-    success_url = 'subjects:sec_list_subject'
+    success_url = 'subjects:sec_list_subjects'
 
 
 """
@@ -191,23 +56,23 @@ Secretariat SubjectType Views
 """
 
 
-class SecCreateSubjectType(SecCreate):
+class SecCreateSubjectType(views.ScopedSecCreateView):
     model = SubjectType
     form_class = forms.SecSubjectTypeForm
-    success_url = 'subjects:sec_list_subject-type'
+    success_url = 'subjects:sec_list_subject-types'
     headline = _('Δημιουργία Τύπου Θέματος')
     back_url = ''
 
 
-class SecUpdateSubjectType(SecUpdate):
+class SecUpdateSubjectType(views.ScopedSecUpdateView):
     model = SubjectType
     form_class = forms.SecSubjectTypeForm
-    success_url = 'subjects:sec_list_subject-type'
+    success_url = 'subjects:sec_list_subject-types'
     delete_url = 'subjects:sec_delete_subject-type'
     confirm_modal = True
 
 
-class SecListSubjectType(SecList):
+class SecListSubjectType(views.ScopedSecListView):
     model = SubjectType
     fields = ['title_gr']
     headers = {
@@ -218,9 +83,9 @@ class SecListSubjectType(SecList):
     update_url = 'subjects:sec_update_subject-type'
 
 
-class SecDeleteSubjectType(SecDelete):
+class SecDeleteSubjectType(views.ScopedDeleteView):
     model = SubjectType
-    success_url = 'subjects:sec_list_subject-type'
+    success_url = 'subjects:sec_list_subject-types'
 
 
 """
@@ -228,23 +93,23 @@ Secretariat SubjectCategory Views
 """
 
 
-class SecCreateSubjectCategory(SecCreate):
+class SecCreateSubjectCategory(views.ScopedSecCreateView):
     model = SubjectCategory
     form_class = forms.SecSubjectCategoryForm
-    success_url = 'subjects:sec_list_subject-category'
+    success_url = 'subjects:sec_list_subject-categories'
     headline = _('Δημιουργία Κατηγορίας Θέματος')
     back_url = ''
 
 
-class SecUpdateSubjectCategory(SecUpdate):
+class SecUpdateSubjectCategory(views.ScopedSecUpdateView):
     model = SubjectCategory
     form_class = forms.SecSubjectCategoryForm
-    success_url = 'subjects:sec_list_subject-category'
+    success_url = 'subjects:sec_list_subject-categories'
     delete_url = 'subjects:sec_delete_subject-category'
     confirm_modal = True
 
 
-class SecListSubjectCategory(SecList):
+class SecListSubjectCategory(views.ScopedSecListView):
     model = SubjectCategory
     fields = ['title_gr']
     headers = {
@@ -255,9 +120,9 @@ class SecListSubjectCategory(SecList):
     update_url = 'subjects:sec_update_subject-category'
 
 
-class SecDeleteSubjectCategory(SecDelete):
+class SecDeleteSubjectCategory(views.ScopedDeleteView):
     model = SubjectCategory
-    success_url = 'subjects:sec_list_subject-category'
+    success_url = 'subjects:sec_list_subject-categories'
 
 
 """
@@ -265,37 +130,71 @@ Secretariat Decision Views
 """
 
 
-class SecCreateDecision(SecCreate):
+class SecCreateDecision(views.ScopedSecCreateView):
     model = Decision
     form_class = forms.SecDecisionForm
-    success_url = 'subjects:sec_list_decision'
+    success_url = 'subjects:sec_list_decisions'
     headline = _('Δημιουργία Απόφασης')
     back_url = ''
 
 
-class SecUpdateDecision(SecUpdate):
+class SecUpdateDecision(views.ScopedSecUpdateView):
     model = Decision
     form_class = forms.SecDecisionForm
-    success_url = 'subjects:sec_list_decision'
+    success_url = 'subjects:sec_list_decisions'
     delete_url = 'subjects:sec_delete_decision'
     confirm_modal = True
 
 
-class SecListDecision(SecList):
+class SecListDecision(views.ScopedSecListView):
     model = Decision
-    fields = ['title_gr', 'subject']
+    fields = ['subject', 'title_gr'],
     headers = {
-        'title_gr': _('Τίτλος'),
-        'subject': _('Θέμα')
-    }
+        'subject': _('Θέμα'),
+        'title_gr': _('Τελική Απόφαση')
+    },
     table_title = _('Αποφάσεις')
     create_url = 'subjects:sec_create_decision'
     update_url = 'subjects:sec_update_decision'
 
 
-class SecDeleteDecision(SecDelete):
+class SecDeleteDecision(views.ScopedDeleteView):
     model = Decision
-    success_url = 'subjects:sec_list_decision'
+    success_url = 'subjects:sec_list_decisions'
+
+
+"""
+Staff Subject and Decision Views
+"""
+
+
+class StaffListSubject(views.StaffListView):
+    model = Subject
+    fields = ['index', 'type', 'category', 'program', 'department', 'school', 'notes']
+    headers = {
+        'index': _('Θέση'),
+        'type': _('Τύπος'),
+        'category': _('Κατηγορία'),
+        'program': _('Πρόγραμμα Σπουδών'),
+        'department': _('Τμήμα'),
+        'school': _('Σχολή'),
+        'notes': _('Σημειώσεις')
+    }
+    table_title = _('Θέματα')
+    create_url = False
+    update_url = False
+
+
+class StaffListDecision(views.StaffListView):
+    model = Decision
+    fields = ['subject', 'title_gr'],
+    headers = {
+        'subject': _('Θέμα'),
+        'title_gr': _('Τελική Απόφαση')
+    },
+    table_title = _('Αποφάσεις')
+    create_url = False
+    update_url = False
 
 
 """
@@ -335,4 +234,3 @@ class SecSubjectCategoryAutoComplete(SecSubjectAutoComplete):
             qs = qs.filter(Q(title_gr__icontains=self.q) | Q(title_en__icontains=self.q))
 
         return qs.order_by(get_order_by_title())[:10]
-

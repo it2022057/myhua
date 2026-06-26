@@ -5,15 +5,15 @@ APPS = {
     'secretariat' : [
         {
             'title': _('Θέματα'),
-            'url': reverse_lazy('subjects:sec_list_subject'),
+            'url': reverse_lazy('subjects:sec_list_subjects'),
         },
         {
             'title': _('Αποφάσεις'),
-            'url': reverse_lazy('subjects:sec_list_decision'),
+            'url': reverse_lazy('subjects:sec_list_decisions'),
         },
         {
             'title': _('Συλλογικά Όργανα'),
-            'url': reverse_lazy('bodies:sec_list_collectivebody'),
+            'url': reverse_lazy('bodies:sec_list_collectivebodies'),
         },
     ],
     # 'participant': [
@@ -35,6 +35,14 @@ APPS = {
         }
     ],
     'staff_member' : [
+        {
+            'title': _('Θέματα'),
+            'url': reverse_lazy('subjects:staff_list_subjects'),
+        },
+        {
+            'title': _('Αποφάσεις'),
+            'url': reverse_lazy('subjects:staff_list_decisions'),
+        },
         {
             'title': 'Staff Member',
             'url': reverse_lazy('accounts:forgot_password')

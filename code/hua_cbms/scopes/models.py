@@ -5,6 +5,8 @@ from scopes.utils import get_secretariat_scope
 from django.core.exceptions import PermissionDenied
 
 User = get_user_model()
+
+
 # Create your models here.
 
 class Secretariat(models.Model):
@@ -18,66 +20,67 @@ class Secretariat(models.Model):
 
     def __str__(self):
         if self.user:
-            return 'Secretariat user: %s' % self.user.username
+            return _('Χρήστης Γραμματείας: %s') % self.user.username
         else:
-            return 'Secretariat user'
-        
+            return _('Χρήστης Γραμματείας')
+
     def program_scope(self):
         return self.programs.all()
-    
+
     def department_scope(self):
         return self.departments.all()
+
 
 class ScopedQueryPrg(models.QuerySet):
     def scope_filter(self, scope):
         return self.filter(program__in=scope['programs'])
-    
+
     def in_scope_of(self, user):
         scope = get_secretariat_scope(user)
         return self.scope_filter(scope)
 
-    def sc_get(self, *args, user=None, **kwargs): 
+    def sc_get(self, *args, user=None, **kwargs):
         if not user:
             raise ValueError("You must pass user= to ScopedManagerPrg.sc_get()")
-                   
-        return self.in_scope_of(user).get(*args, **kwargs)   
+
+        return self.in_scope_of(user).get(*args, **kwargs)
 
     def sc_filter(self, *args, user=None, **kwargs):
         if not user:
             raise ValueError("You must pass user= to ScopedManagerPrg.sc_filter()")
-          
-        return self.in_scope_of(user).filter(*args, **kwargs)
-              
-class ScopedModelPrg(models.Model):
 
+        return self.in_scope_of(user).filter(*args, **kwargs)
+
+
+class ScopedModelPrg(models.Model):
     class Meta:
         abstract = True
 
     objects = ScopedQueryPrg.as_manager()
-    
+
     def scope_query(self, scope):
-        return scope['programs'].filter(id = self.program.id).exists()
-        
+        return scope['programs'].filter(id=self.program.id).exists()
+
     def is_in_scope_of(self, user):
         scope = get_secretariat_scope(user)
         return self.scope_query(scope)
-        
+
     def in_scope_or_403(self, user):
         if not self.is_in_scope_of(user):
             raise PermissionDenied()
-        
+
+
 class ScopedQueryDep(ScopedQueryPrg):
 
     def scope_filter(self, scope):
-        return self.filter(department__in = scope['departments'])
-    
+        return self.filter(department__in=scope['departments'])
+
 
 class ScopedModelDep(ScopedModelPrg):
-    
     class Meta:
         abstract = True
 
-    objects = ScopedQueryDep.as_manager()    
+    objects = ScopedQueryDep.as_manager()
+
     def scope_query(self, scope):
-        return scope['departments'].filter(id = self.program.id).exists()
-        
+        return scope['departments'].filter(id=self.program.id).exists()
