@@ -118,14 +118,15 @@ class SecCollectiveBodyOverviewList(SecMultipleList):
     master_headline = _('Στοιχεία Συλλογικού Οργάνου')
     master_p = _('Παρακάτω ακολουθούν κάποιες σημαντικές πληροφορίες για το συλλογικό όργανο...')
     back_url = reverse_lazy('bodies:sec_list_collectivebodies')
+    # ordering = get_order_by_title()
 
     def setup(self, *args, **kwargs):
         super().setup(*args, **kwargs)
-        # sec = get_object_or_404(Secretariat, user=self.request.user)
+        sec = Secretariat.objects.filter(user=self.request.user).first()
         body = get_object_or_404(CollectiveBody, pk=self.kwargs['pk'])
 
-        # if body.secretariat != sec:
-        #     raise PermissionDenied
+        if (body.secretariat != sec) and not self.request.user.is_superuser:
+            raise PermissionDenied
 
         if body:
             self.master_headline = _('Στοιχεία Συλλογικού Οργάνου: ') + '%s' % str(body)
@@ -232,15 +233,16 @@ Staff Student Views
 
 class StaffListCollectiveBody(StaffList):
     model = CollectiveBody
-    fields = ['title_gr', 'president', 'secretariat', 'start_date', 'end_date']
+    fields = ['title_gr', 'president', 'start_date', 'end_date']
     headers = {
         'title_gr': _('Τίτλος'),
         'president': _('Πρόεδρος'),
-        'secretariat': _('Γραμματεία'),
         'start_date': _('Ημερομηνία Έναρξης'),
         'end_date': _('Ημερομηνία Λήξης')
     }
     table_title = _('Συλλογικά Όργανα')
+    create_button = False
+    update_buttons = False
     extra_buttons2 = True
     extra_button_icon2 = 'info'
     extra_text2 = _('Δράσεις')
@@ -280,7 +282,7 @@ class StaffCollectiveBodyOverviewList(StaffMultipleList):
                 },
                 table_id='subject',
                 create_button=False,
-                update_button=False,
+                update_buttons=False,
                 objects=subjects,
                 next=self.request.path
             ),
@@ -293,7 +295,7 @@ class StaffCollectiveBodyOverviewList(StaffMultipleList):
                 },
                 table_id='decision',
                 create_button=False,
-                update_button=False,
+                update_buttons=False,
                 objects=Decision.objects.filter(subject__in=subjects),
                 next=self.request.path
             ),

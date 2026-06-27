@@ -156,6 +156,19 @@ class ScopedSecListView(GenericListView):
         return is_secretariat(self.request.user)
 
     def get_queryset(self):
+        """
+                Maybe add this because i want ordering
+        """
+        # super().get_queryset()
+        # queryset = self.model.objects.sc_filter(user=self.request.user)
+        # 
+        # ordering = self.get_ordering()
+        # if ordering:
+        #     if isinstance(ordering, str):
+        #         ordering = (ordering,)
+        #     queryset = queryset.order_by(*ordering)
+        # 
+        # return queryset
         return self.model.objects.sc_filter(user=self.request.user)
 
 

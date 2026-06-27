@@ -1,6 +1,9 @@
+from lib2to3.fixes.fix_input import context
+
 from dal import autocomplete
 from django.contrib.auth.mixins import UserPassesTestMixin, LoginRequiredMixin
 from django.db.models import Q
+from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
 
 from accounts.checks import is_secretariat
@@ -148,11 +151,11 @@ class SecUpdateDecision(views.ScopedSecUpdateView):
 
 class SecListDecision(views.ScopedSecListView):
     model = Decision
-    fields = ['subject', 'title_gr'],
+    fields = ['subject', 'title_gr']
     headers = {
         'subject': _('Θέμα'),
         'title_gr': _('Τελική Απόφαση')
-    },
+    }
     table_title = _('Αποφάσεις')
     create_url = 'subjects:sec_create_decision'
     update_url = 'subjects:sec_update_decision'
@@ -181,20 +184,22 @@ class StaffListSubject(views.StaffListView):
         'notes': _('Σημειώσεις')
     }
     table_title = _('Θέματα')
-    create_url = False
-    update_url = False
+    create_button = False
+    update_buttons = False
+    back_url = reverse_lazy('bodies:staff_list_collectivebodies')
 
 
 class StaffListDecision(views.StaffListView):
     model = Decision
-    fields = ['subject', 'title_gr'],
+    fields = ['subject', 'title_gr']
     headers = {
         'subject': _('Θέμα'),
         'title_gr': _('Τελική Απόφαση')
-    },
+    }
     table_title = _('Αποφάσεις')
-    create_url = False
-    update_url = False
+    create_button = False
+    update_buttons = False
+    back_url = reverse_lazy('bodies:staff_list_collectivebodies')
 
 
 """

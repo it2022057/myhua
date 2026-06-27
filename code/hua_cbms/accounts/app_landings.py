@@ -12,6 +12,14 @@ APPS = {
             'url': reverse_lazy('subjects:sec_list_decisions'),
         },
         {
+            'title': _('Τύποι Θεμάτων'),
+            'url': reverse_lazy('subjects:sec_list_subject-types'),
+        },
+        {
+            'title': _('Κατηγορίες Θεμάτων'),
+            'url': reverse_lazy('subjects:sec_list_subject-categories'),
+        },
+        {
             'title': _('Συλλογικά Όργανα'),
             'url': reverse_lazy('bodies:sec_list_collectivebodies'),
         },
@@ -30,21 +38,21 @@ APPS = {
     # ],
     'applicant' : [
         {
-            'title': 'Applicant',
+            'title': _('Οι αιτήσεις μου'),
+            'url': reverse_lazy('accounts:forgot_password')
+        },
+        {
+            'title': _('Ξέχασα τον κωδικό πρόσβασης'),
             'url': reverse_lazy('accounts:forgot_password')
         }
     ],
     'staff_member' : [
         {
-            'title': _('Θέματα'),
-            'url': reverse_lazy('subjects:staff_list_subjects'),
+            'title': _('Οι συμμετοχές μου'),
+            'url': reverse_lazy('bodies:staff_list_collectivebodies'),
         },
         {
-            'title': _('Αποφάσεις'),
-            'url': reverse_lazy('subjects:staff_list_decisions'),
-        },
-        {
-            'title': 'Staff Member',
+            'title': _('Ξέχασα τον κωδικό πρόσβασης'),
             'url': reverse_lazy('accounts:forgot_password')
         }
     ],

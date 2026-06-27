@@ -170,6 +170,13 @@ class StaffMember(PersonStrMixin, ScopedModelDep):
 
         super().save(*args, **kwargs)
 
+    def delete(self, *args, **kwargs):
+        personal_info = self.personal_info
+        super().delete(*args, **kwargs)
+
+        if personal_info:
+            personal_info.delete()
+
 class CustomUserPermissions(models.Model):
     class Meta:
         verbose_name = _('Προσαρμοσμένο Δικαίωμα Χρήστη')
