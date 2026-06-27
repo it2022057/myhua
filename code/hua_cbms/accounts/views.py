@@ -8,6 +8,7 @@ from django.urls import reverse_lazy
 from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
 
+from bodies.models import CollectiveBody
 from core import views
 from core.utils import get_order_by_display_name
 from core.views import Section
@@ -39,6 +40,21 @@ class SecCreateStaffMember(views.ScopedSecCreateView):
     success_url = 'accounts:sec_list_staff_members'
     headline = _('Δημιουργία Μέλους Προσωπικού')
     back_url = ''
+
+    # If the create_button, located at the participants table, is pressed in bodies:sec_overview_collectivebody and the
+    # staff member is created, it is important to also automatically add him/her to the participants list of the body
+    def form_valid(self, form):
+        response = super().form_valid(form)
+
+        next_url = self.request.GET.get("next")
+
+        if "bodies/sec/collectivebody/" in next_url:
+            body_id = next_url.split("collectivebody/")[1].split("/")[0]
+            body = get_object_or_404(CollectiveBody, pk=body_id)
+            body.participants.add(self.object)
+            self.success_url = reverse_lazy('bodies:sec_overview_collectivebody')
+
+        return response
 
 
 class SecUpdateStaffMember(views.ScopedSecUpdateView):

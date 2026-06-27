@@ -9,6 +9,7 @@ from django.utils.translation import gettext_lazy as _
 from accounts.checks import is_secretariat
 from accounts.models import StaffMember
 from bodies import forms
+from bodies.forms import SecParticipantsForm
 from bodies.models import CollectiveBody
 from core import views
 from core.models import TitleStrMixin
@@ -151,14 +152,15 @@ class SecCollectiveBodyOverviewList(SecMultipleList):
                 next=self.request.path
             ),
             Table(
-                fields=['participants'],
+                fields=['participants', 'participants.title'],
                 table_title=_('Συμμετέχοντες Συλλογικού Οργάνου'),
                 headers={
-                    'participants': _('Συμμετέχοντες')
+                    'participants': _('Συμμετέχοντες'),
+                    'participants.title': _('Ιδιότητα')
                 },
                 table_id='participants',
-                # update_url='need to make a customize button for adding/removing participants',
-                # create_url='sto create_staff_member if next = 'bodies/collectivebody/1/overview' ftiaje neo staff member kai kanton assign san participant automata',
+                update_url='bodies:sec_update_collectivebody_participants',
+                create_url='accounts:sec_create_staff_member',
                 objects=CollectiveBody.objects.filter(pk=body.pk),
                 next=self.request.path
             ),
@@ -200,6 +202,13 @@ class SecCollectiveBodyOverviewList(SecMultipleList):
                 next=self.request.path
             ),
         ]
+
+
+class SecUpdateParticipants(views.ScopedSecUpdateView):
+    model = CollectiveBody
+    form_class = SecParticipantsForm
+    success_url = 'bodies:sec_overview_collectivebody'
+    confirm_modal = True
 
 
 class SecCollectiveBodyAutoComplete(TitleStrMixin, LoginRequiredMixin, UserPassesTestMixin,

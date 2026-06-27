@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-06-26 18:48+0300\n"
+"POT-Creation-Date: 2026-06-27 18:42+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -26,19 +26,19 @@ msgid "Ιστότοπος διαχείρισης HUA"
 msgstr "HUA site admin"
 
 #: accounts/app_landings.py:7 accounts/app_landings.py:39
-#: bodies/templates/bodies/partials/bodies_menu.html:6 subjects/models.py:75
+#: bodies/templates/bodies/partials/bodies_menu.html:7 subjects/models.py:75
 #: subjects/views.py:44 subjects/views.py:183
 msgid "Θέματα"
 msgstr "Subjects"
 
 #: accounts/app_landings.py:11 accounts/app_landings.py:43
-#: bodies/templates/bodies/partials/bodies_menu.html:7 subjects/models.py:109
+#: bodies/templates/bodies/partials/bodies_menu.html:9 subjects/models.py:109
 #: subjects/views.py:156 subjects/views.py:195
 msgid "Αποφάσεις"
 msgstr "Decisions"
 
-#: accounts/app_landings.py:15 bodies/models.py:21 bodies/views.py:94
-#: bodies/views.py:234
+#: accounts/app_landings.py:15 bodies/models.py:21 bodies/views.py:95
+#: bodies/views.py:243
 msgid "Συλλογικά Όργανα"
 msgstr "Collective Bodies"
 
@@ -83,15 +83,15 @@ msgstr "You have not used at least two special characters"
 msgid "Ε-mail"
 msgstr "E-mail"
 
-#: accounts/forms.py:30 accounts/views.py:138
+#: accounts/forms.py:30 accounts/views.py:154
 msgid "2ο E-mail"
 msgstr "2nd E-mail"
 
-#: accounts/forms.py:31 accounts/views.py:135
+#: accounts/forms.py:31 accounts/views.py:151
 msgid "Όνομα"
 msgstr "First Name"
 
-#: accounts/forms.py:32 accounts/views.py:136
+#: accounts/forms.py:32 accounts/views.py:152
 msgid "Επώνυμο"
 msgstr "Last Name"
 
@@ -99,17 +99,17 @@ msgstr "Last Name"
 msgid "Ίδρυμα"
 msgstr "Institution"
 
-#: accounts/forms.py:34 bodies/views.py:144 bodies/views.py:269
+#: accounts/forms.py:34 bodies/views.py:145 bodies/views.py:278
 #: curricula/models.py:28 subjects/forms.py:22 subjects/views.py:180
 msgid "Σχολή"
 msgstr "School"
 
-#: accounts/forms.py:35 bodies/views.py:143 bodies/views.py:268
+#: accounts/forms.py:35 bodies/views.py:144 bodies/views.py:277
 #: curricula/models.py:46 subjects/forms.py:21 subjects/views.py:179
 msgid "Τμήμα"
 msgstr "Department"
 
-#: accounts/forms.py:36 bodies/views.py:142 bodies/views.py:267
+#: accounts/forms.py:36 bodies/views.py:143 bodies/views.py:276
 #: curricula/models.py:69 subjects/forms.py:20 subjects/views.py:178
 msgid "Πρόγραμμα Σπουδών"
 msgstr "Study Program"
@@ -118,7 +118,7 @@ msgstr "Study Program"
 msgid "Τμήμα εντός του ιδρύματος"
 msgstr "Department within the institution"
 
-#: accounts/forms.py:38 accounts/views.py:58
+#: accounts/forms.py:38 accounts/views.py:74 bodies/views.py:159
 msgid "Ιδιότητα"
 msgstr "Position"
 
@@ -138,79 +138,79 @@ msgstr "Can be an evaluator for PhD applications?"
 msgid "Μπορεί να είναι επιβλέπων ή μέλος επιτροπής διπλωματικών;"
 msgstr "Can be a supervisor or a member of a thesis committee?"
 
-#: accounts/forms.py:43 accounts/views.py:134 core/views.py:54
+#: accounts/forms.py:43 accounts/views.py:150 core/views.py:54
 msgid "Εικόνα"
 msgstr "Picture"
 
-#: accounts/forms.py:44 accounts/views.py:147
+#: accounts/forms.py:44 accounts/views.py:163
 msgid "Όνομα Πατέρα"
 msgstr "Father's Name"
 
-#: accounts/forms.py:44 accounts/views.py:148
+#: accounts/forms.py:44 accounts/views.py:164
 msgid "Ημ/νία Γέννησης"
 msgstr "Date of Birth"
 
-#: accounts/forms.py:44 accounts/views.py:151
+#: accounts/forms.py:44 accounts/views.py:167
 msgid "ΑΦΜ"
 msgstr "Tax Identification Number"
 
-#: accounts/forms.py:44 accounts/views.py:152
+#: accounts/forms.py:44 accounts/views.py:168
 msgid "ΑΜΚΑ"
 msgstr "Social Security Number"
 
-#: accounts/forms.py:44 accounts/views.py:149
+#: accounts/forms.py:44 accounts/views.py:165
 msgid "Φύλο"
 msgstr "Gender"
 
-#: accounts/forms.py:45 accounts/views.py:150
+#: accounts/forms.py:45 accounts/views.py:166
 msgid "Κινητό Τηλέφωνο"
 msgstr "Mobile Phone"
 
-#: accounts/forms.py:45 accounts/views.py:173
+#: accounts/forms.py:45 accounts/views.py:189
 msgid "Τηλέφωνο Κατοικίας"
 msgstr "Home Phone"
 
-#: accounts/forms.py:45 accounts/views.py:194
+#: accounts/forms.py:45 accounts/views.py:210
 msgid "Τηλέφωνο Εργασίας"
 msgstr "Work Phone"
 
-#: accounts/forms.py:46 accounts/views.py:168
+#: accounts/forms.py:46 accounts/views.py:184
 msgid "Οδός Κατοικίας"
 msgstr "Home Street Address"
 
-#: accounts/forms.py:46 accounts/views.py:169
+#: accounts/forms.py:46 accounts/views.py:185
 msgid "Αριθμός Κατοικίας"
 msgstr "Home Address Number"
 
-#: accounts/forms.py:47 accounts/views.py:170
+#: accounts/forms.py:47 accounts/views.py:186
 msgid "Τ.Κ. Κατοικίας"
 msgstr "Home Street Address"
 
-#: accounts/forms.py:47 accounts/views.py:171
+#: accounts/forms.py:47 accounts/views.py:187
 msgid "Πόλη Κατοικίας"
 msgstr "Home City"
 
-#: accounts/forms.py:48 accounts/views.py:172
+#: accounts/forms.py:48 accounts/views.py:188
 msgid "Χώρα Κατοικίας"
 msgstr "Home Country"
 
-#: accounts/forms.py:49 accounts/views.py:189
+#: accounts/forms.py:49 accounts/views.py:205
 msgid "Οδός Εργασίας"
 msgstr "Work Street Address"
 
-#: accounts/forms.py:49 accounts/views.py:190
+#: accounts/forms.py:49 accounts/views.py:206
 msgid "Αριθμός Εργασίας"
 msgstr "Work Address Number"
 
-#: accounts/forms.py:50 accounts/views.py:191
+#: accounts/forms.py:50 accounts/views.py:207
 msgid "Τ.Κ. Εργασίας"
 msgstr "Work Postal Code"
 
-#: accounts/forms.py:50 accounts/views.py:192
+#: accounts/forms.py:50 accounts/views.py:208
 msgid "Πόλη Εργασίας"
 msgstr "Work City"
 
-#: accounts/forms.py:51 accounts/views.py:193
+#: accounts/forms.py:51 accounts/views.py:209
 msgid "Χώρα Εργασίας"
 msgstr "Work Country"
 
@@ -298,8 +298,8 @@ msgstr "New password"
 msgid "Νέος κωδικός πρόσβασης (επανάληψη)"
 msgstr "New password (repeat)"
 
-#: accounts/models.py:37 accounts/models.py:38 accounts/views.py:104
-#: accounts/views.py:143 core/views.py:29
+#: accounts/models.py:37 accounts/models.py:38 accounts/views.py:120
+#: accounts/views.py:159 core/views.py:29
 msgid "Προσωπικά Στοιχεία"
 msgstr "Personal Information"
 
@@ -319,7 +319,7 @@ msgstr "Other"
 msgid "Μέλος Προσωπικού"
 msgstr "Staff Member"
 
-#: accounts/models.py:124 accounts/views.py:61
+#: accounts/models.py:124 accounts/views.py:77
 msgid "Μέλη Προσωπικού"
 msgstr "Staff Members"
 
@@ -366,8 +366,8 @@ msgid "Έξοδος"
 msgstr "Logout"
 
 #: accounts/templates/accounts/page.html:92
-#: accounts/templates/accounts/page.html:99 accounts/views.py:330
-#: accounts/views.py:345 accounts/views.py:409
+#: accounts/templates/accounts/page.html:99 accounts/views.py:346
+#: accounts/views.py:361 accounts/views.py:425
 msgid "Επιστροφή"
 msgstr "Back"
 
@@ -399,7 +399,7 @@ msgstr "Go to"
 
 #: accounts/templates/accounts/password_reset_choice.html:15
 #: accounts/templates/accounts/password_reset_choice.html:20
-#: accounts/views.py:216 accounts/views.py:273
+#: accounts/views.py:232 accounts/views.py:289
 msgid "εδώ"
 msgstr "here"
 
@@ -530,84 +530,84 @@ msgstr ""
 "Use only digits from 0 to 9, Latin letters, or the special characters listed "
 "above."
 
-#: accounts/views.py:25
+#: accounts/views.py:26
 msgid "Δεν είστε δηλωμένος στο σύστημα ως μέλος του ιδρύματος."
 msgstr "You are not registered in the system as a member of the institution."
 
-#: accounts/views.py:40
+#: accounts/views.py:41
 msgid "Δημιουργία Μέλους Προσωπικού"
 msgstr "Create Staff Member"
 
-#: accounts/views.py:57
+#: accounts/views.py:73
 msgid "Ονοματεπώνυμο"
 msgstr "Full Name"
 
-#: accounts/views.py:59 accounts/views.py:137
+#: accounts/views.py:75 accounts/views.py:153
 msgid "E-mail"
 msgstr "E-mail"
 
-#: accounts/views.py:66
+#: accounts/views.py:82
 msgid "Προφίλ"
 msgstr "Profile"
 
-#: accounts/views.py:105
+#: accounts/views.py:121
 msgid ""
 "Παρακάτω ακολουθούν τα προσωπικά στοιχεία του χρήστη, χωρισμένα σε "
 "κατηγορίες..."
 msgstr "Below are the user's personal details, divided into categories..."
 
-#: accounts/views.py:126
+#: accounts/views.py:142
 msgid "Προσωπικά Στοιχεία: "
 msgstr "Personal Info: "
 
-#: accounts/views.py:130
+#: accounts/views.py:146
 msgid "Βασικά Στοιχεία"
 msgstr "Basic Information"
 
-#: accounts/views.py:157
+#: accounts/views.py:173
 msgid "Στοιχεία Κατοικίας"
 msgstr "Home Information"
 
-#: accounts/views.py:178
+#: accounts/views.py:194
 msgid "Στοιχεία Εργασίας"
 msgstr "Work Information"
 
-#: accounts/views.py:214
+#: accounts/views.py:230
 msgid ""
 "Αποσυνδεθήκατε από το σύστημα. Ευχαριστούμε που χρησιμοποιήσατε την υπηρεσία "
 "μας. "
 msgstr "You have been logged out. Thank you for using our service."
 
-#: accounts/views.py:215 accounts/views.py:272
+#: accounts/views.py:231 accounts/views.py:288
 msgid "Συνδεθείτε ξανά"
 msgstr "Log in again"
 
-#: accounts/views.py:233
+#: accounts/views.py:249
 msgid ""
 "H πρόκληση να εγγραφείτε έχει λήξει. Θα πρέπει να επαναλάβετε την διαδικασία."
 msgstr ""
 "The invitation to register has expired. You will need to repeat the process."
 
-#: accounts/views.py:237 accounts/views.py:396
+#: accounts/views.py:253 accounts/views.py:412
 msgid "O σύνδεσμος δεν είναι σωστός!"
 msgstr "The link is invalid!"
 
-#: accounts/views.py:243
+#: accounts/views.py:259
 msgid "Έχετε ήδη εγγραφεί στο σύστημα!"
 msgstr "You are already registered in the system!"
 
-#: accounts/views.py:271
+#: accounts/views.py:287
 msgid "Εγγραφήκατε επιτυχώς στο σύστημα!"
 msgstr "You have successfully registered in the system!"
 
-#: accounts/views.py:308
+#: accounts/views.py:324
 msgid ""
 "Έχει αποσταλλεί e-mail στην διεύθυνση που δηλώσατε για να ενεργοποιήσετε το "
 "λογαριασμό σας"
 msgstr ""
 "An email has been sent to the address you provided to activate your account"
 
-#: accounts/views.py:329
+#: accounts/views.py:345
 msgid ""
 "Είστε ιδρυματικός χρήστης. Θα πρέπει να αλλάξετε τον κωδικό χρησιμοποιώντας "
 "τα κεντρικά συστήματα του ιδρύματος"
@@ -615,17 +615,17 @@ msgstr ""
 "You are an institutional user. You must change your password using the "
 "institution’s central systems."
 
-#: accounts/views.py:344 accounts/views.py:408
+#: accounts/views.py:360 accounts/views.py:424
 msgid "Ο κωδικός σας έχει αλλάξει."
 msgstr "Your password has been changed."
 
-#: accounts/views.py:371
+#: accounts/views.py:387
 msgid ""
 "Παρακαλούμε ελέγξτε την διεύθυνση ηλεκτρονικού ταχυδρομείου που καταχωρήσατε "
 "για την συνέχεια."
 msgstr "Please check the email address you provided to proceed."
 
-#: accounts/views.py:393
+#: accounts/views.py:409
 msgid "Ο σύνδεσμος αυτός έχει λήξει."
 msgstr "This link has expired."
 
@@ -653,28 +653,29 @@ msgstr "Title (Greek)"
 msgid "Τίτλος (Αγγλικά)"
 msgstr "Title (English)"
 
-#: bodies/forms.py:13 bodies/views.py:88 bodies/views.py:98 bodies/views.py:157
+#: bodies/forms.py:13 bodies/forms.py:77 bodies/views.py:89 bodies/views.py:99
+#: bodies/views.py:158
 msgid "Συμμετέχοντες"
 msgstr "Participants"
 
-#: bodies/forms.py:14 bodies/views.py:89 bodies/views.py:229
+#: bodies/forms.py:14 bodies/views.py:90 bodies/views.py:238
 msgid "Πρόεδρος"
 msgstr ""
 
-#: bodies/forms.py:15 bodies/views.py:90 bodies/views.py:230
+#: bodies/forms.py:15 bodies/views.py:91 bodies/views.py:239
 #: scopes/models.py:14
 msgid "Γραμματεία"
 msgstr "Secretariat"
 
-#: bodies/forms.py:16 bodies/views.py:91 bodies/views.py:231
+#: bodies/forms.py:16 bodies/views.py:92 bodies/views.py:240
 msgid "Ημερομηνία Έναρξης"
 msgstr "Start Date"
 
-#: bodies/forms.py:17 bodies/views.py:92 bodies/views.py:232
+#: bodies/forms.py:17 bodies/views.py:93 bodies/views.py:241
 msgid "Ημερομηνία Λήξης"
 msgstr "End Date"
 
-#: bodies/forms.py:29
+#: bodies/forms.py:29 bodies/forms.py:81
 msgid "Επιλέξτε συμμετέχοντες"
 msgstr "Select participants"
 
@@ -690,29 +691,29 @@ msgstr "Select secretariat"
 msgid "Συλλογικό Όργανο"
 msgstr "Collective Body"
 
-#: bodies/templates/bodies/partials/bodies_menu.html:8 subjects/models.py:23
+#: bodies/templates/bodies/partials/bodies_menu.html:10 subjects/models.py:23
 #: subjects/templates/subjects/partials/subjects_menu.html:6
 #: subjects/views.py:81
 msgid "Τύποι Θεμάτων"
 msgstr "Subject Types"
 
-#: bodies/templates/bodies/partials/bodies_menu.html:9 subjects/models.py:49
+#: bodies/templates/bodies/partials/bodies_menu.html:12 subjects/models.py:49
 #: subjects/templates/subjects/partials/subjects_menu.html:7
 #: subjects/views.py:118
 msgid "Κατηγορίες Θεμάτων"
 msgstr "Subject Categories"
 
-#: bodies/templates/bodies/partials/bodies_menu.html:16
+#: bodies/templates/bodies/partials/bodies_menu.html:20
 #: subjects/templates/subjects/partials/subjects_menu.html:18
 msgid "Όλα"
 msgstr "All"
 
-#: bodies/templates/bodies/partials/bodies_menu.html:17
+#: bodies/templates/bodies/partials/bodies_menu.html:21
 #: subjects/templates/subjects/partials/subjects_menu.html:19
 msgid "Τρέχων"
 msgstr ""
 
-#: bodies/templates/bodies/partials/bodies_menu.html:18
+#: bodies/templates/bodies/partials/bodies_menu.html:22
 #: subjects/templates/subjects/partials/subjects_menu.html:20
 msgid "Παρελθόν"
 msgstr ""
@@ -722,83 +723,83 @@ msgstr ""
 msgid "Είστε σίγουροι;"
 msgstr "Are you sure?"
 
-#: bodies/views.py:71
+#: bodies/views.py:72
 msgid "Δημιουργία Συλλογικού Πανεπιστημιακού Οργάνου"
 msgstr "Create Collective Body"
 
-#: bodies/views.py:87 bodies/views.py:182 bodies/views.py:194
-#: bodies/views.py:228 subjects/views.py:79 subjects/views.py:116
+#: bodies/views.py:88 bodies/views.py:184 bodies/views.py:196
+#: bodies/views.py:237 subjects/views.py:79 subjects/views.py:116
 msgid "Τίτλος"
 msgstr "Title"
 
-#: bodies/views.py:103 bodies/views.py:237
+#: bodies/views.py:104 bodies/views.py:246
 msgid "Δράσεις"
 msgstr "Actions"
 
-#: bodies/views.py:117 bodies/views.py:243
+#: bodies/views.py:118 bodies/views.py:252
 msgid "Στοιχεία Συλλογικού Οργάνου"
 msgstr "Collective Body Information"
 
-#: bodies/views.py:118 bodies/views.py:244
+#: bodies/views.py:119 bodies/views.py:253
 msgid ""
 "Παρακάτω ακολουθούν κάποιες σημαντικές πληροφορίες για το συλλογικό όργανο..."
 msgstr "Below is some important information about the collective body..."
 
-#: bodies/views.py:130 bodies/views.py:256
+#: bodies/views.py:131 bodies/views.py:265
 msgid "Στοιχεία Συλλογικού Οργάνου: "
 msgstr "Collective Body Information: "
 
-#: bodies/views.py:136 bodies/views.py:262
+#: bodies/views.py:137 bodies/views.py:271
 msgid "Θέματα Συνεδριάσεων Συλλογικού Οργάνου"
 msgstr "Subjects of Collective Body Meetings"
 
-#: bodies/views.py:138 bodies/views.py:264 subjects/forms.py:16
+#: bodies/views.py:139 bodies/views.py:273 subjects/forms.py:16
 #: subjects/views.py:38 subjects/views.py:175
 msgid "Θέση"
 msgstr "Index"
 
-#: bodies/views.py:139 bodies/views.py:265 subjects/forms.py:17
+#: bodies/views.py:140 bodies/views.py:274 subjects/forms.py:17
 #: subjects/views.py:39 subjects/views.py:176
 msgid "Τύπος"
 msgstr "Type"
 
-#: bodies/views.py:140 bodies/views.py:266 subjects/forms.py:18
+#: bodies/views.py:141 bodies/views.py:275 subjects/forms.py:18
 #: subjects/views.py:40 subjects/views.py:177
 msgid "Κατηγορία"
 msgstr "Category"
 
-#: bodies/views.py:141 subjects/forms.py:19
+#: bodies/views.py:142 subjects/forms.py:19
 msgid "Αιτών"
 msgstr "Applicant"
 
-#: bodies/views.py:145 bodies/views.py:270 subjects/forms.py:24
+#: bodies/views.py:146 bodies/views.py:279 subjects/forms.py:24
 #: subjects/views.py:42 subjects/views.py:181
 msgid "Σημειώσεις"
 msgstr "Notes"
 
-#: bodies/views.py:155
+#: bodies/views.py:156
 msgid "Συμμετέχοντες Συλλογικού Οργάνου"
 msgstr "Collective Body Participants"
 
-#: bodies/views.py:167 bodies/views.py:280
+#: bodies/views.py:169 bodies/views.py:289
 msgid "Αποφάσεις για τα Θέματα"
 msgstr "Decisions on the Subjects"
 
-#: bodies/views.py:169 bodies/views.py:282 subjects/forms.py:28
+#: bodies/views.py:171 bodies/views.py:291 subjects/forms.py:28
 #: subjects/models.py:74 subjects/views.py:153 subjects/views.py:192
 msgid "Θέμα"
 msgstr "Subject"
 
-#: bodies/views.py:170 bodies/views.py:283 subjects/views.py:154
+#: bodies/views.py:172 bodies/views.py:292 subjects/views.py:154
 #: subjects/views.py:193
 msgid "Τελική Απόφαση"
 msgstr "Final Decision"
 
-#: bodies/views.py:180
+#: bodies/views.py:182
 msgid "Τύποι Θεμάτων Συλλογικού Οργάνου"
 msgstr "Collective Body Subject Types"
 
-#: bodies/views.py:192
+#: bodies/views.py:194
 msgid "Κατηγορίες Θεμάτων Συλλογικού Οργάνου"
 msgstr "Collective Body Subject Categories"
 

@@ -28,7 +28,7 @@ class PersonStrMixin:
                     return self.given_name_en + ' ' +self.surname_en
             return romanize(self.given_name) + ' ' + romanize(self.surname)
             
-        return self.given_name + ' ' +self.surname
+        return self.given_name + ' ' + self.surname
 
 
 class TrackedModel(models.Model):

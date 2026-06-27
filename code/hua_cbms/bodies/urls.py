@@ -10,6 +10,7 @@ urlpatterns = [
     path('sec/', views.SecListCollectiveBody.as_view(), name='sec_list_collectivebodies'),
     path('sec/collectivebody/<int:pk>/delete', views.SecDeleteCollectiveBody.as_view(), name='sec_delete_collectivebody'),
     path('sec/collectivebody/<int:pk>/overview', views.SecCollectiveBodyOverviewList.as_view(), name='sec_overview_collectivebody'),
+    path('sec/collectivebody/<int:pk>/participants', views.SecUpdateParticipants.as_view(), name='sec_update_collectivebody_participants'),
 
     # URL for CollectiveBody autocomplete
     path('sec/collectivebody/autocomplete', views.SecCollectiveBodyAutoComplete.as_view(), name='collectivebody-autocomplete'),

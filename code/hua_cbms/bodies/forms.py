@@ -68,3 +68,27 @@ class SecCollectiveBodyForm(GenericModelForm):
                 Div(Field('end_date'), css_class='col-md-6'),
                 css_class="row"),
         )
+
+
+class SecParticipantsForm(GenericModelForm):
+    class Meta:
+        fields = ['participants']
+        model = CollectiveBody
+        labels = { 'participants': _('Συμμετέχοντες') }
+        widgets = {
+            'participants': autocomplete.ModelSelect2Multiple(
+                url='accounts:staff-autocomplete',
+                attrs={**BASE_ATTRS, 'data-placeholder': _('Επιλέξτε συμμετέχοντες')}
+            )
+        }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        self.helper.layout = Layout(
+            Row(self.button_element_html,
+                css_class="row"),
+            Row(
+                Div(Field('participants')),
+                css_class="row"),
+        )
