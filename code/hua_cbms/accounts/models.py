@@ -5,6 +5,7 @@ from django.utils.translation import gettext_lazy as _
 from romanize import romanize
 
 from core.models import PersonStrMixin, TrackedScopedProgramModel
+from core.utils import get_order_by_display_name
 from curricula.models import Department, StudyProgram
 from hua_cbms import settings
 from scopes.models import ScopedModelDep, ScopedQueryDep
@@ -36,6 +37,7 @@ class PersonalInfo(TrackedScopedProgramModel):
     class Meta:
         verbose_name = _('Προσωπικά Στοιχεία')
         verbose_name_plural = _('Προσωπικά Στοιχεία')
+        ordering = ['pk']
 
     GENDER_MALE = "M"
     GENDER_FEMALE = "F"
@@ -122,6 +124,7 @@ class StaffMember(PersonStrMixin, ScopedModelDep):
     class Meta:
         verbose_name = _('Μέλος Προσωπικού')
         verbose_name_plural = _('Μέλη Προσωπικού')
+        ordering = ['pk']
 
     user = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True)
     email = models.EmailField(null=True)

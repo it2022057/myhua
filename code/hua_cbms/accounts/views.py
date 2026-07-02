@@ -72,9 +72,10 @@ class SecListStaffMember(views.ScopedSecListView):
     headers = {
         'display_name': _('Ονοματεπώνυμο'),
         'title': _('Ιδιότητα'),
-        'email': _('E-mail'),
+        'email': _('E-mail')
     }
     table_title = _('Μέλη Προσωπικού')
+    ordering = ['title', get_order_by_display_name()]
     create_url = 'accounts:sec_create_staff_member'
     update_url = 'accounts:sec_update_staff_member'
     back_url = reverse_lazy('bodies:sec_list_collectivebodies')

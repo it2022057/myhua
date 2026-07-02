@@ -93,6 +93,7 @@ class SecListCollectiveBody(SecList):
         'end_date': _('Ημερομηνία Λήξης')
     }
     table_title = _('Συλλογικά Όργανα')
+    ordering = ['end_date', 'start_date', 'president', get_order_by_title()]
     create_url = 'bodies:sec_create_collectivebody'
     update_url = 'bodies:sec_update_collectivebody'
     extra_buttons = True
@@ -118,7 +119,6 @@ class SecCollectiveBodyOverviewList(SecMultipleList):
     master_headline = _('Στοιχεία Συλλογικού Οργάνου')
     master_p = _('Παρακάτω ακολουθούν κάποιες σημαντικές πληροφορίες για το συλλογικό όργανο...')
     back_url = reverse_lazy('bodies:sec_list_collectivebodies')
-    # ordering = get_order_by_title()
 
     def setup(self, *args, **kwargs):
         super().setup(*args, **kwargs)
@@ -147,22 +147,25 @@ class SecCollectiveBodyOverviewList(SecMultipleList):
                     'notes': _('Σημειώσεις')
                 },
                 table_id='subject',
+                order=[[0, 'asc']],
                 update_url='subjects:sec_update_subject',
                 create_url='subjects:sec_create_subject',
                 objects=subjects,
                 next=self.request.path
             ),
             Table(
-                fields=['participants', 'participants.title'],
+                fields=['display_name', 'title', 'email'],
                 table_title=_('Συμμετέχοντες Συλλογικού Οργάνου'),
                 headers={
-                    'participants': _('Συμμετέχοντες'),
-                    'participants.title': _('Ιδιότητα')
+                    'display_name': _('Ονοματεπώνυμο'),
+                    'title': _('Ιδιότητα'),
+                    'email': _('E-mail')
                 },
                 table_id='participants',
+                order=[[1, 'asc'], [0, 'asc']],
                 update_url='bodies:sec_update_collectivebody_participants',
                 create_url='accounts:sec_create_staff_member',
-                objects=CollectiveBody.objects.filter(pk=body.pk),
+                objects=body.participants.all(),
                 next=self.request.path
             ),
             Table(
@@ -173,6 +176,7 @@ class SecCollectiveBodyOverviewList(SecMultipleList):
                     'title_gr': _('Τελική Απόφαση')
                 },
                 table_id='decision',
+                order=[[0, 'asc'], [1, 'asc']],
                 update_url='subjects:sec_update_decision',
                 create_url='subjects:sec_create_decision',
                 objects=Decision.objects.filter(subject__in=subjects),
@@ -185,6 +189,7 @@ class SecCollectiveBodyOverviewList(SecMultipleList):
                     'title_gr': _('Τίτλος')
                 },
                 table_id='subject_type',
+                order=[[0, 'asc']],
                 update_url='subjects:sec_update_subject-type',
                 create_url='subjects:sec_create_subject-type',
                 objects=SubjectType.objects.filter(id__in=subjects.values_list("type_id", flat=True)),
@@ -197,6 +202,7 @@ class SecCollectiveBodyOverviewList(SecMultipleList):
                     'title_gr': _('Τίτλος')
                 },
                 table_id='subject_category',
+                order=[[0, 'asc']],
                 update_url='subjects:sec_update_subject-category',
                 create_url='subjects:sec_create_subject-category',
                 objects=SubjectCategory.objects.filter(id__in=subjects.values_list("category_id", flat=True)),
@@ -241,12 +247,18 @@ class StaffListCollectiveBody(StaffList):
         'end_date': _('Ημερομηνία Λήξης')
     }
     table_title = _('Συλλογικά Όργανα')
+    ordering = ['end_date', 'start_date', 'president', get_order_by_title()]
     create_button = False
     update_buttons = False
     extra_buttons2 = True
     extra_button_icon2 = 'info'
     extra_text2 = _('Δράσεις')
     extra_url2 = 'bodies:staff_overview_collectivebody'
+
+    """
+    OVERRIDE get_queryset, DEFINE A setup METHOD AND MAYBE CHANGE THE ORDERING 
+    ALSO, ADD 2 TABLES WITH OLD AND NEW PARTICIPATIONS IN COLLECTIVE BODIES FOR THE STAFF MEMBER
+    """
 
 
 class StaffCollectiveBodyOverviewList(StaffMultipleList):
@@ -281,6 +293,7 @@ class StaffCollectiveBodyOverviewList(StaffMultipleList):
                     'notes': _('Σημειώσεις'),
                 },
                 table_id='subject',
+                order=[[0, 'asc']],
                 create_button=False,
                 update_buttons=False,
                 objects=subjects,
@@ -294,6 +307,7 @@ class StaffCollectiveBodyOverviewList(StaffMultipleList):
                     'title_gr': _('Τελική Απόφαση')
                 },
                 table_id='decision',
+                order=[[0, 'asc'], [1, 'asc']],
                 create_button=False,
                 update_buttons=False,
                 objects=Decision.objects.filter(subject__in=subjects),

@@ -5,7 +5,7 @@
         $('#{{ table_id }}').DataTable({
                 "lengthChange": false,
                 "pageLength": {{ page_length }},
-                "order": [[0, "desc"]],
+                "order": {{ order|safe }},
                 language: {
                     search: "{% trans 'Αναζήτηση' %}",
                     info: "_START_ - _END_ ({% trans 'σύνολο:' %} _TOTAL_ {% trans 'εγγραφές' %})",

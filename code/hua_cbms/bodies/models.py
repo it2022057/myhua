@@ -19,9 +19,10 @@ class CollectiveBody(TitleStrMixin, TrackedScopedProgramModel):
     class Meta:
         verbose_name = _('Συλλογικό Όργανο')
         verbose_name_plural = _('Συλλογικά Όργανα')
+        ordering = ['pk']
 
     title_gr = models.CharField(max_length=100)
-    title_en = models.CharField(max_length=100)
+    title_en = models.CharField(null=True, blank = True, max_length=100)
     participants = models.ManyToManyField('accounts.StaffMember', blank=True, related_name='collectivebody_participants')
     president = models.ForeignKey('accounts.StaffMember', null=True, on_delete=models.SET_NULL, related_name='collectivebody_president')
     secretariat = models.ForeignKey('scopes.Secretariat', null=True, on_delete=models.SET_NULL)

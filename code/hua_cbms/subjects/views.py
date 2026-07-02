@@ -45,6 +45,7 @@ class SecListSubject(views.ScopedSecListView):
         'notes': _('Σημειώσεις'),
     }
     table_title = _('Θέματα')
+    ordering = ['type', 'category']
     create_url = 'subjects:sec_create_subject'
     update_url = 'subjects:sec_update_subject'
 
@@ -82,6 +83,7 @@ class SecListSubjectType(views.ScopedSecListView):
         'title_gr': _('Τίτλος')
     }
     table_title = _('Τύποι Θεμάτων')
+    ordering = get_order_by_title()
     create_url = 'subjects:sec_create_subject-type'
     update_url = 'subjects:sec_update_subject-type'
 
@@ -119,6 +121,7 @@ class SecListSubjectCategory(views.ScopedSecListView):
         'title_gr': _('Τίτλος')
     }
     table_title = _('Κατηγορίες Θεμάτων')
+    ordering = get_order_by_title()
     create_url = 'subjects:sec_create_subject-category'
     update_url = 'subjects:sec_update_subject-category'
 
@@ -157,6 +160,7 @@ class SecListDecision(views.ScopedSecListView):
         'title_gr': _('Τελική Απόφαση')
     }
     table_title = _('Αποφάσεις')
+    ordering = ['subject', get_order_by_title()]
     create_url = 'subjects:sec_create_decision'
     update_url = 'subjects:sec_update_decision'
 

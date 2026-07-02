@@ -10,6 +10,7 @@ class Meeting(TrackedModel):
     class Meta:
         verbose_name = _('Συνεδρίαση')
         verbose_name_plural = _('Συνεδριάσεις')
+        ordering = ['pk']
 
     date_and_time = models.DateTimeField()
     location = models.CharField(max_length=30, default='Ομήρου 9, 17778, Αθήνα, Ελλάδα')

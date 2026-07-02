@@ -21,6 +21,7 @@ class SubjectType(TitleStrMixin, TrackedScopedProgramModel):
     class Meta:
         verbose_name = _('Τύπος Θέματος')
         verbose_name_plural = _('Τύποι Θεμάτων')
+        ordering = ['pk']
 
     title_gr = models.CharField(max_length=100)
     title_en = models.CharField(null = True, blank = True, max_length=100)
@@ -47,6 +48,7 @@ class SubjectCategory(TitleStrMixin, TrackedScopedProgramModel):
     class Meta:
         verbose_name = _('Κατηγορία Θέματος')
         verbose_name_plural = _('Κατηγορίες Θεμάτων')
+        ordering = ['pk']
 
     title_gr = models.CharField(max_length=100)
     title_en = models.CharField(null = True, blank = True, max_length=100)
@@ -73,7 +75,7 @@ class Subject(TrackedScopedProgramModel):
     class Meta:
         verbose_name = _('Θέμα')
         verbose_name_plural = _('Θέματα')
-        ordering = ['type']
+        ordering = ['pk']
 
     index = models.IntegerField()
     type = models.ForeignKey(SubjectType, null=True, blank=True, on_delete=models.CASCADE)
@@ -107,6 +109,7 @@ class Decision(TitleStrMixin, TrackedScopedProgramModel):
     class Meta:
         verbose_name = _('Απόφαση')
         verbose_name_plural = _('Αποφάσεις')
+        ordering = ['pk']
 
     title_gr = models.CharField(max_length=100)
     title_en = models.CharField(null = True, blank = True, max_length=100)

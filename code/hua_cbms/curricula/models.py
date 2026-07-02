@@ -14,6 +14,7 @@ class Institution(TitleStrMixin, models.Model):
     class Meta:
         verbose_name = _('Ίδρυμα')
         verbose_name_plural = _('Ιδρύματα')
+        ordering = ['pk']
 
     title_gr = models.CharField(max_length=100)
     title_en = models.CharField(max_length=100)
@@ -27,6 +28,7 @@ class School(TitleStrMixin, models.Model):
     class Meta:
         verbose_name = _('Σχολή')
         verbose_name_plural = _('Σχολές')
+        ordering = ['pk']
 
     title_gr = models.CharField(max_length=100)
     title_en = models.CharField(max_length=100)
@@ -45,6 +47,7 @@ class Department(TitleStrMixin, ScopedModelPrg):
     class Meta:
         verbose_name = _('Τμήμα')
         verbose_name_plural = _('Τμήματα')
+        ordering = ['pk']
 
     title_gr = models.CharField(max_length=100)
     title_en = models.CharField(max_length=100)
@@ -68,6 +71,7 @@ class StudyProgram(TitleStrMixin, ScopedModelPrg):
     class Meta:
         verbose_name = _('Πρόγραμμα Σπουδών')
         verbose_name_plural = _('Προγράμματα Σπουδών')
+        ordering = ['pk']
 
     UNDERGRADUATE = "Προπτυχιακό"
     POSTGRADUATE = "Μεταπτυχιακό"

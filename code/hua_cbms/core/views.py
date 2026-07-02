@@ -16,6 +16,7 @@ DEFAULT_CONTEXT_VALUES = {
     'context_object_name': 'objects',
     'table_id': 'objects',
     'page_length': 20,
+    'order': [],
     'table_title': _('Καταχωρήσεις'),
     'create_button': True,
     'create_url': None,
@@ -156,20 +157,9 @@ class ScopedSecListView(GenericListView):
         return is_secretariat(self.request.user)
 
     def get_queryset(self):
-        """
-                Maybe add this because i want ordering
-        """
-        # super().get_queryset()
-        # queryset = self.model.objects.sc_filter(user=self.request.user)
-        # 
-        # ordering = self.get_ordering()
-        # if ordering:
-        #     if isinstance(ordering, str):
-        #         ordering = (ordering,)
-        #     queryset = queryset.order_by(*ordering)
-        # 
-        # return queryset
-        return self.model.objects.sc_filter(user=self.request.user)
+        self.queryset = self.model.objects.sc_filter(user=self.request.user)
+
+        return super().get_queryset()
 
 
 class GenericUpdateView(LoginRequiredMixin, UserPassesTestMixin, generic.UpdateView):
@@ -377,7 +367,7 @@ class GenericDeleteView(View):
 
 class Table:
 
-    def __init__(self, objects=[], sections=[], **kwargs):
+    def __init__(self, objects=[], **kwargs):
         for k, v in DEFAULT_CONTEXT_VALUES.items():
             setattr(self, k, kwargs.get(k, v))
 
