@@ -5,6 +5,7 @@ from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.utils.translation import gettext_lazy as _
 
+from bodies.models import CollectiveBody
 from core.forms import GenericModelForm
 from core.widgets import ImageInput
 from .checks import validate_password
@@ -101,6 +102,30 @@ class StaffForm(GenericModelForm):
                 css_class="row"),
             Row(
                 Div(Field('can_post_theses')),
+                css_class="row"),
+        )
+
+
+class SecParticipantsForm(GenericModelForm):
+    class Meta:
+        fields = ['participants']
+        model = CollectiveBody
+        labels = { 'participants': _('Συμμετέχοντες') }
+        widgets = {
+            'participants': autocomplete.ModelSelect2Multiple(
+                url='accounts:staff-autocomplete',
+                attrs={**BASE_ATTRS, 'data-placeholder': _('Επιλέξτε συμμετέχοντες')}
+            )
+        }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        self.helper.layout = Layout(
+            Row(self.button_element_html,
+                css_class="row"),
+            Row(
+                Div(Field('participants')),
                 css_class="row"),
         )
 

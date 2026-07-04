@@ -15,7 +15,8 @@ from core.views import Section
 from hua_cbms import settings
 from scopes.models import Secretariat
 from .checks import app_urls, is_secretariat, is_staff_member
-from .forms import SignUpForm, RegisterForm, PasswordForm, ForgotPasswordForm, StaffForm, PersonalInfoForm
+from .forms import SignUpForm, RegisterForm, PasswordForm, ForgotPasswordForm, StaffForm, PersonalInfoForm, \
+    SecParticipantsForm
 from .models import StaffMember, PersonalInfo
 from .utils import complexity_message, get_domain_uri, send_password_link
 
@@ -48,7 +49,7 @@ class SecCreateStaffMember(views.ScopedSecCreateView):
 
         next_url = self.request.GET.get("next")
 
-        if "bodies/sec/collectivebody/" in next_url:
+        if "sec/collectivebody/" in next_url:
             body_id = next_url.split("collectivebody/")[1].split("/")[0]
             body = get_object_or_404(CollectiveBody, pk=body_id)
             body.participants.add(self.object)
@@ -78,7 +79,7 @@ class SecListStaffMember(views.ScopedSecListView):
     ordering = ['title', get_order_by_display_name()]
     create_url = 'accounts:sec_create_staff_member'
     update_url = 'accounts:sec_update_staff_member'
-    back_url = reverse_lazy('bodies:sec_list_collectivebodies')
+    # back_url = reverse_lazy('bodies:sec_list_collectivebodies')
     extra_buttons = True
     extra_text = _('Προφίλ')
     extra_button_icon = 'person'
@@ -90,12 +91,49 @@ class SecDeleteStaffMember(views.ScopedDeleteView):
     success_url = 'subjects:sec_list_staff_members'
 
 
+class SecUpdateParticipants(views.ScopedSecUpdateView):
+    model = CollectiveBody
+    form_class = SecParticipantsForm
+    success_url = 'bodies:sec_overview_collectivebody'
+    confirm_modal = True
+
+
+class SecListParticipants(views.ScopedSecListView):
+    model = StaffMember
+    fields = ['display_name', 'title', 'email']
+    headers = {
+        'display_name': _('Ονοματεπώνυμο'),
+        'title': _('Ιδιότητα'),
+        'email': _('E-mail')
+    }
+    table_title = _('Συμμετέχοντες')
+    ordering = ['title', get_order_by_display_name()]
+    create_url = 'accounts:sec_create_staff_member'
+    update_url = 'accounts:sec_update_staff_member'
+    back_url = reverse_lazy('bodies:sec_list_collectivebodies')
+    extra_buttons = True
+    extra_text = _('Προφίλ')
+    extra_button_icon = 'person'
+    extra_url = 'accounts:sec_personal_info_overview'
+
+    def get_queryset(self):
+        super().get_queryset()
+        body = get_object_or_404(CollectiveBody, pk=self.kwargs['pk'])
+
+        return body.participants.all()
+
+
 class SecUpdatePersonalInfo(views.ScopedSecUpdateView):
     model = PersonalInfo
     form_class = PersonalInfoForm
     success_url = 'accounts:sec_personal_info_overview'
     delete_url = 'accounts:sec_delete_personal_info'
     confirm_modal = True
+
+    def get_object(self, *args, **kwargs):
+        pi = get_object_or_404(PersonalInfo, pk=self.kwargs['pi_pk'])
+
+        return pi
 
     def get_delete_url(self, obj):
         if isinstance(self.delete_url, str):
@@ -121,7 +159,6 @@ class SecPersonalInfoOverviewList(views.SecMultipleSectionView):
     master_headline = _('Προσωπικά Στοιχεία')
     master_p = _('Παρακάτω ακολουθούν τα προσωπικά στοιχεία του χρήστη, χωρισμένα σε κατηγορίες...')
     update_url = 'accounts:sec_update_personal_info'
-    back_url = reverse_lazy('accounts:sec_list_staff_members')
 
     def get_update_url(self, obj):
         if self.update_url:

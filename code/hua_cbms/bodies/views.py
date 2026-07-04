@@ -4,12 +4,12 @@ from django.core.exceptions import PermissionDenied
 from django.db.models import Q
 from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
+from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
 from accounts.checks import is_secretariat
 from accounts.models import StaffMember
 from bodies import forms
-from bodies.forms import SecParticipantsForm
 from bodies.models import CollectiveBody
 from core import views
 from core.models import TitleStrMixin
@@ -99,14 +99,11 @@ class SecListCollectiveBody(SecList):
     extra_buttons = True
     extra_text = _('Συμμετέχοντες')
     extra_button_icon = 'people'
-    extra_url = 'accounts:sec_list_staff_members'
+    extra_url = 'accounts:sec_list_participants'
     extra_buttons2 = True
     extra_button_icon2 = 'history'
     extra_text2 = _('Δράσεις')
     extra_url2 = 'bodies:sec_overview_collectivebody'
-
-    def get_extra_url(self, obj):
-        return reverse_lazy(self.extra_url)
 
 
 class SecDeleteCollectiveBody(SecDelete):
@@ -155,7 +152,7 @@ class SecCollectiveBodyOverviewList(SecMultipleList):
             ),
             Table(
                 fields=['display_name', 'title', 'email'],
-                table_title=_('Συμμετέχοντες Συλλογικού Οργάνου'),
+                table_title=_('Συμμετέχοντες'),
                 headers={
                     'display_name': _('Ονοματεπώνυμο'),
                     'title': _('Ιδιότητα'),
@@ -163,7 +160,11 @@ class SecCollectiveBodyOverviewList(SecMultipleList):
                 },
                 table_id='participants',
                 order=[[1, 'asc'], [0, 'asc']],
-                update_url='bodies:sec_update_collectivebody_participants',
+                update_url_callable=lambda obj: reverse_lazy(
+                    "accounts:sec_update_participants",
+                    kwargs={"pk": body.pk},
+                ),
+                update_text=_('Ενημέρωση λίστας'),
                 create_url='accounts:sec_create_staff_member',
                 objects=body.participants.all(),
                 next=self.request.path
@@ -211,13 +212,6 @@ class SecCollectiveBodyOverviewList(SecMultipleList):
         ]
 
 
-class SecUpdateParticipants(views.ScopedSecUpdateView):
-    model = CollectiveBody
-    form_class = SecParticipantsForm
-    success_url = 'bodies:sec_overview_collectivebody'
-    confirm_modal = True
-
-
 class SecCollectiveBodyAutoComplete(TitleStrMixin, LoginRequiredMixin, UserPassesTestMixin,
                                     autocomplete.Select2QuerySetView):
     def get_queryset(self):
@@ -237,7 +231,7 @@ Staff Student Views
 """
 
 
-class StaffListCollectiveBody(StaffList):
+class StaffListCollectiveBody(StaffMultipleList):
     model = CollectiveBody
     fields = ['title_gr', 'president', 'start_date', 'end_date']
     headers = {
@@ -246,19 +240,65 @@ class StaffListCollectiveBody(StaffList):
         'start_date': _('Ημερομηνία Έναρξης'),
         'end_date': _('Ημερομηνία Λήξης')
     }
-    table_title = _('Συλλογικά Όργανα')
+    master_headline = _('Συλλογικά Όργανα')
+    master_p = _('Παρακάτω ακολουθούν τα συλλογικά όργανα στα οποία συμμετέχετε ή έχετε συμμετάσχει στο παρελθόν...')
     ordering = ['end_date', 'start_date', 'president', get_order_by_title()]
-    create_button = False
-    update_buttons = False
-    extra_buttons2 = True
-    extra_button_icon2 = 'info'
-    extra_text2 = _('Δράσεις')
-    extra_url2 = 'bodies:staff_overview_collectivebody'
 
-    """
-    OVERRIDE get_queryset, DEFINE A setup METHOD AND MAYBE CHANGE THE ORDERING 
-    ALSO, ADD 2 TABLES WITH OLD AND NEW PARTICIPATIONS IN COLLECTIVE BODIES FOR THE STAFF MEMBER
-    """
+    def get_queryset(self, current=True):
+        queryset = super().get_queryset()
+        staff_member = get_object_or_404(StaffMember, user=self.request.user)
+        today = timezone.now()
+
+        queryset = CollectiveBody.objects.filter(participants=staff_member)
+        if current:
+            queryset = queryset.filter(end_date__gte=today)
+        else:
+            queryset = queryset.filter(end_date__lt=today)
+
+        return queryset
+
+    def setup(self, *args, **kwargs):
+        super().setup(*args, **kwargs)
+        fields = ['title_gr', 'president', 'start_date', 'end_date']
+        headers = {
+            'title_gr': _('Τίτλος'),
+            'president': _('Πρόεδρος'),
+            'start_date': _('Ημερομηνία Έναρξης'),
+            'end_date': _('Ημερομηνία Λήξης')
+        }
+
+        self.tables = [
+            Table(
+                fields=fields,
+                table_title=_('Παλιές Συμμετοχές'),
+                headers=headers,
+                table_id='old_participations',
+                create_button=False,
+                update_buttons=False,
+                extra_buttons=True,
+                extra_button_class='btn btn-secondary',
+                extra_button_icon='info',
+                extra_text=_('Δράσεις'),
+                extra_url='bodies:staff_overview_collectivebody',
+                objects=self.get_queryset(current=False),
+                next=self.request.path
+            ),
+            Table(
+                fields=fields,
+                table_title=_('Τρέχουσες Συμμετοχές'),
+                headers=headers,
+                table_id='new_participations',
+                create_button=False,
+                update_buttons=False,
+                extra_buttons=True,
+                extra_button_class='btn btn-secondary',
+                extra_button_icon='info',
+                extra_text=_('Δράσεις'),
+                extra_url='bodies:staff_overview_collectivebody',
+                objects=self.get_queryset(current=True),
+                next=self.request.path
+            ),
+        ]
 
 
 class StaffCollectiveBodyOverviewList(StaffMultipleList):
@@ -314,35 +354,3 @@ class StaffCollectiveBodyOverviewList(StaffMultipleList):
                 next=self.request.path
             ),
         ]
-
-
-        # class StaffListCurrentCollectiveBody(StaffListCollectiveBody):
-#     table_title = _('Current Collective Bodies')
-#
-#     def get_queryset(self):
-#         today = timezone.now().date()
-#
-#         return (
-#             super()
-#             .get_queryset()
-#             .filter(participants=self.object)
-#             .filter(
-#                 Q(end_date__isnull=True) | Q(end_date__gte=today)
-#             )
-#             .distinct()
-#         )
-#
-#
-# class StaffListPastCollectiveBody(StaffListCollectiveBody):
-#     table_title = _('Past Collective Bodies')
-#
-#     def get_queryset(self):
-#         today = timezone.now().date()
-#
-#         return (
-#             super()
-#             .get_queryset()
-#             .filter(participants=self.object)
-#             .filter(end_date__lt=today)
-#             .distinct()
-#         )

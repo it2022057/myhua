@@ -18,11 +18,18 @@ urlpatterns = [
     path('password/forgot', views.forgot_password, name='forgot_password'),
     path('password/token/<str:token>', views.password_token, name='password_token'),
 
+    # URLs for Secretary CRUD for StaffMembers
     path('sec/staff', views.SecListStaffMember.as_view(), name='sec_list_staff_members'),
     path('sec/staff/<int:pk>', views.SecUpdateStaffMember.as_view(), name='sec_update_staff_member'),
     path('sec/staff/<int:pk>/delete', views.SecDeleteStaffMember.as_view(), name='sec_delete_staff_member'),
     path('sec/staff/new', views.SecCreateStaffMember.as_view(), name='sec_create_staff_member'),
 
+    # URLs for customizing/reading a Collective Body's Participants
+    path('sec/collectivebody/<int:pk>/participants', views.SecListParticipants.as_view(), name='sec_list_participants'),
+    path('sec/collectivebody/<int:pk>', views.SecUpdateParticipants.as_view(),
+         name='sec_update_participants'),
+
+    # URLs for Secretary RUD for user's PersonalInfo
     path('sec/staff/<int:pk>/personal-info', views.SecPersonalInfoOverviewList.as_view(), name='sec_personal_info_overview'),
     path('sec/staff/<int:pk>/personal-info/<int:pi_pk>', views.SecUpdatePersonalInfo.as_view(), name='sec_update_personal_info'),
     path('sec/staff/<int:pk>/personal-info/<int:pi_pk>/delete', views.SecDeleteStaffMember.as_view(), name='sec_delete_personal_info'),

@@ -39,11 +39,11 @@ APPS = {
     'applicant' : [
         {
             'title': _('Οι αιτήσεις μου'),
-            'url': reverse_lazy('accounts:forgot_password')
+            'url': reverse_lazy('accounts:forgot_password'),
         },
         {
             'title': _('Ξέχασα τον κωδικό πρόσβασης'),
-            'url': reverse_lazy('accounts:forgot_password')
+            'url': reverse_lazy('accounts:forgot_password'),
         }
     ],
     'staff_member' : [
@@ -53,7 +53,7 @@ APPS = {
         },
         {
             'title': _('Ξέχασα τον κωδικό πρόσβασης'),
-            'url': reverse_lazy('accounts:forgot_password')
+            'url': reverse_lazy('accounts:forgot_password'),
         }
     ],
     'change_password' : [
