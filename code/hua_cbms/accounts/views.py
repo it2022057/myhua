@@ -252,6 +252,25 @@ class SecPersonalInfoOverviewList(views.SecMultipleSectionView):
         ]
 
 
+# class ApplicantListApplications(views.ApplicantListView):
+#     model = StaffMember
+#     fields = ['display_name', 'title', 'email']
+#     headers = {
+#         'display_name': _('Ονοματεπώνυμο'),
+#         'title': _('Ιδιότητα'),
+#         'email': _('E-mail')
+#     }
+#     table_title = _('Μέλη Προσωπικού')
+#     ordering = ['title', get_order_by_display_name()]
+#     create_url = 'accounts:sec_create_staff_member'
+#     update_url = 'accounts:sec_update_staff_member'
+#     # back_url =
+#     extra_buttons = True
+#     extra_text = _('Προφίλ')
+#     extra_button_icon = 'person'
+#     extra_url = 'accounts:sec_personal_info_overview'
+
+
 @login_required
 def index(request):
     if is_secretariat(request.user):

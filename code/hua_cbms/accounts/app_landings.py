@@ -20,6 +20,10 @@ APPS = {
             'url': reverse_lazy('subjects:sec_list_subject-categories'),
         },
         {
+            'title': _('Συνεδριάσεις'),
+            'url': reverse_lazy('meetings:sec_list_meetings'),
+        },
+        {
             'title': _('Συλλογικά Όργανα'),
             'url': reverse_lazy('bodies:sec_list_collectivebodies'),
         },
@@ -40,10 +44,6 @@ APPS = {
         {
             'title': _('Οι αιτήσεις μου'),
             'url': reverse_lazy('accounts:forgot_password'),
-        },
-        {
-            'title': _('Ξέχασα τον κωδικό πρόσβασης'),
-            'url': reverse_lazy('accounts:forgot_password'),
         }
     ],
     'staff_member' : [
@@ -52,9 +52,9 @@ APPS = {
             'url': reverse_lazy('bodies:staff_list_collectivebodies'),
         },
         {
-            'title': _('Ξέχασα τον κωδικό πρόσβασης'),
-            'url': reverse_lazy('accounts:forgot_password'),
-        }
+            'title': _('Συνεδριάσεις'),
+            'url': reverse_lazy('meetings:staff_list_meetings'),
+        },
     ],
     'change_password' : [
         {

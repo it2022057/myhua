@@ -57,7 +57,7 @@ class StaffList(views.StaffListView):
 
 
 class StaffMultipleList(views.StaffMultipleListView):
-    template_name = 'core/multiple_tables.html'
+    template_name = 'bodies/multiple_tables.html'
 
 
 """

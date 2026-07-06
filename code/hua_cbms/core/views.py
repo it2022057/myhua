@@ -5,7 +5,7 @@ from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
 from django.views import generic, View
 
-from accounts.checks import is_secretariat, is_staff_member
+from accounts.checks import is_secretariat, is_staff_member, is_applicant
 from accounts.models import PersonalInfo, StaffMember
 from scopes.models import ScopedModelPrg
 from scopes.utils import get_scoped_object_or_exc
@@ -547,6 +547,30 @@ class StaffMultipleListView(MultipleListView):
 class StaffListView(GenericListView):
     def test_func(self):
         return is_staff_member(self.request.user)
+
+
+class ApplicantUpdateView(GenericUpdateView):
+
+    def test_func(self):
+        return is_applicant(self.request.user)
+
+
+class ApplicantCreateView(GenericCreateView):
+
+    def test_func(self):
+        return is_applicant(self.request.user)
+
+
+class ApplicantMultipleListView(MultipleListView):
+
+    def test_func(self):
+        return is_applicant(self.request.user)
+
+
+class ApplicantListView(GenericListView):
+    def test_func(self):
+        return is_applicant(self.request.user)
+
 
 # class DoctoralStudentUpdateView(GenericUpdateView):
 #

@@ -5,7 +5,6 @@ from django.utils.translation import gettext_lazy as _
 from romanize import romanize
 
 from core.models import PersonStrMixin, TrackedScopedProgramModel
-from core.utils import get_order_by_display_name
 from curricula.models import Department, StudyProgram
 from hua_cbms import settings
 from scopes.models import ScopedModelDep, ScopedQueryDep
@@ -82,7 +81,7 @@ class PersonalInfo(TrackedScopedProgramModel):
     def scope_query(self, scope):
         if self.staffmember_set.exists():
             staff_member = self.staffmember_set.first()
-            return scope['collective_bodies'].filter(Q(participants=staff_member)|
+            return scope['collective_bodies'].filter(Q(participants=staff_member) |
                                                      Q(president=staff_member)).exists()
         else:
             return False
@@ -96,7 +95,7 @@ class PersonalInfo(TrackedScopedProgramModel):
             user.last_name = self.surname
 
         user.save()
-        super().save(*args, update_user = self.updated_by, **kwargs)
+        super().save(*args, update_user=self.updated_by, **kwargs)
 
 
 def create_personal_info_if_required(obj):
@@ -121,6 +120,7 @@ class StaffMember(PersonStrMixin, ScopedModelDep):
     """
     The basic staff member class. Stores information related to faculty members
     """
+
     class Meta:
         verbose_name = _('Μέλος Προσωπικού')
         verbose_name_plural = _('Μέλη Προσωπικού')
@@ -180,6 +180,38 @@ class StaffMember(PersonStrMixin, ScopedModelDep):
         if personal_info:
             personal_info.delete()
 
+
+class ApplicantQuery(ScopedQueryDep):
+
+    def scope_filter(self, scope):
+        return self.filter(
+            application__call__program__in=scope['programs']
+        )
+
+
+class Applicant(PersonStrMixin, TrackedScopedProgramModel):
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True)
+    given_name = models.CharField(max_length=50)
+    given_name_en = models.CharField(null=True, max_length=50)
+    surname = models.CharField(max_length=70)
+    surname_en = models.CharField(null=True, max_length=70)
+
+    objects = ApplicantQuery.as_manager()
+
+    def save(self, *args, **kwargs):
+        if self.user:
+            self.given_name = self.user.first_name
+            self.surname = self.user.last_name
+
+        if not (self.given_name_en and (self.given_name_en != '')):
+            self.given_name_en = romanize(self.given_name)
+
+        if not (self.surname_en and (self.surname_en != '')):
+            self.surname_en = romanize(self.surname)
+
+        super().save(*args, **kwargs)
+
+
 class CustomUserPermissions(models.Model):
     class Meta:
         verbose_name = _('Προσαρμοσμένο Δικαίωμα Χρήστη')
@@ -187,4 +219,3 @@ class CustomUserPermissions(models.Model):
         permissions = (
             ("is_secretariat", "Is a secretariat user"),
         )
-

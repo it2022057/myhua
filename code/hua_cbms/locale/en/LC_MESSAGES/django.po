@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-07-04 15:14+0300\n"
+"POT-Creation-Date: 2026-07-07 02:13+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -28,43 +28,44 @@ msgstr "HUA site admin"
 #: accounts/app_landings.py:7
 #: bodies/templates/bodies/partials/bodies_menu.html:7
 #: bodies/templates/bodies/partials/bodies_menu.html:21 subjects/models.py:77
-#: subjects/views.py:47 subjects/views.py:190
+#: subjects/views.py:48 subjects/views.py:189
 msgid "Θέματα"
 msgstr "Subjects"
 
 #: accounts/app_landings.py:11
 #: bodies/templates/bodies/partials/bodies_menu.html:9
 #: bodies/templates/bodies/partials/bodies_menu.html:23 subjects/models.py:111
-#: subjects/views.py:162 subjects/views.py:203
+#: subjects/views.py:163 subjects/views.py:202
 msgid "Αποφάσεις"
 msgstr "Decisions"
 
 #: accounts/app_landings.py:15
 #: bodies/templates/bodies/partials/bodies_menu.html:10 subjects/models.py:23
 #: subjects/templates/subjects/partials/subjects_menu.html:6
-#: subjects/views.py:85
+#: subjects/views.py:86
 msgid "Τύποι Θεμάτων"
 msgstr "Subject Types"
 
 #: accounts/app_landings.py:19
 #: bodies/templates/bodies/partials/bodies_menu.html:12 subjects/models.py:50
 #: subjects/templates/subjects/partials/subjects_menu.html:7
-#: subjects/views.py:123
+#: subjects/views.py:124
 msgid "Κατηγορίες Θεμάτων"
 msgstr "Subject Categories"
 
-#: accounts/app_landings.py:23 bodies/models.py:21 bodies/views.py:95
+#: accounts/app_landings.py:23 accounts/app_landings.py:55
+#: meetings/models.py:19 meetings/views.py:46 meetings/views.py:68
+msgid "Συνεδριάσεις"
+msgstr "Meetings"
+
+#: accounts/app_landings.py:27 bodies/models.py:21 bodies/views.py:95
 #: bodies/views.py:243
 msgid "Συλλογικά Όργανα"
 msgstr "Collective Bodies"
 
-#: accounts/app_landings.py:41
+#: accounts/app_landings.py:45
 msgid "Οι αιτήσεις μου"
 msgstr "My applications"
-
-#: accounts/app_landings.py:45 accounts/app_landings.py:55
-msgid "Ξέχασα τον κωδικό πρόσβασης"
-msgstr "Forgot password"
 
 #: accounts/app_landings.py:51
 msgid "Οι συμμετοχές μου"
@@ -128,17 +129,17 @@ msgid "Ίδρυμα"
 msgstr "Institution"
 
 #: accounts/forms.py:35 bodies/views.py:143 bodies/views.py:332
-#: curricula/models.py:29 subjects/forms.py:22 subjects/views.py:187
+#: curricula/models.py:29 subjects/forms.py:22 subjects/views.py:45
 msgid "Σχολή"
 msgstr "School"
 
 #: accounts/forms.py:36 bodies/views.py:142 bodies/views.py:331
-#: curricula/models.py:48 subjects/forms.py:21 subjects/views.py:186
+#: curricula/models.py:48 subjects/forms.py:21 subjects/views.py:44
 msgid "Τμήμα"
 msgstr "Department"
 
 #: accounts/forms.py:37 bodies/views.py:141 bodies/views.py:330
-#: curricula/models.py:72 subjects/forms.py:20 subjects/views.py:185
+#: curricula/models.py:72 subjects/forms.py:20 subjects/views.py:43
 msgid "Πρόγραμμα Σπουδών"
 msgstr "Study Program"
 
@@ -336,20 +337,20 @@ msgstr "New password"
 msgid "Νέος κωδικός πρόσβασης (επανάληψη)"
 msgstr "New password (repeat)"
 
-#: accounts/models.py:38 accounts/models.py:39 accounts/views.py:159
+#: accounts/models.py:37 accounts/models.py:38 accounts/views.py:159
 #: accounts/views.py:197 core/views.py:30
 msgid "Προσωπικά Στοιχεία"
 msgstr "Personal Information"
 
-#: accounts/models.py:47
+#: accounts/models.py:46
 msgid "Άρρεν"
 msgstr "Male"
 
-#: accounts/models.py:48
+#: accounts/models.py:47
 msgid "Θήλυ"
 msgstr "Female"
 
-#: accounts/models.py:49
+#: accounts/models.py:48
 msgid "Άλλο"
 msgstr "Other"
 
@@ -361,11 +362,11 @@ msgstr "Staff Member"
 msgid "Μέλη Προσωπικού"
 msgstr "Staff Members"
 
-#: accounts/models.py:185
+#: accounts/models.py:217
 msgid "Προσαρμοσμένο Δικαίωμα Χρήστη"
 msgstr "Custom User Permission"
 
-#: accounts/models.py:186
+#: accounts/models.py:218
 msgid "Προσαρμοσμένα Δικαιώματα Χρήστη"
 msgstr "Custom User Permissions"
 
@@ -404,8 +405,8 @@ msgid "Έξοδος"
 msgstr "Logout"
 
 #: accounts/templates/accounts/page.html:92
-#: accounts/templates/accounts/page.html:99 accounts/views.py:384
-#: accounts/views.py:399 accounts/views.py:463
+#: accounts/templates/accounts/page.html:99 accounts/views.py:403
+#: accounts/views.py:418 accounts/views.py:482
 msgid "Επιστροφή"
 msgstr "Back"
 
@@ -437,7 +438,7 @@ msgstr "Go to"
 
 #: accounts/templates/accounts/password_reset_choice.html:15
 #: accounts/templates/accounts/password_reset_choice.html:20
-#: accounts/views.py:270 accounts/views.py:327
+#: accounts/views.py:289 accounts/views.py:346
 msgid "εδώ"
 msgstr "here"
 
@@ -611,42 +612,42 @@ msgstr "Home Information"
 msgid "Στοιχεία Εργασίας"
 msgstr "Work Information"
 
-#: accounts/views.py:268
+#: accounts/views.py:287
 msgid ""
 "Αποσυνδεθήκατε από το σύστημα. Ευχαριστούμε που χρησιμοποιήσατε την υπηρεσία "
 "μας. "
 msgstr "You have been logged out. Thank you for using our service."
 
-#: accounts/views.py:269 accounts/views.py:326
+#: accounts/views.py:288 accounts/views.py:345
 msgid "Συνδεθείτε ξανά"
 msgstr "Log in again"
 
-#: accounts/views.py:287
+#: accounts/views.py:306
 msgid ""
 "H πρόκληση να εγγραφείτε έχει λήξει. Θα πρέπει να επαναλάβετε την διαδικασία."
 msgstr ""
 "The invitation to register has expired. You will need to repeat the process."
 
-#: accounts/views.py:291 accounts/views.py:450
+#: accounts/views.py:310 accounts/views.py:469
 msgid "O σύνδεσμος δεν είναι σωστός!"
 msgstr "The link is invalid!"
 
-#: accounts/views.py:297
+#: accounts/views.py:316
 msgid "Έχετε ήδη εγγραφεί στο σύστημα!"
 msgstr "You are already registered in the system!"
 
-#: accounts/views.py:325
+#: accounts/views.py:344
 msgid "Εγγραφήκατε επιτυχώς στο σύστημα!"
 msgstr "You have successfully registered in the system!"
 
-#: accounts/views.py:362
+#: accounts/views.py:381
 msgid ""
 "Έχει αποσταλλεί e-mail στην διεύθυνση που δηλώσατε για να ενεργοποιήσετε το "
 "λογαριασμό σας"
 msgstr ""
 "An email has been sent to the address you provided to activate your account"
 
-#: accounts/views.py:383
+#: accounts/views.py:402
 msgid ""
 "Είστε ιδρυματικός χρήστης. Θα πρέπει να αλλάξετε τον κωδικό χρησιμοποιώντας "
 "τα κεντρικά συστήματα του ιδρύματος"
@@ -654,17 +655,17 @@ msgstr ""
 "You are an institutional user. You must change your password using the "
 "institution’s central systems."
 
-#: accounts/views.py:398 accounts/views.py:462
+#: accounts/views.py:417 accounts/views.py:481
 msgid "Ο κωδικός σας έχει αλλάξει."
 msgstr "Your password has been changed."
 
-#: accounts/views.py:425
+#: accounts/views.py:444
 msgid ""
 "Παρακαλούμε ελέγξτε την διεύθυνση ηλεκτρονικού ταχυδρομείου που καταχωρήσατε "
 "για την συνέχεια."
 msgstr "Please check the email address you provided to proceed."
 
-#: accounts/views.py:447
+#: accounts/views.py:466
 msgid "Ο σύνδεσμος αυτός έχει λήξει."
 msgstr "This link has expired."
 
@@ -719,7 +720,9 @@ msgstr "Select president"
 msgid "Επιλέξτε γραμματεία"
 msgstr "Select secretariat"
 
-#: bodies/models.py:20 subjects/forms.py:23 subjects/views.py:44
+#: bodies/models.py:20 meetings/forms.py:13 meetings/views.py:41
+#: meetings/views.py:63 subjects/forms.py:23 subjects/views.py:40
+#: subjects/views.py:184
 msgid "Συλλογικό Όργανο"
 msgstr "Collective Body"
 
@@ -733,8 +736,8 @@ msgid "Δημιουργία Συλλογικού Πανεπιστημιακού 
 msgstr "Create Collective Body"
 
 #: bodies/views.py:88 bodies/views.py:190 bodies/views.py:203
-#: bodies/views.py:238 bodies/views.py:264 subjects/views.py:83
-#: subjects/views.py:121
+#: bodies/views.py:238 bodies/views.py:264 subjects/views.py:84
+#: subjects/views.py:122
 msgid "Τίτλος"
 msgstr "Title"
 
@@ -759,18 +762,19 @@ msgstr "Collective Body Information: "
 msgid "Θέματα Συνεδριάσεων Συλλογικού Οργάνου"
 msgstr "Subjects of Collective Body Meetings"
 
-#: bodies/views.py:137 bodies/views.py:327 subjects/forms.py:16
-#: subjects/views.py:41 subjects/views.py:182
+#: bodies/views.py:137 bodies/views.py:327 meetings/forms.py:12
+#: meetings/views.py:38 meetings/views.py:62 subjects/forms.py:16
+#: subjects/views.py:39 subjects/views.py:183
 msgid "Θέση"
 msgstr "Index"
 
 #: bodies/views.py:138 bodies/views.py:328 subjects/forms.py:17
-#: subjects/views.py:42 subjects/views.py:183
+#: subjects/views.py:41 subjects/views.py:185
 msgid "Τύπος"
 msgstr "Type"
 
 #: bodies/views.py:139 bodies/views.py:329 subjects/forms.py:18
-#: subjects/views.py:43 subjects/views.py:184
+#: subjects/views.py:42 subjects/views.py:186
 msgid "Κατηγορία"
 msgstr "Category"
 
@@ -778,8 +782,9 @@ msgstr "Category"
 msgid "Αιτών"
 msgstr "Applicant"
 
-#: bodies/views.py:144 bodies/views.py:333 subjects/forms.py:24
-#: subjects/views.py:45 subjects/views.py:188
+#: bodies/views.py:144 bodies/views.py:333 meetings/forms.py:16
+#: meetings/views.py:44 meetings/views.py:66 subjects/forms.py:24
+#: subjects/views.py:46 subjects/views.py:187
 msgid "Σημειώσεις"
 msgstr "Notes"
 
@@ -792,12 +797,12 @@ msgid "Αποφάσεις για τα Θέματα"
 msgstr "Decisions on the Subjects"
 
 #: bodies/views.py:176 bodies/views.py:346 subjects/forms.py:28
-#: subjects/models.py:76 subjects/views.py:159 subjects/views.py:200
+#: subjects/models.py:76 subjects/views.py:160 subjects/views.py:199
 msgid "Θέμα"
 msgstr "Subject"
 
-#: bodies/views.py:177 bodies/views.py:347 subjects/views.py:160
-#: subjects/views.py:201
+#: bodies/views.py:177 bodies/views.py:347 subjects/views.py:161
+#: subjects/views.py:200
 msgid "Τελική Απόφαση"
 msgstr "Final Decision"
 
@@ -858,22 +863,27 @@ msgid "Θα αντικατασταθεί με:"
 msgstr "Will be replaced with:"
 
 #: core/templates/core/partials/table.html:10
+#: meetings/templates/meetings/partials/table.html:10
 msgid "Αναζήτηση"
 msgstr "Search"
 
 #: core/templates/core/partials/table.html:11
+#: meetings/templates/meetings/partials/table.html:11
 msgid "σύνολο:"
 msgstr "total:"
 
 #: core/templates/core/partials/table.html:11
+#: meetings/templates/meetings/partials/table.html:11
 msgid "εγγραφές"
 msgstr "records"
 
 #: core/templates/core/partials/table.html:13
+#: meetings/templates/meetings/partials/table.html:13
 msgid "Προηγούμενο"
 msgstr "Previous"
 
 #: core/templates/core/partials/table.html:14
+#: meetings/templates/meetings/partials/table.html:14
 msgid "Επόμενο"
 msgstr "Next"
 
@@ -949,13 +959,49 @@ msgstr "Departments"
 msgid "Προγράμματα Σπουδών"
 msgstr "Study Programs"
 
-#: meetings/models.py:11
+#: meetings/forms.py:14 meetings/views.py:42 meetings/views.py:64
+msgid "Τοποθεσία"
+msgstr "Location"
+
+#: meetings/forms.py:15 meetings/views.py:43 meetings/views.py:65
+msgid "Ημερομηνία & ώρα"
+msgstr "Date & time"
+
+#: meetings/forms.py:28 subjects/forms.py:64
+msgid "Επιλέξτε συλλογικό όργανο"
+msgstr "Select collective body"
+
+#: meetings/models.py:18
 msgid "Συνεδρίαση"
 msgstr "Meeting"
 
-#: meetings/models.py:12
-msgid "Συνεδριάσεις"
-msgstr "Meetings"
+#: meetings/views.py:22
+msgid "Δημιουργία Συνεδρίασης"
+msgstr "Create Meeting"
+
+#: meetings/views.py:39 meetings/views.py:84
+msgid "Παρών"
+msgstr "Present"
+
+#: meetings/views.py:40 meetings/views.py:83
+msgid "Απών"
+msgstr "Absent"
+
+#: meetings/views.py:71 meetings/views.py:81
+msgid "Αλλαγή απάντησης"
+msgstr "Change reply"
+
+#: meetings/views.py:74
+msgid "Αποδοχή"
+msgstr "Accept"
+
+#: meetings/views.py:79
+msgid "Άρνηση"
+msgstr "Refuse"
+
+#: meetings/views.py:82
+msgid "Παρακαλούμε επιλέξτε εκ νέου την απάντηση για τη συμμετοχή σας στη συνεδρίαση !"
+msgstr "Please re-select your response regarding your participation in the meeting !"
 
 #: scopes/models.py:15
 msgid "Γραμματείες"
@@ -986,10 +1032,6 @@ msgstr "Select applicant"
 msgid "Επιλέξτε σχολή"
 msgstr "Select school"
 
-#: subjects/forms.py:64
-msgid "Επιλέξτε συλλογικό όργανο"
-msgstr "Select collective body"
-
 #: subjects/forms.py:72
 msgid "Επιλέξτε θέμα"
 msgstr "Select subject"
@@ -1018,19 +1060,19 @@ msgstr ""
 msgid "Παρελθόν"
 msgstr ""
 
-#: subjects/views.py:25
+#: subjects/views.py:23
 msgid "Δημιουργία Θέματος"
 msgstr "Create Subject"
 
-#: subjects/views.py:67
+#: subjects/views.py:68
 msgid "Δημιουργία Τύπου Θέματος"
 msgstr "Create Subject Type"
 
-#: subjects/views.py:105
+#: subjects/views.py:106
 msgid "Δημιουργία Κατηγορίας Θέματος"
 msgstr "Create Subject Category"
 
-#: subjects/views.py:143
+#: subjects/views.py:144
 msgid "Δημιουργία Απόφασης"
 msgstr "Create Decision"
 
@@ -1421,9 +1463,6 @@ msgstr "Create Decision"
 #~ "επιστολή"
 #~ msgstr "There is no contact that has not sent a letter of recommendation"
 
-#~ msgid "Υποβολή αίτησης"
-#~ msgstr "Submit application"
-
 #~ msgid "Στοιχεία Πρόσκλησης"
 #~ msgstr "Call Details"
 
@@ -1807,9 +1846,6 @@ msgstr "Create Decision"
 
 #~ msgid "Τίτλος Διατριβής (Αγγλικά)"
 #~ msgstr "Dissertation Title (English)"
-
-#~ msgid "Ημερομηνία Εγγραφής"
-#~ msgstr "Registration Date"
 
 #~ msgid "Έτος Εγγραφής"
 #~ msgstr "Registration Year"

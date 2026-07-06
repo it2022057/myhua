@@ -1,5 +1,3 @@
-from lib2to3.fixes.fix_input import context
-
 from dal import autocomplete
 from django.contrib.auth.mixins import UserPassesTestMixin, LoginRequiredMixin
 from django.db.models import Q
@@ -36,13 +34,16 @@ class SecUpdateSubject(views.ScopedSecUpdateView):
 
 class SecListSubject(views.ScopedSecListView):
     model = Subject
-    fields = ['index', 'type', 'category', 'collective_body', 'notes']
+    fields = ['index', 'collective_body', 'type', 'category', 'program', 'department', 'school', 'notes']
     headers = {
         'index': _('Θέση'),
+        'collective_body': _('Συλλογικό Όργανο'),
         'type': _('Τύπος'),
         'category': _('Κατηγορία'),
-        'collective_body': _('Συλλογικό Όργανο'),
-        'notes': _('Σημειώσεις'),
+        'program': _('Πρόγραμμα Σπουδών'),
+        'department': _('Τμήμα'),
+        'school': _('Σχολή'),
+        'notes': _('Σημειώσεις')
     }
     table_title = _('Θέματα')
     ordering = ['type', 'category']
@@ -177,14 +178,12 @@ Staff Subject and Decision Views
 
 class StaffListSubject(views.StaffListView):
     model = Subject
-    fields = ['index', 'type', 'category', 'program', 'department', 'school', 'notes']
+    fields = ['index', 'collective_body', 'type', 'category', 'notes']
     headers = {
         'index': _('Θέση'),
+        'collective_body': _('Συλλογικό Όργανο'),
         'type': _('Τύπος'),
         'category': _('Κατηγορία'),
-        'program': _('Πρόγραμμα Σπουδών'),
-        'department': _('Τμήμα'),
-        'school': _('Σχολή'),
         'notes': _('Σημειώσεις')
     }
     table_title = _('Θέματα')
