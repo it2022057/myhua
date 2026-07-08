@@ -1,3 +1,4 @@
+from django.core.validators import MinValueValidator
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth import get_user_model
 from django.db import models
@@ -77,7 +78,7 @@ class Subject(TrackedScopedProgramModel):
         verbose_name_plural = _('Θέματα')
         ordering = ['pk']
 
-    index = models.IntegerField()
+    index = models.PositiveIntegerField(validators=[MinValueValidator(1)])
     type = models.ForeignKey(SubjectType, null=True, blank=True, on_delete=models.CASCADE)
     category = models.ForeignKey(SubjectCategory, null=True, blank=True, on_delete=models.CASCADE)
     applicant_user = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)

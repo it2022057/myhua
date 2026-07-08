@@ -1,3 +1,4 @@
+from django.core.validators import MinValueValidator
 from django.utils.translation import gettext_lazy as _
 from django.db import models
 
@@ -19,7 +20,7 @@ class Meeting(TrackedScopedProgramModel):
         verbose_name_plural = _('Συνεδριάσεις')
         ordering = ['pk']
 
-    index = models.IntegerField()
+    index = models.PositiveIntegerField(validators=[MinValueValidator(1)])
     present = models.ManyToManyField('accounts.StaffMember', blank=True, related_name='meeting_present')
     absent = models.ManyToManyField('accounts.StaffMember', blank=True, related_name='meeting_absent')
     collective_body = models.ForeignKey('bodies.CollectiveBody', null=True, on_delete=models.SET_NULL)

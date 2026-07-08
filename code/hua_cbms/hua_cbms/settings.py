@@ -149,8 +149,8 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 AUTHENTICATION_BACKENDS = [
-    # "django_auth_ldap.backend.LDAPBackend",
-    # "hua_cbms.auth.CustomAuthBackend",
+    "django_auth_ldap.backend.LDAPBackend",
+    "hua_cbms.auth.CustomAuthBackend",
     "django.contrib.auth.backends.ModelBackend",
 ]
 
@@ -221,7 +221,8 @@ LOGGING = {
 # AUTH_LDAP_SERVER_URI = os.environ.get('AUTH_LDAP_SERVER_URI')
 # AUTH_LDAP_BIND_DN = os.environ.get('AUTH_LDAP_BIND_DN')
 # AUTH_LDAP_BIND_PASSWORD = os.environ.get('AUTH_LDAP_BIND_PASSWORD')
-AUTH_LDAP_SERVER_URI = "ldap://10.100.51.117"
+# AUTH_LDAP_SERVER_URI = "ldap://10.100.51.117"
+AUTH_LDAP_SERVER_URI = "ldap://ldap3.ditapps.hua.gr"
 AUTH_LDAP_BIND_DN = "uid=it2022057,ou=People,dc=hua,dc=gr"
 AUTH_LDAP_BIND_PASSWORD = "go&U2E5$U$"
 AUTH_LDAP_USER_SEARCH = LDAPSearch(

@@ -1,11 +1,14 @@
 from django.contrib.auth.decorators import login_required
-from django.core.exceptions import ViewDoesNotExist
-from django.db.models import Q
-from django.shortcuts import get_object_or_404, redirect
-from django.urls import reverse_lazy
+from django.core.exceptions import PermissionDenied
+from django.db.models import Q, Max
+from django.http import JsonResponse
+from django.shortcuts import get_object_or_404
 from django.utils.translation import gettext_lazy as _
+from django.views.decorators.http import require_GET
+from rest_framework.reverse import reverse_lazy
 
 from accounts.models import StaffMember
+from bodies.models import CollectiveBody
 from core import views
 from . import forms
 from .models import Meeting
@@ -17,10 +20,17 @@ Secretariat Subject Views
 
 class SecCreateMeeting(views.ScopedSecCreateView):
     model = Meeting
+    template_name = 'meetings/show_object.html'
     form_class = forms.SecMeetingForm
     success_url = 'meetings:sec_list_meetings'
     headline = _('Δημιουργία Συνεδρίασης')
     back_url = ''
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data()
+        context['nextIndexUrl'] = reverse_lazy('meetings:next_meeting_index')
+
+        return context
 
 
 class SecUpdateMeeting(views.ScopedSecUpdateView):
@@ -68,69 +78,37 @@ class StaffListMeeting(views.StaffListView):
     table_title = _('Συνεδριάσεις')
     ordering = ['collective_body', 'index']
     create_button = False
-    update_text = _('Αλλαγή απάντησης')
-    extra_buttons = True
-    extra_button_icon = 'check_circle'
-    extra_text = _('Αποδοχή')
-    extra_url = 'meetings:staff_accept_meeting'
-    extra_buttons2 = True
-    extra_button_icon2 = 'cancel'
-    extra_button_class2 = 'btn btn-danger'
-    extra_text2 = _('Άρνηση')
-    extra_url2 = 'meetings:staff_refuse_meeting'
-    confirm_modal_title = _('Αλλαγή απάντησης')
-    confirm_modal_question = _('Παρακαλούμε επιλέξτε εκ νέου την απάντηση για τη συμμετοχή σας στη συνεδρίαση !')
-    confirm_modal_cancel = _('Απών')
-    confirm_modal_ok = _('Παρών')
+    update_buttons = False
 
     def get_queryset(self):
         super().get_queryset()
         staff_member = get_object_or_404(StaffMember, user=self.request.user)
         queryset = Meeting.objects.exclude(Q(present=staff_member) | Q(absent=staff_member))
+        # queryset = Meeting.objects.filter(body__members=staff_member) LATER WHEN I CREATE THE BODY MODEL
 
         return queryset
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        staff_member = get_object_or_404(StaffMember, user=self.request.user)
-
-        for meeting in context[self.context_object_name]:
-            if meeting.can_respond(staff_member):
-                meeting.display_invitation_buttons = True
-            else:
-                meeting.display_invitation_buttons = False
-                # GIVE THEM AN OPTION TO CHANGE THEIR RESPONSE, IF THE DATE TIME OF THE MEETING HASN'T PASSED
-                meeting.present_url = reverse_lazy('meetings:staff_accept_meeting', kwargs={'pk': meeting.pk})
-                meeting.absent_url = reverse_lazy('meetings:staff_refuse_meeting', kwargs={'pk': meeting.pk})
-
-        return context
-
 
 @login_required
-def accept_meeting(request, pk):
-    meeting = get_object_or_404(Meeting, pk=pk)
-    staff_member = get_object_or_404(StaffMember, user=request.user)
+@require_GET
+def get_next_meeting_index(request):
+    collective_body_id = request.GET.get('collective_body')
 
-    # Is the staff member invited and has not already replied ?
-    if not meeting.can_respond(staff_member):
-        raise ViewDoesNotExist
+    if not collective_body_id:
+        return JsonResponse({'next_index': ''})
 
-    meeting.absent.remove(staff_member)
-    meeting.present.add(staff_member)
+    # Find the collective body only if the current user has access to it (*sc_filter*)
+    has_permission = CollectiveBody.objects.sc_filter(user=request.user).filter(pk=collective_body_id).exists()
 
-    return redirect(request.GET.get('next') or 'meetings:staff_list_meetings')
+    # Prevents logged-in users with no access to the collective body, to visit the endpoint
+    if not has_permission:
+        raise PermissionDenied
 
+    previous_index = (
+        Meeting.objects
+        .filter(collective_body_id=collective_body_id)
+        .aggregate(Max('index'))['index__max']
+        or 0
+    )
 
-@login_required
-def refuse_meeting(request, pk):
-    meeting = get_object_or_404(Meeting, pk=pk)
-    staff_member = get_object_or_404(StaffMember, user=request.user)
-
-    # Is the staff member invited and has not already replied ?
-    if not meeting.can_respond(staff_member):
-        raise ViewDoesNotExist
-
-    meeting.present.remove(staff_member)
-    meeting.absent.add(staff_member)
-
-    return redirect(request.GET.get('next') or 'meetings:staff_list_meetings')
+    return JsonResponse({'next_index': previous_index + 1})

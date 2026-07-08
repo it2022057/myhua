@@ -1,10 +1,15 @@
 from dal import autocomplete
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import UserPassesTestMixin, LoginRequiredMixin
-from django.db.models import Q
+from django.core.exceptions import PermissionDenied
+from django.db.models import Q, Max
+from django.http import JsonResponse
 from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
+from django.views.decorators.http import require_GET
 
 from accounts.checks import is_secretariat
+from bodies.models import CollectiveBody
 from core import views
 from core.utils import get_order_by_title
 from scopes.utils import get_secretariat_scope
@@ -18,10 +23,17 @@ Secretariat Subject Views
 
 class SecCreateSubject(views.ScopedSecCreateView):
     model = Subject
+    template_name = 'meetings/show_object.html'
     form_class = forms.SecSubjectForm
     success_url = 'subjects:sec_list_subjects'
     headline = _('Δημιουργία Θέματος')
     back_url = ''
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data()
+        context['nextIndexUrl'] = reverse_lazy('subjects:next_subject_index')
+
+        return context
 
 
 class SecUpdateSubject(views.ScopedSecUpdateView):
@@ -54,6 +66,31 @@ class SecListSubject(views.ScopedSecListView):
 class SecDeleteSubject(views.ScopedDeleteView):
     model = Subject
     success_url = 'subjects:sec_list_subjects'
+
+
+@login_required
+@require_GET
+def get_next_subject_index(request):
+    collective_body_id = request.GET.get('collective_body')
+
+    if not collective_body_id:
+        return JsonResponse({'next_index': ''})
+
+    # Find the collective body only if the current user has access to it (*sc_filter*)
+    has_permission = CollectiveBody.objects.sc_filter(user=request.user).filter(pk=collective_body_id).exists()
+
+    # Prevents logged-in users with no access to the collective body, to visit the endpoint
+    if not has_permission:
+        raise PermissionDenied
+
+    previous_index = (
+        Subject.objects
+        .filter(collective_body_id=collective_body_id)
+        .aggregate(Max('index'))['index__max']
+        or 0
+    )
+
+    return JsonResponse({'next_index': previous_index + 1})
 
 
 """

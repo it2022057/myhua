@@ -3,6 +3,7 @@ from django import forms
 from crispy_forms.layout import Layout, Row, Div, Field, HTML
 from django.utils.translation import gettext_lazy as _
 
+from accounts.checks import validate_subject_index
 from core.forms import GenericModelForm
 from subjects.models import Subject, Decision, SubjectType, SubjectCategory
 
@@ -109,6 +110,16 @@ class SecSubjectForm(GenericModelForm):
                 Div(Field('notes')),
                 css_class="row"),
         )
+
+    def clean(self):
+        cleaned_data = super().clean()
+        index = cleaned_data['index']
+        collective_body = cleaned_data['collective_body']
+
+        try:
+            validate_subject_index(index, collective_body, instance=self.instance)
+        except forms.ValidationError as e:
+            self.add_error('index', e)
 
 
 class SecSubjectTypeForm(GenericModelForm):

@@ -1,0 +1,76 @@
+{% extends 'accounts/page.html' %}
+{% load crispy_forms_tags %}
+{% load i18n %}
+{% block middle %}
+    {% if headline_above %}
+        <h5> {{ headline_above }}</h5>
+    {% endif %}
+
+    {% if above_p %}
+        <div class="row text-center">
+            <p> {{ above_p }} </p>
+        </div>
+    {% endif %}
+
+    {% block alert %}
+        {% if form.errors %}
+            <div class="alert alert-danger" role="alert">
+                <p> {% trans 'Παρακαλούμε διορθώστε τα σφάλματα στην φόρμα όπως εμφανίζονται παρακάτω.' %}</p>
+            </div>
+        {% endif %}
+    {% endblock %}
+
+    {% if button_above_text %}
+        <div class="row text-center justify-content-center">
+            <div class="col-sm-6 text-center">
+                {% if button_above_next %}
+                    <a href="{{ button_above_url }}?next={{ button_above_next }}"
+                       class="{{ button_above_classes }}"><span
+                            class="mto">{{ button_above_icon }} </span> {{ button_above_text }}</a>
+                {% else %}
+                    <a href="{{ button_above_url }}" class="{{ button_above_classes }}"><span
+                            class="mto">{{ button_above_icon }} </span> {{ button_above_text }}</a>
+                {% endif %}
+            </div>
+        </div>
+        </br>
+    {% endif %}
+
+    <h4> {{ headline }} </h4>
+
+    {% crispy form %}
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const collectiveBodySelect = document.getElementById("id_collective_body");
+            const indexField = document.getElementById("id_index");
+
+            // Clear index on page load
+            indexField.value = "";
+
+            if (!collectiveBodySelect || !indexField) {
+                return;
+            }
+
+            function updateMeetingIndex() {
+                const collectiveBodyId = collectiveBodySelect.value;
+
+                if (!collectiveBodyId) {
+                    indexField.value = "";
+                    return;
+                }
+
+                fetch(`{{ nextIndexUrl }}?collective_body=${encodeURIComponent(collectiveBodyId)}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        indexField.value = data.next_index;
+                    });
+            }
+
+            if (window.jQuery && $.fn && $.fn.select2) {
+                $(collectiveBodySelect).on("select2:select", updateMeetingIndex);
+            }
+        });
+    </script>
+
+{% endblock %}

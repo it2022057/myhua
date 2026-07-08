@@ -39,3 +39,14 @@ class CollectiveBody(TitleStrMixin, TrackedScopedProgramModel):
             self.title_en = romanize(self.title_gr)
 
         super().save(*args, update_user = self.updated_by,  **kwargs)
+
+
+# class Body(TitleStrMixin, TrackedScopedProgramModel):
+#     class Meta:
+#         verbose_name = _('Σώμα')
+#         verbose_name_plural = _('Σώματα')
+#         ordering = ['pk']
+#
+#     members = models.ManyToManyField('accounts.StaffMember', blank=True, related_name='body_members')
+#     active = models.BooleanField(default=True)
+

@@ -10,8 +10,9 @@ urlpatterns = [
     path('sec/', views.SecListMeeting.as_view(), name='sec_list_meetings'),
     path('sec/meeting/<int:pk>/delete', views.SecDeleteMeeting.as_view(), name='sec_delete_meeting'),
 
-    # URLs for Staff Members stating their absence/presence in Meetings
-    path('staff/', views.StaffListMeeting.as_view(), name="staff_list_meetings"),
-    path("staff/meeting/<int:pk>/accept", views.accept_meeting, name="staff_accept_meeting"),
-    path("staff/meeting/<int:pk>/refuse", views.refuse_meeting, name="staff_refuse_meeting")
+    # URL for next-index endpoint
+    path("sec/next-index", views.get_next_meeting_index, name="next_meeting_index"),
+
+    # URL for Staff Members stating their absence/presence in Meetings
+    path('staff/', views.StaffListMeeting.as_view(), name="staff_list_meetings")
 ]
