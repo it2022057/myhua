@@ -24,7 +24,7 @@ urlpatterns = [
     path('sec/staff/<int:pk>/delete', views.SecDeleteStaffMember.as_view(), name='sec_delete_staff_member'),
     path('sec/staff/new', views.SecCreateStaffMember.as_view(), name='sec_create_staff_member'),
 
-    # URLs for customizing/reading a Collective Body's Participants
+    # URLs for customizing/listing a Collective Body's Participants
     path('sec/collectivebody/<int:pk>/participants', views.SecListParticipants.as_view(), name='sec_list_participants'),
     path('sec/collectivebody/<int:pk>', views.SecUpdateParticipants.as_view(),
          name='sec_update_participants'),
@@ -38,6 +38,8 @@ urlpatterns = [
     path('applicant/autocomplete', views.ApplicantAutocomplete.as_view(), name='applicant-autocomplete'),
     # URL for StaffMember autocomplete
     path('staff/autocomplete', views.StaffMemberAutocomplete.as_view(), name='staff-autocomplete'),
+    # URL for Participant (StaffMember) autocomplete
+    path('participant/autocomplete', views.ParticipantAutocomplete.as_view(), name='participant-autocomplete'),
     # URL for Secretariat autocomplete
     path('sec/autocomplete', views.SecretariatAutocomplete.as_view(), name='sec-autocomplete')
 

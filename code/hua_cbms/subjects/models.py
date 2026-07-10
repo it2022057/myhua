@@ -94,7 +94,7 @@ class Subject(TrackedScopedProgramModel):
         return scope['collective_bodies'].filter(id=self.collective_body.id).exists()
 
     def __str__(self):
-        return f"{self.index} - {self.type} - {self.category}"
+        return f"{self.index}. {self.type} - {self.category}"
 
     def save(self, *args, **kwargs):
         super().save(*args, update_user = self.updated_by,  **kwargs)

@@ -49,6 +49,10 @@ class SecCollectiveBodyForm(GenericModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
+        # Only if the secretariat tries to update a collective body, the form disables the secretariat and president field
+        if not self.user.is_superuser:
+            self.disable_form_fields(fields=['secretariat', 'president'])
+
         self.helper.layout = Layout(
             Row(self.button_element_html,
                 css_class="row"),

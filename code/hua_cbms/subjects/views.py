@@ -30,7 +30,7 @@ class SecCreateSubject(views.ScopedSecCreateView):
     back_url = ''
 
     def get_context_data(self, **kwargs):
-        context = super().get_context_data()
+        context = super().get_context_data(**kwargs)
         context['nextIndexUrl'] = reverse_lazy('subjects:next_subject_index')
 
         return context
@@ -61,6 +61,7 @@ class SecListSubject(views.ScopedSecListView):
     ordering = ['type', 'category']
     create_url = 'subjects:sec_create_subject'
     update_url = 'subjects:sec_update_subject'
+    back_url = reverse_lazy('bodies:sec_list_collectivebodies')
 
 
 class SecDeleteSubject(views.ScopedDeleteView):
@@ -84,10 +85,10 @@ def get_next_subject_index(request):
         raise PermissionDenied
 
     previous_index = (
-        Subject.objects
-        .filter(collective_body_id=collective_body_id)
-        .aggregate(Max('index'))['index__max']
-        or 0
+            Subject.objects
+            .filter(collective_body_id=collective_body_id)
+            .aggregate(Max('index'))['index__max']
+            or 0
     )
 
     return JsonResponse({'next_index': previous_index + 1})
@@ -124,6 +125,7 @@ class SecListSubjectType(views.ScopedSecListView):
     ordering = get_order_by_title()
     create_url = 'subjects:sec_create_subject-type'
     update_url = 'subjects:sec_update_subject-type'
+    back_url = reverse_lazy('bodies:sec_list_collectivebodies')
 
 
 class SecDeleteSubjectType(views.ScopedDeleteView):
@@ -162,6 +164,7 @@ class SecListSubjectCategory(views.ScopedSecListView):
     ordering = get_order_by_title()
     create_url = 'subjects:sec_create_subject-category'
     update_url = 'subjects:sec_update_subject-category'
+    back_url = reverse_lazy('bodies:sec_list_collectivebodies')
 
 
 class SecDeleteSubjectCategory(views.ScopedDeleteView):
@@ -201,6 +204,7 @@ class SecListDecision(views.ScopedSecListView):
     ordering = ['subject', get_order_by_title()]
     create_url = 'subjects:sec_create_decision'
     update_url = 'subjects:sec_update_decision'
+    back_url = reverse_lazy('bodies:sec_list_collectivebodies')
 
 
 class SecDeleteDecision(views.ScopedDeleteView):
@@ -249,13 +253,19 @@ Subject AutoComplete forms
 
 class SecSubjectAutoComplete(LoginRequiredMixin, UserPassesTestMixin, autocomplete.Select2QuerySetView):
     def get_queryset(self):
-        scopes = get_secretariat_scope(self.request.user)
-        qs = scopes['collective_bodies']
+        # scopes = get_secretariat_scope(self.request.user)
+        # qs = Subject.objects.filter(collective_body__in=scopes['collective_bodies'])
+        qs = Subject.objects.all()
 
         if self.q:
-            qs = qs.filter(Q(title_gr__icontains=self.q) | Q(title_en__icontains=self.q))
+            qs = qs.filter(
+                Q(type__title_gr__icontains=self.q) |
+                Q(type__title_en__icontains=self.q) |
+                Q(category__title_gr__icontains=self.q) |
+                Q(category__title_en__icontains=self.q)
+            )
 
-        return qs.order_by(get_order_by_title())[:10]
+        return qs.order_by('collective_body', 'index')[:10]
 
     def test_func(self):
         return is_secretariat(self.request.user)

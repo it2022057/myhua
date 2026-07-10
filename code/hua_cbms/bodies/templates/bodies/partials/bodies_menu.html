@@ -7,10 +7,16 @@
                     class="mto">subject</span>{% trans 'Θέματα' %}</a>
             <a href="{% url 'subjects:sec_list_decisions' %}" class="btn btn-primary me-3"><span
                     class="mto">gavel</span>{% trans 'Αποφάσεις' %}</a>
-            <a href="{% url 'subjects:sec_list_subject-types' %}" class="btn btn-primary me-3"><span class="mto">list_alt</span>{% trans 'Τύποι Θεμάτων' %}
+            <a href="{% url 'subjects:sec_list_subject-types' %}" class="btn btn-primary me-3"><span
+                    class="mto">list_alt</span>{% trans 'Τύποι Θεμάτων' %}
             </a>
-            <a href="{% url 'subjects:sec_list_subject-categories' %}" class="btn btn-primary me-3"><span class="mto">category</span>{% trans 'Κατηγορίες Θεμάτων' %}
+            <a href="{% url 'subjects:sec_list_subject-categories' %}" class="btn btn-primary me-3"><span
+                    class="mto">category</span>{% trans 'Κατηγορίες Θεμάτων' %}
             </a>
+            <a href="{% url 'meetings:sec_list_meetings' %}" class="btn btn-primary me-3"><span
+                    class="mto">event</span>{% trans 'Συνεδριάσεις' %}</a>
+            <a href="{% url 'accounts:sec_list_staff_members' %}" class="btn btn-primary me-3"><span
+                    class="mto">badge</span>{% trans 'Μέλη' %}</a>
         </div>
     </div>
     </br></br>
@@ -21,6 +27,8 @@
                     class="mto">subject</span>{% trans 'Θέματα' %}</a>
             <a href="{% url 'subjects:staff_list_decisions' %}" class="btn btn-primary me-3"><span
                     class="mto">gavel</span>{% trans 'Αποφάσεις' %}</a>
+            <a href="{% url 'meetings:staff_list_meetings' %}" class="btn btn-primary me-3"><span
+                    class="mto">event</span>{% trans 'Συνεδριάσεις' %}</a>
         </div>
     </div>
     </br></br>

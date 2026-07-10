@@ -3,6 +3,7 @@ from django.contrib.auth import get_user_model, logout, update_session_auth_hash
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.core.signing import TimestampSigner, SignatureExpired, BadSignature
+from django.db.models import Q
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.utils.safestring import mark_safe
@@ -14,8 +15,8 @@ from core.utils import get_order_by_display_name
 from core.views import Section
 from hua_cbms import settings
 from scopes.models import Secretariat
-from .checks import app_urls, is_secretariat, is_staff_member
-from .forms import SignUpForm, RegisterForm, PasswordForm, ForgotPasswordForm, StaffForm, PersonalInfoForm, \
+from .checks import app_urls, is_secretariat, is_staff_member, is_applicant
+from .forms import SignUpForm, RegisterForm, PasswordForm, ForgotPasswordForm, SecStaffForm, SecPersonalInfoForm, \
     SecParticipantsForm
 from .models import StaffMember, PersonalInfo
 from .utils import complexity_message, get_domain_uri, send_password_link
@@ -30,14 +31,14 @@ def render_unauthorized_staff(request):
 
 
 """
-Faculty CRUD views
+StaffMember CRUD views
 """
 
 
 class SecCreateStaffMember(views.ScopedSecCreateView):
     model = StaffMember
     template_name = 'accounts/show_object.html'
-    form_class = StaffForm
+    form_class = SecStaffForm
     success_url = 'accounts:sec_list_staff_members'
     headline = _('Δημιουργία Μέλους Προσωπικού')
     back_url = ''
@@ -61,7 +62,7 @@ class SecCreateStaffMember(views.ScopedSecCreateView):
 class SecUpdateStaffMember(views.ScopedSecUpdateView):
     model = StaffMember
     template_name = 'accounts/show_object.html'
-    form_class = StaffForm
+    form_class = SecStaffForm
     success_url = 'accounts:sec_list_staff_members'
     delete_url = 'accounts:sec_delete_staff_member'
     confirm_modal = True
@@ -79,7 +80,7 @@ class SecListStaffMember(views.ScopedSecListView):
     ordering = ['title', get_order_by_display_name()]
     create_url = 'accounts:sec_create_staff_member'
     update_url = 'accounts:sec_update_staff_member'
-    # back_url = reverse_lazy('bodies:sec_list_collectivebodies')
+    back_url = reverse_lazy('bodies:sec_list_collectivebodies')
     extra_buttons = True
     extra_text = _('Προφίλ')
     extra_button_icon = 'person'
@@ -89,6 +90,11 @@ class SecListStaffMember(views.ScopedSecListView):
 class SecDeleteStaffMember(views.ScopedDeleteView):
     model = StaffMember
     success_url = 'subjects:sec_list_staff_members'
+
+
+"""
+Participant's Update and List views
+"""
 
 
 class SecUpdateParticipants(views.ScopedSecUpdateView):
@@ -117,15 +123,21 @@ class SecListParticipants(views.ScopedSecListView):
     extra_url = 'accounts:sec_personal_info_overview'
 
     def get_queryset(self):
-        super().get_queryset()
         body = get_object_or_404(CollectiveBody, pk=self.kwargs['pk'])
 
-        return body.participants.all()
+        return body.participants.all().order_by(*self.ordering)
+
+
+"""
+Secretariat views for viewing, updating and deleting a staff member's personal information
+
+The overview page displays the PersonalInfo object in multiple sections
+"""
 
 
 class SecUpdatePersonalInfo(views.ScopedSecUpdateView):
     model = PersonalInfo
-    form_class = PersonalInfoForm
+    form_class = SecPersonalInfoForm
     success_url = 'accounts:sec_personal_info_overview'
     delete_url = 'accounts:sec_delete_personal_info'
     confirm_modal = True
@@ -250,25 +262,6 @@ class SecPersonalInfoOverviewList(views.SecMultipleSectionView):
                 object=obj,
             ),
         ]
-
-
-# class ApplicantListApplications(views.ApplicantListView):
-#     model = StaffMember
-#     fields = ['display_name', 'title', 'email']
-#     headers = {
-#         'display_name': _('Ονοματεπώνυμο'),
-#         'title': _('Ιδιότητα'),
-#         'email': _('E-mail')
-#     }
-#     table_title = _('Μέλη Προσωπικού')
-#     ordering = ['title', get_order_by_display_name()]
-#     create_url = 'accounts:sec_create_staff_member'
-#     update_url = 'accounts:sec_update_staff_member'
-#     # back_url =
-#     extra_buttons = True
-#     extra_text = _('Προφίλ')
-#     extra_button_icon = 'person'
-#     extra_url = 'accounts:sec_personal_info_overview'
 
 
 @login_required
@@ -493,26 +486,78 @@ def password_token(request, token):
                   {"form": form, "password_policy": mark_safe(complexity_message()), "alertclass": "alert alert-info"})
 
 
-class ApplicantAutocomplete(LoginRequiredMixin, autocomplete.Select2QuerySetView):
+class ApplicantAutocomplete(LoginRequiredMixin, UserPassesTestMixin, autocomplete.Select2QuerySetView):
     def get_queryset(self):
         User = get_user_model()
-        qs = User.objects.all()
+
+        applicant_ids = []
+        for user in User.objects.all():
+            if is_applicant(user):
+                applicant_ids.append(user.pk)
+
+        qs = User.objects.filter(id__in=applicant_ids)
         if self.q:
             qs = qs.filter(username__icontains=self.q)
 
         return qs.order_by('username')[:10]
+
+    def test_func(self):
+        return is_secretariat(self.request.user)
 
 
 class StaffMemberAutocomplete(LoginRequiredMixin, UserPassesTestMixin, autocomplete.Select2QuerySetView):
     def get_queryset(self):
         qs = StaffMember.objects.all()
         if self.q:
-            qs = qs.filter(display_name__icontains=self.q) | qs.filter(display_name_en__icontains=self.q)
+            qs = qs.filter(Q(display_name__icontains=self.q) | Q(display_name_en__icontains=self.q))
 
         return qs.order_by(get_order_by_display_name())[:10]
 
     def test_func(self):
-        return is_staff_member(self.request.user) or is_secretariat(self.request.user)
+        return self.request.user.is_superuser or is_secretariat(self.request.user)
+
+
+class ParticipantAutocomplete(LoginRequiredMixin, UserPassesTestMixin, autocomplete.Select2QuerySetView):
+    def get_queryset(self):
+        # Get selected collective body
+        collective_body_id = self.forwarded.get('collective_body')
+
+        if not collective_body_id:
+            return StaffMember.objects.none()
+
+        # Start from the participants of this collective body only
+        qs = CollectiveBody.objects.get(pk=collective_body_id).participants.all()
+
+        # Get the staff members that are already selected as present or absent
+        present_ids = self.get_forwarded_ids('present')
+        absent_ids = self.get_forwarded_ids('absent')
+
+        # Exclude already selected present members from the results (prevents choosing the same person again)
+        if present_ids:
+            qs = qs.exclude(pk__in=present_ids)
+
+        # Exclude already selected absent members from the results (prevents a person from being both present and absent)
+        if absent_ids:
+            qs = qs.exclude(pk__in=absent_ids)
+
+        if self.q:
+            qs = qs.filter(Q(display_name__icontains=self.q) | Q(display_name_en__icontains=self.q))
+
+        return qs.order_by(get_order_by_display_name())[:10]
+
+    def get_forwarded_ids(self, field_name):
+        value = self.forwarded.get(field_name)
+
+        if not value:
+            return []
+
+        if isinstance(value, list):
+            return value
+
+        return [value]
+
+    def test_func(self):
+        return is_secretariat(self.request.user)
 
 
 class SecretariatAutocomplete(LoginRequiredMixin, UserPassesTestMixin, autocomplete.Select2QuerySetView):
@@ -524,4 +569,4 @@ class SecretariatAutocomplete(LoginRequiredMixin, UserPassesTestMixin, autocompl
         return qs.order_by('user')[:10]
 
     def test_func(self):
-        return is_secretariat(self.request.user)
+        return self.request.user.is_superuser

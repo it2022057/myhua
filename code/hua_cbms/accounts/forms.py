@@ -59,7 +59,7 @@ BASE_ATTRS = {
 }
 
 
-class StaffForm(GenericModelForm):
+class SecStaffForm(GenericModelForm):
     scoped_fields = ['internal_department']
 
     class Meta:
@@ -130,7 +130,7 @@ class SecParticipantsForm(GenericModelForm):
         )
 
 
-class PersonalInfoForm(GenericModelForm):
+class SecPersonalInfoForm(GenericModelForm):
     scoped_fields = ['department', 'program']
 
     class Meta:

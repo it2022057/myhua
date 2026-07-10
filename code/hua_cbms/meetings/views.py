@@ -27,7 +27,7 @@ class SecCreateMeeting(views.ScopedSecCreateView):
     back_url = ''
 
     def get_context_data(self, **kwargs):
-        context = super().get_context_data()
+        context = super().get_context_data(**kwargs)
         context['nextIndexUrl'] = reverse_lazy('meetings:next_meeting_index')
 
         return context
@@ -57,6 +57,7 @@ class SecListMeeting(views.ScopedSecListView):
     ordering = ['collective_body', 'index']
     create_url = 'meetings:sec_create_meeting'
     update_url = 'meetings:sec_update_meeting'
+    back_url = reverse_lazy('bodies:sec_list_collectivebodies')
 
 
 class SecDeleteMeeting(views.ScopedDeleteView):
@@ -66,7 +67,6 @@ class SecDeleteMeeting(views.ScopedDeleteView):
 
 class StaffListMeeting(views.StaffListView):
     model = Meeting
-    template_name = 'meetings/list_objects.html'
     fields = ['index', 'collective_body', 'location', 'date_and_time', 'notes']
     headers = {
         'index': _('Θέση'),
@@ -79,6 +79,7 @@ class StaffListMeeting(views.StaffListView):
     ordering = ['collective_body', 'index']
     create_button = False
     update_buttons = False
+    back_url = reverse_lazy('bodies:staff_list_collectivebodies')
 
     def get_queryset(self):
         super().get_queryset()

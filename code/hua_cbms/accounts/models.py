@@ -113,7 +113,7 @@ def create_personal_info_if_required(obj):
 
 class ScopedStaffMemberQuery(ScopedQueryDep):
     def scope_filter(self, scope):
-        return self.filter(collectivebody_participants__in=scope['collective_bodies'])
+        return self.filter(collectivebody_participants__in=scope['collective_bodies']).distinct()
 
 
 class StaffMember(PersonStrMixin, ScopedModelDep):
@@ -179,37 +179,6 @@ class StaffMember(PersonStrMixin, ScopedModelDep):
 
         if personal_info:
             personal_info.delete()
-
-
-class ApplicantQuery(ScopedQueryDep):
-
-    def scope_filter(self, scope):
-        return self.filter(
-            application__call__program__in=scope['programs']
-        )
-
-
-class Applicant(PersonStrMixin, TrackedScopedProgramModel):
-    user = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True)
-    given_name = models.CharField(max_length=50)
-    given_name_en = models.CharField(null=True, max_length=50)
-    surname = models.CharField(max_length=70)
-    surname_en = models.CharField(null=True, max_length=70)
-
-    objects = ApplicantQuery.as_manager()
-
-    def save(self, *args, **kwargs):
-        if self.user:
-            self.given_name = self.user.first_name
-            self.surname = self.user.last_name
-
-        if not (self.given_name_en and (self.given_name_en != '')):
-            self.given_name_en = romanize(self.given_name)
-
-        if not (self.surname_en and (self.surname_en != '')):
-            self.surname_en = romanize(self.surname)
-
-        super().save(*args, **kwargs)
 
 
 class CustomUserPermissions(models.Model):

@@ -74,9 +74,11 @@ class ImageInput(forms.widgets.Input):
         if self.pi.gender == self.pi.GENDER_MALE:
             default_pic = 'accounts/images/default_man.png'
         elif self.pi.gender == self.pi.GENDER_FEMALE:
-            default_pic = 'accounts/images/default_woman.jpg'
-        else:
+            default_pic = 'accounts/images/default_woman.png'
+        elif self.pi.gender == self.pi.GENDER_OTHER:
             default_pic = 'accounts/images/default_other.png'
+        else:
+            default_pic = 'accounts/images/no_pic2.png'
 
         checkbox_name = self.clear_checkbox_name(name)
         checkbox_id = self.clear_checkbox_id(checkbox_name)

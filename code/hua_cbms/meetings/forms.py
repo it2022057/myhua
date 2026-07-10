@@ -7,10 +7,12 @@ from accounts.checks import validate_meeting_index
 from core.forms import GenericModelForm
 from .models import Meeting
 
-MEETING_FIELDS = ['index', 'collective_body', 'location', 'date_and_time', 'notes']
+MEETING_FIELDS = ['index', 'present', 'absent', 'collective_body', 'location', 'date_and_time', 'notes']
 
 FIELD_LABELS = {
     'index': _('Θέση'),
+    'present': _('Παρών'),
+    'absent': _('Απών'),
     'collective_body': _('Συλλογικό Όργανο'),
     'location': _('Τοποθεσία'),
     'date_and_time': _('Ημερομηνία & ώρα'),
@@ -28,6 +30,16 @@ MEETING_WIDGETS = {
         url='bodies:collectivebody-autocomplete',
         attrs={**BASE_ATTRS, 'data-placeholder': _('Επιλέξτε συλλογικό όργανο')}
     ),
+    'present': autocomplete.ModelSelect2Multiple(
+        url='accounts:participant-autocomplete',
+        forward=['collective_body', 'present', 'absent'],
+        attrs={**BASE_ATTRS, 'data-placeholder': _('Επιλέξτε τους παρών')}
+    ),
+    'absent': autocomplete.ModelSelect2Multiple(
+        url='accounts:participant-autocomplete',
+        forward=['collective_body', 'absent', 'present'],
+        attrs={**BASE_ATTRS, 'data-placeholder': _('Επιλέξτε τους απών')}
+    ),
     'notes': forms.Textarea(attrs={'rows': 6})
 }
 
@@ -44,12 +56,21 @@ class SecMeetingForm(GenericModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
+        # If a CreateView is pressed for Meetings, disable present and absent fields
+        # because the secretariat updates these fields after the meeting is finished
+        if self.instance.pk is None:
+            self.disable_form_fields(fields=['present', 'absent'])
+
         self.helper.layout = Layout(
             Row(self.button_element_html,
                 css_class="row"),
             Row(
                 Div(Field('index'), css_class='col-md-2'),
                 Div(Field('collective_body'), css_class='col-md-10'),
+                css_class="row"),
+            Row(
+                Div(Field('present'), css_class='col-md-6'),
+                Div(Field('absent'), css_class='col-md-6'),
                 css_class="row"),
             Row(
                 Div(Field('location'), css_class='col-md-6'),

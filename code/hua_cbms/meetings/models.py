@@ -35,15 +35,3 @@ class Meeting(TrackedScopedProgramModel):
 
     def save(self, *args, **kwargs):
         super().save(*args, update_user=self.updated_by, **kwargs)
-
-    def is_participant(self, staff_member):
-        return self.collective_body.participants.filter(pk=staff_member.pk).exists()
-
-    def has_responded(self, staff_member):
-        return (
-                self.present.filter(pk=staff_member.pk).exists() or
-                self.absent.filter(pk=staff_member.pk).exists()
-        )
-
-    def can_respond(self, staff_member):
-        return self.is_participant(staff_member) and not self.has_responded(staff_member)

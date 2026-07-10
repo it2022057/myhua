@@ -1,3 +1,5 @@
+from multiprocessing import context
+
 from dal import autocomplete
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.core.exceptions import PermissionDenied
@@ -72,6 +74,10 @@ class SecCreateCollectiveBody(SecCreate):
     headline = _('Δημιουργία Συλλογικού Πανεπιστημιακού Οργάνου')
     back_url = ''
 
+    # Only the admin can create a new collective body
+    def test_func(self):
+        return self.request.user.is_superuser
+
 
 class SecUpdateCollectiveBody(SecUpdate):
     model = CollectiveBody
@@ -94,16 +100,25 @@ class SecListCollectiveBody(SecList):
     }
     table_title = _('Συλλογικά Όργανα')
     ordering = ['end_date', 'start_date', 'president', get_order_by_title()]
-    create_url = 'bodies:sec_create_collectivebody'
     update_url = 'bodies:sec_update_collectivebody'
     extra_buttons = True
     extra_text = _('Συμμετέχοντες')
-    extra_button_icon = 'people'
+    extra_button_icon = 'groups'
     extra_url = 'accounts:sec_list_participants'
     extra_buttons2 = True
     extra_button_icon2 = 'history'
     extra_text2 = _('Δράσεις')
     extra_url2 = 'bodies:sec_overview_collectivebody'
+
+    # If the user is the admin show the create_button and assign a create_url, else hide it
+    def setup(self, request, *args, **kwargs):
+        super().setup(request, *args, **kwargs)
+
+        if request.user.is_superuser:
+            self.create_url = 'bodies:sec_create_collectivebody'
+        else:
+            self.create_button = False
+            self.create_url = None
 
 
 class SecDeleteCollectiveBody(SecDelete):
@@ -164,7 +179,7 @@ class SecCollectiveBodyOverviewList(SecMultipleList):
                     "accounts:sec_update_participants",
                     kwargs={"pk": body.pk},
                 ),
-                update_text=_('Ενημέρωση λίστας'),
+                update_text=_('Ενημέρωση λίστας συμμετεχόντων'),
                 create_url='accounts:sec_create_staff_member',
                 objects=body.participants.all(),
                 next=self.request.path
@@ -245,7 +260,7 @@ class StaffListCollectiveBody(StaffMultipleList):
     ordering = ['end_date', 'start_date', 'president', get_order_by_title()]
 
     def get_queryset(self, current=True):
-        queryset = super().get_queryset()
+        super().get_queryset()
         staff_member = get_object_or_404(StaffMember, user=self.request.user)
         today = timezone.now()
 
