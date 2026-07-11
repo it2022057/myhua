@@ -60,7 +60,9 @@
                     return;
                 }
 
-                fetch(`{{ nextIndexUrl }}?collective_body=${encodeURIComponent(collectiveBodyId)}`)
+                fetch(`{{ nextIndexUrl }}?collective_body_id=${encodeURIComponent(collectiveBodyId)}`, {
+                    credentials: 'same-origin' // when the request goes to the same origin, include cookies/auth credentials
+                })
                     .then(response => response.json())
                     .then(data => {
                         indexField.value = data.next_index;

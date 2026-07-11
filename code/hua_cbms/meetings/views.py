@@ -28,7 +28,7 @@ class SecCreateMeeting(views.ScopedSecCreateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['nextIndexUrl'] = reverse_lazy('meetings:next_meeting_index')
+        context['nextIndexUrl'] = reverse_lazy('api:next_meeting_index')
 
         return context
 
@@ -88,28 +88,3 @@ class StaffListMeeting(views.StaffListView):
         # queryset = Meeting.objects.filter(body__members=staff_member) LATER WHEN I CREATE THE BODY MODEL
 
         return queryset
-
-
-@login_required
-@require_GET
-def get_next_meeting_index(request):
-    collective_body_id = request.GET.get('collective_body')
-
-    if not collective_body_id:
-        return JsonResponse({'next_index': ''})
-
-    # Find the collective body only if the current user has access to it (*sc_filter*)
-    has_permission = CollectiveBody.objects.sc_filter(user=request.user).filter(pk=collective_body_id).exists()
-
-    # Prevents logged-in users with no access to the collective body, to visit the endpoint
-    if not has_permission:
-        raise PermissionDenied
-
-    previous_index = (
-        Meeting.objects
-        .filter(collective_body_id=collective_body_id)
-        .aggregate(Max('index'))['index__max']
-        or 0
-    )
-
-    return JsonResponse({'next_index': previous_index + 1})

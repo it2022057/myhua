@@ -15,6 +15,6 @@ urlpatterns = [
     path('sec/collectivebody/autocomplete', views.SecCollectiveBodyAutoComplete.as_view(), name='collectivebody-autocomplete'),
 
     # URLs for Staff Member
-    path('staff/', views.StaffListCollectiveBody.as_view(), name="staff_list_collectivebodies"),
+    path('staff/', views.StaffListCollectiveBody.as_view(), name='staff_list_collectivebodies'),
     path('staff/collectivebody/<int:pk>/overview', views.StaffCollectiveBodyOverviewList.as_view(), name='staff_overview_collectivebody'),
 ]

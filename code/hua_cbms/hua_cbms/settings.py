@@ -15,10 +15,8 @@ from django_auth_ldap.config import LDAPSearch
 import ldap
 import os
 
-
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
@@ -36,14 +34,15 @@ if DUMMY_EMAILS:
     print('Outputting email messages to console because env variable DUMMY_EMAILS is set to True.')
 
 ALLOWED_HOSTS = ['localhost', '127.0.0.1']
-CSRF_TRUSTED_ORIGINS = ['https://mydep.ditapps.hua.gr', 'https://myfaculty-dev.ditapps.hua.gr', 'http://localhost:8080', 'http://127.0.0.1:8080']
+CSRF_TRUSTED_ORIGINS = ['https://mydep.ditapps.hua.gr', 'https://myfaculty-dev.ditapps.hua.gr', 'http://localhost:8080',
+                        'http://127.0.0.1:8080']
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 MEDIA_TMP_EXPORT = BASE_DIR / 'media/export/tmp'
 
 if not os.path.isdir(MEDIA_TMP_EXPORT):
-        os.makedirs(MEDIA_TMP_EXPORT)
+    os.makedirs(MEDIA_TMP_EXPORT)
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
@@ -75,12 +74,21 @@ INSTALLED_APPS = [
     'crispy_bootstrap5',
     'rest_framework',
     'rest_framework.authtoken',
-    #'django_recaptcha',
+    # 'django_recaptcha',
     'django_celery_results',
     'core',
     'scopes',
     'curricula',
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication'
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAdminUser'
+    ],
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -114,18 +122,17 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'hua_cbms.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'hua_cbms', #os.environ.get('POSTGRES_NAME'),
-	    'USER': 'hua_cbms', #os.environ.get('POSTGRES_USER'),
-	    'PASSWORD': 'hua_cbms', #os.environ.get('POSTGRES_PASSWORD'),
-        'HOST': '127.0.0.1', #os.environ.get('POSTGRES_HOST'),
-        'PORT': '5432', #os.environ.get('POSTGRES_PORT'),
+        'NAME': 'hua_cbms',  # os.environ.get('POSTGRES_NAME'),
+        'USER': 'hua_cbms',  # os.environ.get('POSTGRES_USER'),
+        'PASSWORD': 'hua_cbms',  # os.environ.get('POSTGRES_PASSWORD'),
+        'HOST': '127.0.0.1',  # os.environ.get('POSTGRES_HOST'),
+        'PORT': '5432',  # os.environ.get('POSTGRES_PORT'),
 
     }
 }
@@ -154,7 +161,7 @@ AUTHENTICATION_BACKENDS = [
     "django.contrib.auth.backends.ModelBackend",
 ]
 
-LOGIN_REDIRECT_URL='/'
+LOGIN_REDIRECT_URL = '/'
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.2/topics/i18n/
@@ -175,7 +182,7 @@ LOCALE_PATHS = [
     BASE_DIR / "locale",
 ]
 
-#USE_L10N = False
+# USE_L10N = False
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
@@ -185,36 +192,35 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 DATE_FORMAT = '%d/%m/%Y'
 DATE_INPUT_FORMATS = ['%d/%m/%Y']
 
-
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
     'formatters': {
-        'verbose' : {
-            'format' : '{asctime} {levelname} {message}',
-            'style' : '{',
+        'verbose': {
+            'format': '{asctime} {levelname} {message}',
+            'style': '{',
         },
     },
     'handlers': {
-        'console' : {
-            'class' : 'logging.StreamHandler',
-           },
-        'file' : {
-            'class' : 'logging.FileHandler',
-            'filename' : BASE_DIR / 'django_app.log', # access gets denied at /var/log/
-            'formatter' : 'verbose'
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+        'file': {
+            'class': 'logging.FileHandler',
+            'filename': BASE_DIR / 'django_app.log',  # access gets denied at /var/log/
+            'formatter': 'verbose'
         }
     },
     'loggers': {
         'django_auth_ldap': {
             'level': 'DEBUG',
             'handlers': ['file', 'console']
-            },
-        'hua_cbms' : {
-            'level' : 'DEBUG',
+        },
+        'hua_cbms': {
+            'level': 'DEBUG',
             'handlers': ['file', 'console'],
-            }
         }
+    }
 }
 
 # LDAP options
@@ -237,8 +243,8 @@ AUTH_LDAP_USER_ATTR_MAP = {
 }
 # AUTH_LDAP_START_TLS = os.getenv('AUTH_LDAP_START_TLS') == 'True'
 AUTH_LDAP_START_TLS = True
-AUTH_LDAP_GLOBAL_OPTIONS ={
-    ldap.OPT_X_TLS_REQUIRE_CERT : ldap.OPT_X_TLS_NEVER
+AUTH_LDAP_GLOBAL_OPTIONS = {
+    ldap.OPT_X_TLS_REQUIRE_CERT: ldap.OPT_X_TLS_NEVER
 }
 
 # Custom auth backend
@@ -250,11 +256,11 @@ LOWERCASE_MIN = 1
 DIGITS_MIN = 1
 SPECIAL_CHARACTERS_MIN = 2
 MIN_LENGTH = 8
-#PASSWORD_SPECIAL_CHARS = r'[!@#\$%\^&\*\(\)_\+\-=\[\]\{\};:\"",\.<>\/\?\\\|~]'
+# PASSWORD_SPECIAL_CHARS = r'[!@#\$%\^&\*\(\)_\+\-=\[\]\{\};:\"",\.<>\/\?\\\|~]'
 PASSWORD_SPECIAL_CHARS = '{}!@#$%^&*()-+'
 
 # Settings for reference letter invitations
-INVITATION_REFERENCE_MAX_AGE = 30 # Number of days that the invitation links are valid
+INVITATION_REFERENCE_MAX_AGE = 30  # Number of days that the invitation links are valid
 INVITATION_REFERENCE_MAX_AGE_SECS = INVITATION_REFERENCE_MAX_AGE * 24 * 60 * 60
 
 INVITATION_DEPARTMENT_GR = 'Πληροφορικής και Τηλεματικής'

@@ -21,21 +21,22 @@ from django.contrib import admin
 from django.urls import path, include
 
 urlpatterns = [
-    path("i18n/", include("django.conf.urls.i18n")),
-    #path('media/<path:path>', media_download, name='media_download'),
+    path('i18n/', include('django.conf.urls.i18n')),
+    # Keeping api/ outside i18n_patterns avoids POST requests to not accidentally become GET after redirect
+    path('api/', include('api.urls')),
+    # path('media/<path:path>', media_download, name='media_download')
 ]
 
 urlpatterns += i18n_patterns(
     path('admin/', admin.site.urls),
-    path("", include("accounts.urls")),
-    path("accounts/", include("django.contrib.auth.urls")),
+    path('', include('accounts.urls')),
+    path('accounts/', include('django.contrib.auth.urls')),
     # path('attachments/', include('attachments.urls')),
     path('bodies/', include('bodies.urls')),
     path('curricula/', include('curricula.urls')),
     path('meetings/', include('meetings.urls')),
     path('subjects/', include('subjects.urls')),
 )
-
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL,

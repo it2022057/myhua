@@ -28,12 +28,9 @@ urlpatterns = [
     path('sec/decisions', views.SecListDecision.as_view(), name='sec_list_decisions'),
     path('sec/decision/<int:pk>/delete', views.SecDeleteDecision.as_view(), name='sec_delete_decision'),
 
-    # URL for next-index endpoint
-    path("sec/next-index", views.get_next_subject_index, name="next_subject_index"),
-
     # URLs for Staff Member
-    path('staff/', views.StaffListSubject.as_view(), name="staff_list_subjects"),
-    path('staff/decisions', views.StaffListDecision.as_view(), name="staff_list_decisions"),
+    path('staff/', views.StaffListSubject.as_view(), name='staff_list_subjects'),
+    path('staff/decisions', views.StaffListDecision.as_view(), name='staff_list_decisions'),
 
     # URLs for Secretary autocomplete
     path('sec/subject/autocomplete', views.SecSubjectAutoComplete.as_view(), name='subject-autocomplete'),
