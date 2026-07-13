@@ -40,6 +40,61 @@
 
     {% crispy form %}
 
+    {% if confirm_modal %}
+        <div class="modal fade" id="updateConfirmModal" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+
+                    <div class="modal-header">
+                        <h5 class="modal-title">{{ confirm_modal_title }}</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+
+                    <div class="modal-body">
+                        {{ confirm_modal_question }}
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                            {{ confirm_modal_cancel }}
+                        </button>
+                        <button type="button" class="btn btn-primary" id="confirmUpdateBtn">
+                            {{ confirm_modal_ok }}
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+
+                // ===== UPDATE CONFIRMATION =====
+                const form = document.getElementById("crispyForm");
+                const updateModal = new bootstrap.Modal(
+                    document.getElementById("updateConfirmModal")
+                );
+                const confirmUpdateBtn = document.getElementById("confirmUpdateBtn");
+
+                let updateConfirmed = false;
+
+                if (form) {
+                    form.addEventListener("submit", function (e) {
+                        if (!updateConfirmed) {
+                            e.preventDefault();
+                            updateModal.show();
+                        }
+                    });
+                }
+
+                confirmUpdateBtn.addEventListener("click", function () {
+                    updateConfirmed = true;
+                    form.submit();
+                });
+            });
+        </script>
+    {% endif %}
+
     {% if delete_url %}
         {% if form.instance.pk %}
             <p></p>
@@ -112,7 +167,7 @@
             element.dispatchEvent(new Event('change', {bubbles: true}));
         }
 
-    // run on page load too
-    showInternalDepartmentField();
+        // run on page load too
+        showInternalDepartmentField();
     </script>
 {% endblock %}

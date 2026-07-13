@@ -42,6 +42,7 @@ class SecCreateStaffMember(views.ScopedSecCreateView):
     success_url = 'accounts:sec_list_staff_members'
     headline = _('Δημιουργία Μέλους Προσωπικού')
     back_url = ''
+    success_message = _('Το μέλος του προσωπικού καταχωρήθηκε επιτυχώς.')
 
     # If the create_button, located at the participants table, is pressed in bodies:sec_overview_collectivebody and the
     # staff member is created, it is important to also automatically add him/her to the participants list of the body
@@ -66,6 +67,7 @@ class SecUpdateStaffMember(views.ScopedSecUpdateView):
     success_url = 'accounts:sec_list_staff_members'
     delete_url = 'accounts:sec_delete_staff_member'
     confirm_modal = True
+    success_message = _('Το μέλος του προσωπικού ενημερώθηκε επιτυχώς.')
 
 
 class SecListStaffMember(views.ScopedSecListView):
@@ -90,6 +92,7 @@ class SecListStaffMember(views.ScopedSecListView):
 class SecDeleteStaffMember(views.ScopedDeleteView):
     model = StaffMember
     success_url = 'subjects:sec_list_staff_members'
+    success_message = _('Το μέλος του προσωπικού διαγράφηκε.')
 
 
 """
@@ -102,6 +105,7 @@ class SecUpdateParticipants(views.ScopedSecUpdateView):
     form_class = SecParticipantsForm
     success_url = 'bodies:sec_overview_collectivebody'
     confirm_modal = True
+    success_message = _('Η λίστα με τους συμμετέχοντες ενημερώθηκε επιτυχώς.')
 
 
 class SecListParticipants(views.ScopedSecListView):
@@ -141,6 +145,7 @@ class SecUpdatePersonalInfo(views.ScopedSecUpdateView):
     success_url = 'accounts:sec_personal_info_overview'
     delete_url = 'accounts:sec_delete_personal_info'
     confirm_modal = True
+    success_message = _('Τα προσωπικά στοιχεία του μέλους ενημερώθηκαν επιτυχώς.')
 
     def get_object(self, *args, **kwargs):
         pi = get_object_or_404(PersonalInfo, pk=self.kwargs['pi_pk'])
@@ -163,6 +168,7 @@ class SecUpdatePersonalInfo(views.ScopedSecUpdateView):
 class SecDeletePersonalInfo(views.ScopedDeleteView):
     model = PersonalInfo
     success_url = 'accounts:sec_personal_info_overview'
+    success_message = _('Τα προσωπικά στοιχεία του μέλους διαγράφηκαν.')
 
 
 class SecPersonalInfoOverviewList(views.SecMultipleSectionView):

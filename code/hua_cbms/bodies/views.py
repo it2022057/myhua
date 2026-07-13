@@ -2,6 +2,7 @@ from multiprocessing import context
 
 from dal import autocomplete
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.contrib.messages.views import SuccessMessageMixin
 from django.core.exceptions import PermissionDenied
 from django.db.models import Q
 from django.shortcuts import get_object_or_404
@@ -17,6 +18,7 @@ from core import views
 from core.models import TitleStrMixin
 from core.utils import get_order_by_title
 from core.views import Table
+from meetings.models import Meeting
 from scopes.models import Secretariat
 from scopes.utils import get_secretariat_scope
 from subjects.models import Subject, Decision, SubjectType, SubjectCategory
@@ -28,10 +30,12 @@ Generic CollectiveBody Views
 
 class SecCreate(views.ScopedSecCreateView):
     template_name = 'bodies/show_object.html'
+    success_message = _('Το πανεπιστημιακό όργανο καταχωρήθηκε επιτυχώς.')
 
 
 class SecUpdate(views.ScopedSecUpdateView):
     template_name = 'bodies/show_object.html'
+    success_message = _('Το πανεπιστημιακό όργανο ενημερώθηκε επιτυχώς.')
 
 
 class SecList(views.ScopedSecListView):
@@ -44,18 +48,7 @@ class SecMultipleList(views.SecMultipleListView):
 
 class SecDelete(views.ScopedDeleteView):
     template_name = 'bodies/show_object.html'
-
-
-class StaffCreate(views.StaffCreateView):
-    template_name = 'bodies/show_object.html'
-
-
-class StaffUpdate(views.StaffUpdateView):
-    template_name = 'bodies/show_object.html'
-
-
-class StaffList(views.StaffListView):
-    template_name = 'bodies/list_objects.html'
+    success_message = _('Το πανεπιστημιακό όργανο διαγράφηκε.')
 
 
 class StaffMultipleList(views.StaffMultipleListView):
@@ -106,8 +99,8 @@ class SecListCollectiveBody(SecList):
     extra_button_icon = 'groups'
     extra_url = 'accounts:sec_list_participants'
     extra_buttons2 = True
-    extra_button_icon2 = 'history'
-    extra_text2 = _('Δράσεις')
+    extra_button_icon2 = 'info'
+    extra_text2 = _('Πληροφορίες')
     extra_url2 = 'bodies:sec_overview_collectivebody'
 
     # If the user is the admin show the create_button and assign a create_url, else hide it
@@ -196,6 +189,24 @@ class SecCollectiveBodyOverviewList(SecMultipleList):
                 update_url='subjects:sec_update_decision',
                 create_url='subjects:sec_create_decision',
                 objects=Decision.objects.filter(subject__in=subjects),
+                next=self.request.path
+            ),
+            Table(
+                fields=['index', 'present', 'absent', 'location', 'date_and_time', 'notes'],
+                table_title=_('Συνεδριάσεις Συλλογικού Οργάνου'),
+                headers={
+                    'index': _('Θέση'),
+                    'present': _('Παρών'),
+                    'absent': _('Απών'),
+                    'location': _('Τοποθεσία'),
+                    'date_and_time': _('Ημερομηνία & ώρα'),
+                    'notes': _('Σημειώσεις')
+                },
+                table_id='meeting',
+                order=[[0, 'asc']],
+                update_url='meetings:sec_update_meeting',
+                create_url='meetings:sec_create_meeting',
+                objects=Meeting.objects.filter(collective_body=body),
                 next=self.request.path
             ),
             Table(
@@ -293,7 +304,7 @@ class StaffListCollectiveBody(StaffMultipleList):
                 extra_buttons=True,
                 extra_button_class='btn btn-secondary',
                 extra_button_icon='info',
-                extra_text=_('Δράσεις'),
+                extra_text=_('Πληροφορίες'),
                 extra_url='bodies:staff_overview_collectivebody',
                 objects=self.get_queryset(current=False),
                 next=self.request.path
@@ -308,7 +319,7 @@ class StaffListCollectiveBody(StaffMultipleList):
                 extra_buttons=True,
                 extra_button_class='btn btn-secondary',
                 extra_button_icon='info',
-                extra_text=_('Δράσεις'),
+                extra_text=_('Πληροφορίες'),
                 extra_url='bodies:staff_overview_collectivebody',
                 objects=self.get_queryset(current=True),
                 next=self.request.path
@@ -366,6 +377,22 @@ class StaffCollectiveBodyOverviewList(StaffMultipleList):
                 create_button=False,
                 update_buttons=False,
                 objects=Decision.objects.filter(subject__in=subjects),
+                next=self.request.path
+            ),
+            Table(
+                fields=['index', 'location', 'date_and_time', 'notes'],
+                table_title=_('Συνεδριάσεις Συλλογικού Οργάνου'),
+                headers={
+                    'index': _('Θέση'),
+                    'location': _('Τοποθεσία'),
+                    'date_and_time': _('Ημερομηνία & ώρα'),
+                    'notes': _('Σημειώσεις')
+                },
+                table_id='meeting',
+                order=[[0, 'asc']],
+                create_button=False,
+                update_buttons=False,
+                objects=Meeting.objects.filter(collective_body=body),
                 next=self.request.path
             ),
         ]

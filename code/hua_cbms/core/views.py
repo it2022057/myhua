@@ -1,4 +1,6 @@
+from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.contrib.messages.views import SuccessMessageMixin
 from django.core.exceptions import PermissionDenied
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
@@ -162,7 +164,7 @@ class ScopedSecListView(GenericListView):
         return super().get_queryset()
 
 
-class GenericUpdateView(LoginRequiredMixin, UserPassesTestMixin, generic.UpdateView):
+class GenericUpdateView(LoginRequiredMixin, UserPassesTestMixin, SuccessMessageMixin, generic.UpdateView):
     model = None
     template_name = 'core/show_object.html'
     form_class = None
@@ -285,7 +287,7 @@ class GenericDetailView(LoginRequiredMixin, UserPassesTestMixin, generic.DetailV
         return True
 
 
-class GenericCreateView(UserPassesTestMixin, LoginRequiredMixin, generic.CreateView):
+class GenericCreateView(UserPassesTestMixin, LoginRequiredMixin, SuccessMessageMixin, generic.CreateView):
     model = None
     template_name = 'core/show_object.html'
     form_class = None
@@ -337,6 +339,7 @@ class GenericDeleteView(View):
     model = None
     success_url = None
     pk_url_kwarg = "pk"
+    success_message = None
 
     def __init__(self, *args, **kwargs):
         if hasattr(self, 'success_url'):
@@ -476,6 +479,7 @@ class SecMultipleSectionView(MultipleSectionView):
 
 
 class ScopedDeleteView(GenericDeleteView):
+    success_message = None
 
     def __init__(self, *args, **kwargs):
         if hasattr(self, 'success_url'):
@@ -492,7 +496,13 @@ class ScopedDeleteView(GenericDeleteView):
             user=self.request.user,
             pk=kwargs[self.pk_url_kwarg]
         )
-        obj.delete()
+        if self.can_delete():
+            obj.delete()
+            messages.success(self.request, self.success_message)
+        else:
+            messages.error(self.request, _('Κάτι δεν πήγε καλά.'))
+            raise PermissionDenied
+
         return redirect(self.get_success_url())
 
     def test_func(self):

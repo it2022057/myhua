@@ -42,12 +42,12 @@
       <div class="userinfo">
       {% if request.user.is_authenticated %}
         <span class="mto">person</span>
-           {{ user.username }} 
+           {{ user.username }}
       </div>
       {% endif %}
      {% endblock %}
      {% block navbar %}
-      <span class="navbar-text nav-link">    
+      <span class="navbar-text nav-link">
      {% if request.user.is_authenticated %}
       <a class="nav-link-icon" href='{% url 'accounts:index' %}'> <span class="mto">home</span> {% trans 'Κεντρική' %} </a>
       <a class="nav-link-icon" href='{% url 'accounts:logout' %}'><span class="mto">logout</span> {% trans 'Έξοδος' %} </a>
@@ -74,14 +74,30 @@
     </span>
      {% endblock %}
    </nav>
-    
+
   <div class="container features">
     {% block messages %}
-    {% if msg %}
-    <div class="alert alert-danger" role="alert">    
-    {{msg}}
-    </div>
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags }}{% endif %} alert-dismissible fade show auto-close" role="alert">
+                {{ message }}
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="alert"
+                        aria-label="Close">
+                </button>
+            </div>
+        {% endfor %}
     {% endif %}
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            setTimeout(function () {
+                document.querySelectorAll(".auto-close").forEach(function (alert) {
+                    bootstrap.Alert.getOrCreateInstance(alert).close();
+                });
+            }, 5000);
+        });
+    </script>
     {% endblock %}
     {% block submenu %}
     {% endblock %}
@@ -89,16 +105,16 @@
     {% if backurl %}
     <div class="row">
     <div class="col">
-      <a href="{{ backurl }}" type="submit" class="btn btn-primary back-button"> <span class="mto">arrow_back_ios</span> {% trans 'Επιστροφή' %} </a> 
+      <a href="{{ backurl }}" type="submit" class="btn btn-primary back-button"> <span class="mto">arrow_back_ios</span> {% trans 'Επιστροφή' %} </a>
     </div>
-    </div>    
+    </div>
     {% endif %}
     {% if back_url %}
     <div class="row">
     <div class="col">
-      <a href="{{ back_url }}" type="submit" class="btn btn-primary back-button"> <span class="mto">arrow_back_ios</span> {% trans 'Επιστροφή' %} </a> 
+      <a href="{{ back_url }}" type="submit" class="btn btn-primary back-button"> <span class="mto">arrow_back_ios</span> {% trans 'Επιστροφή' %} </a>
     </div>
-    </div>    
+    </div>
     {% endif %}
     {% endblock %}
     {% block upper %}
@@ -131,7 +147,7 @@
         } );
     });
   </script>
-    {% endblock %}    
+    {% endblock %}
   </div>
 
 </body>

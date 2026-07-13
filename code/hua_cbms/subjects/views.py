@@ -28,6 +28,7 @@ class SecCreateSubject(views.ScopedSecCreateView):
     success_url = 'subjects:sec_list_subjects'
     headline = _('Δημιουργία Θέματος')
     back_url = ''
+    success_message = _('Το θέμα καταχωρήθηκε επιτυχώς.')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -42,6 +43,7 @@ class SecUpdateSubject(views.ScopedSecUpdateView):
     success_url = 'subjects:sec_list_subjects'
     delete_url = 'subjects:sec_delete_subject'
     confirm_modal = True
+    success_message = _('Το θέμα ενημερώθηκε επιτυχώς.')
 
 
 class SecListSubject(views.ScopedSecListView):
@@ -67,6 +69,7 @@ class SecListSubject(views.ScopedSecListView):
 class SecDeleteSubject(views.ScopedDeleteView):
     model = Subject
     success_url = 'subjects:sec_list_subjects'
+    success_message = _('Το θέμα διαγράφηκε.')
 
 
 """
@@ -80,6 +83,7 @@ class SecCreateSubjectType(views.ScopedSecCreateView):
     success_url = 'subjects:sec_list_subject-types'
     headline = _('Δημιουργία Τύπου Θέματος')
     back_url = ''
+    success_message = _('Ο τύπος θέματος καταχωρήθηκε επιτυχώς.')
 
 
 class SecUpdateSubjectType(views.ScopedSecUpdateView):
@@ -88,6 +92,7 @@ class SecUpdateSubjectType(views.ScopedSecUpdateView):
     success_url = 'subjects:sec_list_subject-types'
     delete_url = 'subjects:sec_delete_subject-type'
     confirm_modal = True
+    success_message = _('Ο τύπος θέματος καταχωρήθηκε επιτυχώς.')
 
 
 class SecListSubjectType(views.ScopedSecListView):
@@ -101,11 +106,13 @@ class SecListSubjectType(views.ScopedSecListView):
     create_url = 'subjects:sec_create_subject-type'
     update_url = 'subjects:sec_update_subject-type'
     back_url = reverse_lazy('bodies:sec_list_collectivebodies')
+    success_message = _('Ο τύπος θέματος ενημερώθηκε επιτυχώς.')
 
 
 class SecDeleteSubjectType(views.ScopedDeleteView):
     model = SubjectType
     success_url = 'subjects:sec_list_subject-types'
+    success_message = _('Ο τύπος θέματος διαγράφηκε.')
 
 
 """
@@ -119,6 +126,7 @@ class SecCreateSubjectCategory(views.ScopedSecCreateView):
     success_url = 'subjects:sec_list_subject-categories'
     headline = _('Δημιουργία Κατηγορίας Θέματος')
     back_url = ''
+    success_message = _('Η κατηγορία θέματος καταχωρήθηκε επιτυχώς.')
 
 
 class SecUpdateSubjectCategory(views.ScopedSecUpdateView):
@@ -127,6 +135,7 @@ class SecUpdateSubjectCategory(views.ScopedSecUpdateView):
     success_url = 'subjects:sec_list_subject-categories'
     delete_url = 'subjects:sec_delete_subject-category'
     confirm_modal = True
+    success_message = _('Η κατηγορία θέματος ενημερώθηκε επιτυχώς.')
 
 
 class SecListSubjectCategory(views.ScopedSecListView):
@@ -145,6 +154,7 @@ class SecListSubjectCategory(views.ScopedSecListView):
 class SecDeleteSubjectCategory(views.ScopedDeleteView):
     model = SubjectCategory
     success_url = 'subjects:sec_list_subject-categories'
+    success_message = _('Η κατηγορία θέματος διαγράφηκε.')
 
 
 """
@@ -158,6 +168,7 @@ class SecCreateDecision(views.ScopedSecCreateView):
     success_url = 'subjects:sec_list_decisions'
     headline = _('Δημιουργία Απόφασης')
     back_url = ''
+    success_message = _('Η απόφαση καταχωρήθηκε επιτυχώς.')
 
 
 class SecUpdateDecision(views.ScopedSecUpdateView):
@@ -166,6 +177,7 @@ class SecUpdateDecision(views.ScopedSecUpdateView):
     success_url = 'subjects:sec_list_decisions'
     delete_url = 'subjects:sec_delete_decision'
     confirm_modal = True
+    success_message = _('Η απόφαση ενημερώθηκε επιτυχώς.')
 
 
 class SecListDecision(views.ScopedSecListView):
@@ -185,6 +197,7 @@ class SecListDecision(views.ScopedSecListView):
 class SecDeleteDecision(views.ScopedDeleteView):
     model = Decision
     success_url = 'subjects:sec_list_decisions'
+    success_message = _('Η απόφαση διαγράφηκε.')
 
 
 """

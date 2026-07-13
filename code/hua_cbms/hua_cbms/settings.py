@@ -250,6 +250,24 @@ AUTH_LDAP_GLOBAL_OPTIONS = {
 # Custom auth backend
 INTERNAL_DOMAIN = 'hua.gr'
 
+# docx templates
+ECTS_GR_TEMPLATE = 'ects_gr'
+ECTS_EN_TEMPLATE = 'ects_en'
+PROPOSAL_TEMPLATE = 'proposal'
+LEAVE_TEMPLATE = 'leave_template'
+PHD_APPLICATION_TEMPLATE = 'phdapplication'
+
+# Mailer settings
+ALWAYS_NOTIFY = 'ditdean@hua.gr,itsec@hua.gr'
+DEAN_EMAIL = 'thkam@hua.gr'
+EMAIL_PLATFORM_URL = 'https://mydep.ditapps.hua.gr'
+
+# SIS settings
+SIS_KEYCLOAK_TOKEN_URL = os.environ.get('SIS_KEYCLOAK_TOKEN_URL')
+SIS_CLIENT_ID = os.environ.get('SIS_CLIENT_ID')
+SIS_USER_NAME = os.environ.get('SIS_USER_NAME')
+SIS_PASSWD = os.environ.get('SIS_PASSWD')
+
 # Password complexity for user signup
 UPPERCASE_MIN = 1
 LOWERCASE_MIN = 1
@@ -259,17 +277,28 @@ MIN_LENGTH = 8
 # PASSWORD_SPECIAL_CHARS = r'[!@#\$%\^&\*\(\)_\+\-=\[\]\{\};:\"",\.<>\/\?\\\|~]'
 PASSWORD_SPECIAL_CHARS = '{}!@#$%^&*()-+'
 
-# Settings for reference letter invitations
-INVITATION_REFERENCE_MAX_AGE = 30  # Number of days that the invitation links are valid
-INVITATION_REFERENCE_MAX_AGE_SECS = INVITATION_REFERENCE_MAX_AGE * 24 * 60 * 60
+# # User registration options
+# MAX_AGE = 32000 # number seconds one time registration links are active
+# REGISTRATION_MESSAGE = emails.USER_REGISTRATION_MESSAGE
+# REGISTRATION_SUBJECT = 'Activate your account / Ενεργοποιήση του Λογαριασμού σας'
 
-INVITATION_DEPARTMENT_GR = 'Πληροφορικής και Τηλεματικής'
-INVITATION_UNIVERSITY_GR = 'Χαροκόπειο Πανεπιστημίο'
-INVITATION_DEPARTMENT_EN = 'Informatics and Telematics'
-INVITATION_UNIVERSITY_EN = 'Harokopio University'
+# FORGOT_PASSWORD_BODY = emails.USER_FORGOT_PASSWORD_BODY
+# FORGOT_PASSWORD_SUBJECT = 'Password Reset / Επαναφορά κωδικού'
+#
+# # reCAPTCHA settings
+# RECAPTCHA_PUBLIC_KEY = os.environ.get('RECAPTCHA_PUBLIC_KEY')
+# RECAPTCHA_PRIVATE_KEY = os.environ.get('RECAPTCHA_PRIVATE_KEY')
 
 # Reset password
 PASSWORD_RESET_LINK_AGE = 3600
 
-# development server keywords
+# Development server keywords
 DEV_SERVER_KEYWORDS = ['dev', 'localhost', '127.0.0.1']
+
+CELERY_BROKER_URL = "redis://redis:6379/0"
+CELERY_ACCEPT_CONTENT = ["json"]
+CELERY_TASK_SERIALIZER = "json"
+CELERY_RESULT_BACKEND = "django-db"
+
+# Budibase key used for migrations:
+BUDI_KEY = os.environ.get('BUDI_KEY')

@@ -364,7 +364,7 @@ class CourseForm(ModelForm):
         labels = COURSE_LABELS
 
         widgets = {
-            'assigned_to': autocomplete.ModelSelect2Multiple(url='myprofile:staffmember-autocomplete')
+            'assigned_to': autocomplete.ModelSelect2Multiple(url='accounts:staffmember-autocomplete')
         }
 
     def __init__(self, *args, **kwargs):

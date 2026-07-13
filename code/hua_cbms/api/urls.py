@@ -1,6 +1,5 @@
 from django.urls import path
 from rest_framework.authtoken import views
-from rest_framework.views import APIView
 
 from .views import StaffMemberApiView, SubjectApiView, MeetingApiView, SubjectNextIndexApiView, MeetingNextIndexApiView
 

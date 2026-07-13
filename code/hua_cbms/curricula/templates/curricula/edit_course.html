@@ -1,4 +1,4 @@
-{% extends 'myprofile/page.html' %}
+{% extends 'accounts/page.html' %}
 {% load crispy_forms_tags %}
 
 {% block middle %}
@@ -9,7 +9,7 @@
     {% crispy form %} 
 </form>
 
-{% if perms.myprofile.is_secreteriat %}
+{% if perms.accounts.is_secretariat %}
 {% if form.instance.pk %}
 <p></p>
 <button type="button" class="btn btn-danger" onclick="delete_obj()">

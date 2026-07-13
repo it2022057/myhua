@@ -1,14 +1,10 @@
-from django.contrib.auth.decorators import login_required
-from django.core.exceptions import PermissionDenied
-from django.db.models import Q, Max
-from django.http import JsonResponse
+from django.contrib.messages.views import SuccessMessageMixin
+from django.db.models import Q
 from django.shortcuts import get_object_or_404
 from django.utils.translation import gettext_lazy as _
-from django.views.decorators.http import require_GET
 from rest_framework.reverse import reverse_lazy
 
 from accounts.models import StaffMember
-from bodies.models import CollectiveBody
 from core import views
 from . import forms
 from .models import Meeting
@@ -25,6 +21,7 @@ class SecCreateMeeting(views.ScopedSecCreateView):
     success_url = 'meetings:sec_list_meetings'
     headline = _('Δημιουργία Συνεδρίασης')
     back_url = ''
+    success_message = _('Η συνεδρίαση καταχωρήθηκε επιτυχώς.')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -39,6 +36,7 @@ class SecUpdateMeeting(views.ScopedSecUpdateView):
     success_url = 'meetings:sec_list_meetings'
     delete_url = 'meetings:sec_delete_meeting'
     confirm_modal = True
+    success_message = _('Η συνεδρίαση ενημερώθηκε επιτυχώς.')
 
 
 class SecListMeeting(views.ScopedSecListView):
@@ -63,6 +61,7 @@ class SecListMeeting(views.ScopedSecListView):
 class SecDeleteMeeting(views.ScopedDeleteView):
     model = Meeting
     success_url = 'meetings:sec_list_meetings'
+    success_message = _('Η συνεδρίαση διαγράφηκε.')
 
 
 class StaffListMeeting(views.StaffListView):
