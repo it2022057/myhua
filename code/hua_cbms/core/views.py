@@ -1,15 +1,19 @@
+import os
+from urllib.parse import unquote, quote
+
+from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.core.exceptions import PermissionDenied
+from django.http import HttpResponse, FileResponse
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
 from django.views import generic, View
 
+from accounts.checks import can_download
 from accounts.checks import is_secretariat, is_staff_member, is_applicant
-from accounts.models import PersonalInfo, StaffMember
-from scopes.models import ScopedModelPrg
 from scopes.utils import get_scoped_object_or_exc
 
 DEFAULT_CONTEXT_VALUES = {
@@ -582,58 +586,35 @@ class ApplicantListView(GenericListView):
         return is_applicant(self.request.user)
 
 
-# class DoctoralStudentUpdateView(GenericUpdateView):
-#
-#     def test_func(self):
-#         return is_doctoral_student(self.request.user)
-#
-# class DoctoralStudentCreateView(GenericCreateView):
-#
-#     def test_func(self):
-#         return is_doctoral_student(self.request.user)
-#
-# class DoctoralStudentMultipleListView(MultipleListView):
-#
-#     def test_func(self):
-#         return is_doctoral_student(self.request.user)
-#
-# class DoctoralStudentListView(GenericListView):
-#     def test_func(self):
-#         return is_doctoral_student(self.request.user)
-#
-# class DoctoralStudentDeleteView(GenericListView):
-#     def test_func(self):
-#         return is_doctoral_student(self.request.user)
-#
-# def media_download(request, path):
-#     path = unquote(path)
-#     parts = path.split('/')
-#
-#     # Expecting: subjects/<username>/<filename>
-#     if len(parts) < 2:
-#         return HttpResponse(status=404)
-#
-#
-#     allowed = can_download(parts, request.user)
-#
-#     if allowed:
-#         full_path = os.path.normpath(os.path.join(settings.MEDIA_ROOT, path))
-#         if not full_path.startswith(str(settings.MEDIA_ROOT)):
-#            return HttpResponse(status=403)
-#         filename = parts[-1]
-#
-#         if settings.DEBUG:
-#             # Development server: use Django FileResponse
-#             return FileResponse(open(full_path, 'rb'), as_attachment=True, filename=filename)
-#         else:
-#             # Production: use nginx X-Accel-Redirect
-#             encoded_path = quote(path)
-#             filename_encoded = quote(filename)
-#             response = HttpResponse()
-#             response["Content-Type"] = ""  # optional, let nginx set it
-#             response["Content-Disposition"] = f'attachment; filename="{filename_encoded}"'
-#             response["X-Accel-Redirect"] = f"/sec-media/{encoded_path}"
-#             print("X-Accel-Redirect:", f"/sec-media/{path}")
-#             return response
-#     else:
-#         raise PermissionDenied()
+def media_download(request, path):
+    path = unquote(path)
+    parts = path.split('/')
+
+    # Expecting: subjects/<username>/<filename>
+    if len(parts) < 2:
+        return HttpResponse(status=404)
+
+
+    allowed = can_download(parts, request.user)
+
+    if allowed:
+        full_path = os.path.normpath(os.path.join(settings.MEDIA_ROOT, path))
+        if not full_path.startswith(str(settings.MEDIA_ROOT)):
+           return HttpResponse(status=403)
+        filename = parts[-1]
+
+        if settings.DEBUG:
+            # Development server: use Django FileResponse
+            return FileResponse(open(full_path, 'rb'), as_attachment=True, filename=filename)
+        else:
+            # Production: use nginx X-Accel-Redirect
+            encoded_path = quote(path)
+            filename_encoded = quote(filename)
+            response = HttpResponse()
+            response["Content-Type"] = ""  # optional, let nginx set it
+            response["Content-Disposition"] = f'attachment; filename="{filename_encoded}"'
+            response["X-Accel-Redirect"] = f"/sec-media/{encoded_path}"
+            print("X-Accel-Redirect:", f"/sec-media/{path}")
+            return response
+    else:
+        raise PermissionDenied()

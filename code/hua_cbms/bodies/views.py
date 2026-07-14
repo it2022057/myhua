@@ -238,11 +238,10 @@ class SecCollectiveBodyOverviewList(SecMultipleList):
         ]
 
 
-class SecCollectiveBodyAutoComplete(TitleStrMixin, LoginRequiredMixin, UserPassesTestMixin,
-                                    autocomplete.Select2QuerySetView):
+class SecCollectiveBodyAutoComplete(TitleStrMixin, LoginRequiredMixin, UserPassesTestMixin, autocomplete.Select2QuerySetView):
     def get_queryset(self):
         scopes = get_secretariat_scope(self.request.user)
-        qs = scopes['collective_bodies']
+        qs = scopes['collective_bodies'].active_now()
         if self.q:
             qs = qs.filter(Q(title_gr__icontains=self.q) | Q(title_en__icontains=self.q))
 
@@ -344,13 +343,12 @@ class StaffCollectiveBodyOverviewList(StaffMultipleList):
         if body:
             self.master_headline = _('Στοιχεία Συλλογικού Οργάνου: ') + '%s' % str(body)
 
-        subjects = Subject.objects.filter(collective_body=body)
+        subjects = Subject.objects.filter(collective_body=body).order_by('index')
         self.tables = [
             Table(
-                fields=['index', 'type', 'category', 'program', 'department', 'school', 'notes'],
+                fields=['type', 'category', 'program', 'department', 'school', 'notes'],
                 table_title=_('Θέματα Συνεδριάσεων Συλλογικού Οργάνου'),
                 headers={
-                    'index': _('Θέση'),
                     'type': _('Τύπος'),
                     'category': _('Κατηγορία'),
                     'program': _('Πρόγραμμα Σπουδών'),
@@ -380,16 +378,15 @@ class StaffCollectiveBodyOverviewList(StaffMultipleList):
                 next=self.request.path
             ),
             Table(
-                fields=['index', 'location', 'date_and_time', 'notes'],
+                fields=['location', 'date_and_time', 'notes'],
                 table_title=_('Συνεδριάσεις Συλλογικού Οργάνου'),
                 headers={
-                    'index': _('Θέση'),
                     'location': _('Τοποθεσία'),
                     'date_and_time': _('Ημερομηνία & ώρα'),
                     'notes': _('Σημειώσεις')
                 },
                 table_id='meeting',
-                order=[[0, 'asc']],
+                order=[[1, 'asc']],
                 create_button=False,
                 update_buttons=False,
                 objects=Meeting.objects.filter(collective_body=body),

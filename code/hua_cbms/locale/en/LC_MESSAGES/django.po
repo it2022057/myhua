@@ -681,12 +681,12 @@ msgid "Ο σύνδεσμος αυτός έχει λήξει."
 msgstr "This link has expired."
 
 #: attachments/models.py:8
-msgid "Επισυναπτόμενο"
-msgstr "Attachment"
+msgid "Επισυναπτόμενο Θέματος"
+msgstr "Subject Attachment"
 
 #: attachments/models.py:9
-msgid "Επισυναπτόμενα"
-msgstr "Attachments"
+msgid "Επισυναπτόμενα Θεμάτων"
+msgstr "Subject Attachments"
 
 #: attachments/models.py:17
 msgid "Επισυναπτόμενο Απόφασης"

@@ -20,11 +20,13 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
 
+from core.views import media_download
+
 urlpatterns = [
     path('i18n/', include('django.conf.urls.i18n')),
     # Keeping api/ outside i18n_patterns avoids POST requests to not accidentally become GET after redirect
     path('api/', include('api.urls')),
-    # path('media/<path:path>', media_download, name='media_download')
+    path('media/<path:path>', media_download, name='media_download')
 ]
 
 urlpatterns += i18n_patterns(

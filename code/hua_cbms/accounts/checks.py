@@ -3,6 +3,7 @@ import re
 from django import forms
 from django.conf import settings
 from django.contrib.auth import get_user_model
+from django.shortcuts import get_object_or_404
 from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
 
@@ -248,8 +249,9 @@ def validate_subject_index(index, collective_body, instance=None):
         raise forms.ValidationError(_('Υπάρχει ήδη θέμα με αυτόν τον αριθμό για το συγκεκριμένο συλλογικό όργανο'))
 
 
-# def can_download(parts, request_user):
-#
+def can_download(parts, request_user):
+    return True     # TEMPORARY
+
 #     app_name = parts[0]
 #
 #     # Unauthenticated users not allowed
@@ -275,7 +277,7 @@ def validate_subject_index(index, collective_body, instance=None):
 #                 return True
 #
 #         else:
-#             scopes = get_secreteriat_scope(user=request_user)
+#             scopes = get_secretariat_scope(user=request_user)
 #             if student.program in scopes['programs']:
 #                 return True
 #             else:

@@ -1,15 +1,10 @@
 from dal import autocomplete
-from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import UserPassesTestMixin, LoginRequiredMixin
-from django.core.exceptions import PermissionDenied
-from django.db.models import Q, Max
-from django.http import JsonResponse
+from django.db.models import Q
 from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
-from django.views.decorators.http import require_GET
 
 from accounts.checks import is_secretariat
-from bodies.models import CollectiveBody
 from core import views
 from core.utils import get_order_by_title
 from scopes.utils import get_secretariat_scope
@@ -207,15 +202,15 @@ Staff Subject and Decision Views
 
 class StaffListSubject(views.StaffListView):
     model = Subject
-    fields = ['index', 'collective_body', 'type', 'category', 'notes']
+    fields = ['collective_body', 'type', 'category', 'notes']
     headers = {
-        'index': _('Θέση'),
         'collective_body': _('Συλλογικό Όργανο'),
         'type': _('Τύπος'),
         'category': _('Κατηγορία'),
         'notes': _('Σημειώσεις')
     }
     table_title = _('Θέματα')
+    ordering = ['collective_body', 'type', 'category']
     create_button = False
     update_buttons = False
     back_url = reverse_lazy('bodies:staff_list_collectivebodies')
@@ -229,6 +224,7 @@ class StaffListDecision(views.StaffListView):
         'title_gr': _('Τελική Απόφαση')
     }
     table_title = _('Αποφάσεις')
+    ordering = ['subject', get_order_by_title()]
     create_button = False
     update_buttons = False
     back_url = reverse_lazy('bodies:staff_list_collectivebodies')
@@ -241,9 +237,8 @@ Subject AutoComplete forms
 
 class SecSubjectAutoComplete(LoginRequiredMixin, UserPassesTestMixin, autocomplete.Select2QuerySetView):
     def get_queryset(self):
-        # scopes = get_secretariat_scope(self.request.user)
-        # qs = Subject.objects.filter(collective_body__in=scopes['collective_bodies'])
-        qs = Subject.objects.all()
+        scopes = get_secretariat_scope(self.request.user)
+        qs = Subject.objects.filter(collective_body__in=scopes['collective_bodies'])
 
         if self.q:
             qs = qs.filter(
