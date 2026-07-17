@@ -9,6 +9,8 @@ from curricula.models import Department
 from scopes.models import ScopedQueryPrg, ScopedModelPrg
 
 User = get_user_model()
+
+
 # Create your models here.
 
 
@@ -25,7 +27,7 @@ class SubjectType(TitleStrMixin, TrackedScopedProgramModel):
         ordering = ['pk']
 
     title_gr = models.CharField(max_length=100)
-    title_en = models.CharField(null = True, blank = True, max_length=100)
+    title_en = models.CharField(null=True, blank=True, max_length=100)
 
     objects = SubjectTypeQuery.as_manager()
 
@@ -36,7 +38,7 @@ class SubjectType(TitleStrMixin, TrackedScopedProgramModel):
         if not (self.title_en and (self.title_en != '')):
             self.title_en = romanize(self.title_gr)
 
-        super().save(*args, update_user = self.updated_by, **kwargs)
+        super().save(*args, update_user=self.updated_by, **kwargs)
 
 
 class SubjectCategoryQuery(ScopedQueryPrg):
@@ -52,7 +54,7 @@ class SubjectCategory(TitleStrMixin, TrackedScopedProgramModel):
         ordering = ['pk']
 
     title_gr = models.CharField(max_length=100)
-    title_en = models.CharField(null = True, blank = True, max_length=100)
+    title_en = models.CharField(null=True, blank=True, max_length=100)
 
     objects = SubjectCategoryQuery.as_manager()
 
@@ -63,7 +65,7 @@ class SubjectCategory(TitleStrMixin, TrackedScopedProgramModel):
         if not (self.title_en and (self.title_en != '')):
             self.title_en = romanize(self.title_gr)
 
-        super().save(*args, update_user = self.updated_by,  **kwargs)
+        super().save(*args, update_user=self.updated_by, **kwargs)
 
 
 class SubjectQuery(ScopedQueryPrg):
@@ -97,7 +99,7 @@ class Subject(TrackedScopedProgramModel):
         return f"{self.index}. {self.type} - {self.category}"
 
     def save(self, *args, **kwargs):
-        super().save(*args, update_user = self.updated_by,  **kwargs)
+        super().save(*args, update_user=self.updated_by, **kwargs)
 
 
 class DecisionQuery(ScopedQueryPrg):
@@ -106,14 +108,23 @@ class DecisionQuery(ScopedQueryPrg):
         return self.filter(subject__collective_body__in=scope["collective_bodies"])
 
 
-class Decision(TitleStrMixin, TrackedScopedProgramModel):
+class Decision(TrackedScopedProgramModel):
     class Meta:
         verbose_name = _('Απόφαση')
         verbose_name_plural = _('Αποφάσεις')
         ordering = ['pk']
 
-    title_gr = models.CharField(max_length=100)
-    title_en = models.CharField(null = True, blank = True, max_length=100)
+    TITLE_APPROVAL = 'Approval'
+    TITLE_REJECTION = 'Rejection'
+    TITLE_PENDING = 'Pending'
+
+    TITLE_CHOICES = (
+        (TITLE_APPROVAL, _('Έγκριση ✅')),
+        (TITLE_REJECTION, _('Απόρριψη ❌')),
+        (TITLE_PENDING, _('Σε εκκρεμότητα ⏳')),
+    )
+
+    title = models.CharField(max_length=100, choices=TITLE_CHOICES)
     subject = models.ForeignKey(Subject, null=True, on_delete=models.SET_NULL)
 
     objects = DecisionQuery.as_manager()
@@ -122,8 +133,7 @@ class Decision(TitleStrMixin, TrackedScopedProgramModel):
         return scope['collective_bodies'].filter(id=self.subject.collective_body.id).exists()
 
     def save(self, *args, **kwargs):
-        if not (self.title_en and (self.title_en != '')):
-            self.title_en = romanize(self.title_gr)
+        super().save(*args, update_user=self.updated_by, **kwargs)
 
-        super().save(*args, update_user = self.updated_by, **kwargs)
-
+    def __str__(self):
+        return f"For Subject [{self.subject}], the final decision is: {self.get_title_display()}"

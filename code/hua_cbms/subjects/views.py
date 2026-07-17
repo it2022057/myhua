@@ -6,24 +6,27 @@ from django.utils.translation import gettext_lazy as _
 
 from accounts.checks import is_secretariat
 from core import views
+from core.models import AttachmentFormSetMixin
 from core.utils import get_order_by_title
 from scopes.utils import get_secretariat_scope
 from subjects.models import Subject, SubjectType, SubjectCategory, Decision
 from . import forms
+from attachments.forms import SubjectAttachmentFormSet, DecisionAttachmentFormSet
 
 """
 Secretariat Subject Views
 """
 
 
-class SecCreateSubject(views.ScopedSecCreateView):
+class SecCreateSubject(AttachmentFormSetMixin, views.ScopedSecCreateView):
     model = Subject
-    template_name = 'meetings/show_object.html'
+    template_name = 'subjects/show_object.html'
     form_class = forms.SecSubjectForm
     success_url = 'subjects:sec_list_subjects'
     headline = _('Δημιουργία Θέματος')
     back_url = ''
     success_message = _('Το θέμα καταχωρήθηκε επιτυχώς.')
+    attachment_formset_class = SubjectAttachmentFormSet
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -31,19 +34,24 @@ class SecCreateSubject(views.ScopedSecCreateView):
 
         return context
 
+    def get_attachment_form_kwargs(self):
+        return {'user': self.request.user}
 
-class SecUpdateSubject(views.ScopedSecUpdateView):
+
+class SecUpdateSubject(AttachmentFormSetMixin, views.ScopedSecUpdateView):
     model = Subject
+    template_name = 'subjects/show_object.html'
     form_class = forms.SecSubjectForm
     success_url = 'subjects:sec_list_subjects'
     delete_url = 'subjects:sec_delete_subject'
     confirm_modal = True
     success_message = _('Το θέμα ενημερώθηκε επιτυχώς.')
+    attachment_formset_class = SubjectAttachmentFormSet
 
 
 class SecListSubject(views.ScopedSecListView):
     model = Subject
-    fields = ['index', 'collective_body', 'type', 'category', 'program', 'department', 'school', 'notes']
+    fields = ['index', 'collective_body', 'type', 'category', 'program', 'department', 'school', 'notes', 'attachments']
     headers = {
         'index': _('Θέση'),
         'collective_body': _('Συλλογικό Όργανο'),
@@ -52,7 +60,8 @@ class SecListSubject(views.ScopedSecListView):
         'program': _('Πρόγραμμα Σπουδών'),
         'department': _('Τμήμα'),
         'school': _('Σχολή'),
-        'notes': _('Σημειώσεις')
+        'notes': _('Σημειώσεις'),
+        'attachments': _('Επισυναπτόμενα')
     }
     table_title = _('Θέματα')
     ordering = ['type', 'category']
@@ -157,33 +166,39 @@ Secretariat Decision Views
 """
 
 
-class SecCreateDecision(views.ScopedSecCreateView):
+class SecCreateDecision(AttachmentFormSetMixin, views.ScopedSecCreateView):
     model = Decision
     form_class = forms.SecDecisionForm
     success_url = 'subjects:sec_list_decisions'
     headline = _('Δημιουργία Απόφασης')
     back_url = ''
     success_message = _('Η απόφαση καταχωρήθηκε επιτυχώς.')
+    attachment_formset_class = DecisionAttachmentFormSet
+
+    def get_attachment_form_kwargs(self):
+        return {'user': self.request.user}
 
 
-class SecUpdateDecision(views.ScopedSecUpdateView):
+class SecUpdateDecision(AttachmentFormSetMixin, views.ScopedSecUpdateView):
     model = Decision
     form_class = forms.SecDecisionForm
     success_url = 'subjects:sec_list_decisions'
     delete_url = 'subjects:sec_delete_decision'
     confirm_modal = True
     success_message = _('Η απόφαση ενημερώθηκε επιτυχώς.')
+    attachment_formset_class = DecisionAttachmentFormSet
 
 
 class SecListDecision(views.ScopedSecListView):
     model = Decision
-    fields = ['subject', 'title_gr']
+    fields = ['subject', 'title', 'attachments']
     headers = {
         'subject': _('Θέμα'),
-        'title_gr': _('Τελική Απόφαση')
+        'title': _('Τελική Απόφαση'),
+        'attachments': _('Επισυναπτόμενα')
     }
     table_title = _('Αποφάσεις')
-    ordering = ['subject', get_order_by_title()]
+    ordering = ['subject', 'title']
     create_url = 'subjects:sec_create_decision'
     update_url = 'subjects:sec_update_decision'
     back_url = reverse_lazy('bodies:sec_list_collectivebodies')
@@ -202,12 +217,13 @@ Staff Subject and Decision Views
 
 class StaffListSubject(views.StaffListView):
     model = Subject
-    fields = ['collective_body', 'type', 'category', 'notes']
+    fields = ['collective_body', 'type', 'category', 'notes', 'attachments']
     headers = {
         'collective_body': _('Συλλογικό Όργανο'),
         'type': _('Τύπος'),
         'category': _('Κατηγορία'),
-        'notes': _('Σημειώσεις')
+        'notes': _('Σημειώσεις'),
+        'attachments': _('Επισυναπτόμενα')
     }
     table_title = _('Θέματα')
     ordering = ['collective_body', 'type', 'category']
@@ -218,13 +234,14 @@ class StaffListSubject(views.StaffListView):
 
 class StaffListDecision(views.StaffListView):
     model = Decision
-    fields = ['subject', 'title_gr']
+    fields = ['subject', 'title', 'attachments']
     headers = {
         'subject': _('Θέμα'),
-        'title_gr': _('Τελική Απόφαση')
+        'title': _('Τελική Απόφαση'),
+        'attachments': _('Επισυναπτόμενα')
     }
     table_title = _('Αποφάσεις')
-    ordering = ['subject', get_order_by_title()]
+    ordering = ['subject', 'title']
     create_button = False
     update_buttons = False
     back_url = reverse_lazy('bodies:staff_list_collectivebodies')

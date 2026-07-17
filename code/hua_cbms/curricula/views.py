@@ -30,7 +30,7 @@ class SecProgramAutoComplete(LoginRequiredMixin, UserPassesTestMixin, autocomple
     def get_queryset(self):
         from curricula.models import StudyProgram
 
-        qs = StudyProgram.objects.all()
+        qs = StudyProgram.objects.sc_filter(user=self.request.user)
         if self.q:
             qs = qs.filter(Q(title_gr__icontains=self.q) | Q(title_en__icontains=self.q))
 
@@ -44,7 +44,7 @@ class SecDepartmentAutoComplete(SecProgramAutoComplete):
     def get_queryset(self):
         from curricula.models import Department
 
-        qs = Department.objects.all()
+        qs = Department.objects.sc_filter(user=self.request.user)
         if self.q:
             qs = qs.filter(Q(title_gr__icontains=self.q) | Q(title_en__icontains=self.q))
 

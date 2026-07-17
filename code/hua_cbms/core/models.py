@@ -35,6 +35,75 @@ class PersonStrMixin:
         return self.given_name + ' ' + self.surname
 
 
+class AttachmentFormSetMixin:
+    attachment_formset_class = None
+    attachment_context_name = 'attachment_formset'
+    attachment_prefix = 'attachments'
+    # By default, do not pass extra kwargs to the attachment forms
+    attachment_form_kwargs = None
+
+    def get_attachment_form_kwargs(self):
+        """
+        Returns extra kwargs for each form inside the formset.
+        Override this only when the attachment form needs something extra,
+        for example the current user.
+        """
+        return self.attachment_form_kwargs or {}
+
+    def get_attachment_formset(self):
+        """
+        Creates the attachment formset for GET or POST requests
+        """
+
+        formset_kwargs = {
+            'instance': self.object,
+            'prefix': self.attachment_prefix,
+            'form_kwargs': {
+                'user': self.request.user
+            }
+        }
+
+        # Add form_kwargs only it exists
+        form_kwargs = self.get_attachment_form_kwargs()
+
+        if form_kwargs:
+            formset_kwargs['form_kwargs'] = form_kwargs
+
+        if self.request.method == 'POST':
+            formset_kwargs['data'] = self.request.POST
+            formset_kwargs['files'] = self.request.FILES
+
+        return self.attachment_formset_class(**formset_kwargs)
+
+    def get_context_data(self, **kwargs):
+        """
+        Adds the attachment formset to the template context
+        """
+        context = super().get_context_data(**kwargs)
+
+        context[self.attachment_context_name] = self.get_attachment_formset()
+
+        return context
+
+    def form_valid(self, form):
+        """
+        Saves the parent model first, then saves its attachments
+        """
+
+        context = self.get_context_data(form=form)
+        attachment_formset = context[self.attachment_context_name]
+
+        if not attachment_formset.is_valid():
+            return self.form_invalid(form)
+
+        response = super().form_valid(form)
+
+        attachment_formset.instance = self.object
+        attachment_formset.save()
+
+        return response
+
+
 class TrackedModel(models.Model):
     class Meta:
         abstract = True
@@ -48,6 +117,7 @@ class TrackedModel(models.Model):
 
     def save(self, *args, update_user=None, **kwargs):
 
+        # Allow passing either a User object or a username
         if isinstance(update_user, str):
             update_user = User.objects.get(username=update_user)
 
@@ -56,6 +126,7 @@ class TrackedModel(models.Model):
         self.updated_at = now
         self.updated_by = update_user
 
+        # Only set create information when the object is actually created
         if not self.id:
             self.created_at = now
             self.created_by = update_user

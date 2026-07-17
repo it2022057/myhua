@@ -1,0 +1,221 @@
+{% extends 'accounts/page.html' %}
+{% load crispy_forms_tags %}
+{% load i18n %}
+{% block middle %}
+    {% if headline_above %}
+        <h5> {{ headline_above }}</h5>
+    {% endif %}
+
+    {% if above_p %}
+        <div class="row text-center">
+            <p> {{ above_p }} </p>
+        </div>
+    {% endif %}
+
+    {% block alert %}
+        {% if form.errors %}
+            <div class="alert alert-danger" role="alert">
+                <p> {% trans 'Παρακαλούμε διορθώστε τα σφάλματα στην φόρμα όπως εμφανίζονται παρακάτω.' %}</p>
+            </div>
+        {% endif %}
+    {% endblock %}
+
+    {% if button_above_text %}
+        <div class="row text-center justify-content-center">
+            <div class="col-sm-6 text-center">
+                {% if button_above_next %}
+                    <a href="{{ button_above_url }}?next={{ button_above_next }}"
+                       class="{{ button_above_classes }}"><span
+                            class="mto">{{ button_above_icon }} </span> {{ button_above_text }}</a>
+                {% else %}
+                    <a href="{{ button_above_url }}" class="{{ button_above_classes }}"><span
+                            class="mto">{{ button_above_icon }} </span> {{ button_above_text }}</a>
+                {% endif %}
+            </div>
+        </div>
+        </br>
+    {% endif %}
+
+    <h4> {{ headline }} </h4>
+
+    <form id="crispyForm" method="post"
+          {% if form.is_multipart or attachment_formset.is_multipart %}enctype="multipart/form-data"{% endif %}>
+
+        {% csrf_token %}
+
+        {% crispy form %}
+
+        {% if attachment_formset %}
+            {{ attachment_formset.management_form }}
+
+            <!-- Hidden empty form template.
+            This is not submitted as a real form yet.
+            JavaScript will copy it when the user clicks the add button.
+            -->
+            <template id="empty_attachment_form" style="display: none">
+                {% crispy attachment_formset.empty_form %}
+            </template>
+
+            <div id="attachments_form">
+                {% for attachment_form in attachment_formset %}
+                    <!-- Very important: renders hidden id field for existing attachments -->
+                    {% for hidden in attachment_form.hidden_fields %}
+                        {{ hidden }}
+                    {% endfor %}
+
+                    {% crispy attachment_form %}
+
+                    <!-- Render the delete checkbox only for existing attachments -->
+                    {% if attachment_form.instance.pk and attachment_form.DELETE %}
+                        <div class="delete_attachment_wrapper mb-3">
+                            {{ attachment_form.DELETE }}
+
+                            <label for="{{ attachment_form.DELETE.id_for_label }}" class="delete_attachment_label">
+                                <span class="mto">delete</span>
+                                {% trans 'Διαγραφή' %}
+                            </label>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+
+            <button type="button" id="add_attachment" class="btn btn-default">
+                <span class="mto">attach_file_add</span>
+                {% trans "Προσθήκη επισυναπτόμενου" %}
+            </button>
+        {% endif %}
+
+    </form>
+
+    <style>
+        /* Wrapper for the delete checkbox of an attachment */
+        .delete_attachment_wrapper {
+            display: flex;
+            align-items: center;
+            padding-inline-start: 93%;
+        }
+
+        /* Hide the default checkbox, but keep it functional */
+        .delete_attachment_wrapper input[type="checkbox"] {
+            display: none;
+        }
+
+        /* Style the label like a button */
+        .delete_attachment_label {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            padding: 0.45rem 0.75rem;
+            border: 1px solid #dc3545;
+            border-radius: 999px;
+            color: #dc3545;
+            cursor: pointer;
+            margin-bottom: 0;
+            font-size: 0.9rem;
+        }
+
+        /* Change the button style when the delete checkbox is selected */
+        .delete_attachment_wrapper input[type="checkbox"]:checked + .delete_attachment_label {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        /* Optional hover effect */
+        .delete_attachment_label:hover {
+            background-color: #dc3545;
+            color: white;
+        }
+    </style>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const addButton = document.getElementById("add_attachment");
+            const attachmentsForm = document.getElementById("attachments_form");
+            const emptyForm = document.getElementById("empty_attachment_form");
+            const totalFormsInput = document.getElementById("id_attachments-TOTAL_FORMS");
+
+            if (!addButton || !attachmentsForm || !emptyForm || !totalFormsInput) {
+                return;
+            }
+
+            addButton.addEventListener("click", function () {
+                // Read how many forms currently exist.
+                // Example: if TOTAL_FORMS = 0, the next form must be attachments-0.
+                // If TOTAL_FORMS = 1, the next form must be attachments-1.
+                const formIndex = parseInt(totalFormsInput.value);
+
+                // Django's empty_form uses __prefix__ as a placeholder.
+                // Replace it with the real form number.
+                // Example: attachments-__prefix__-file becomes attachments-0-file
+                const newFormHtml = emptyForm.innerHTML.replaceAll("__prefix__", formIndex);
+
+                // Add the new form HTML at the bottom of the attachments form
+                attachmentsForm.insertAdjacentHTML("beforeend", newFormHtml);
+
+                // Find the file input and filename display of the new Attachment form
+                const newFileInput = document.getElementById(`id_attachments-${formIndex}-file`);
+                const newFileDisplay = document.getElementById(`file-name-id_attachments-${formIndex}-file`);
+
+                // Add the change event if both elements exist
+                newFileInput.addEventListener("change", function (e) {
+                    addEventInNewFileInput(e, newFileDisplay);
+                });
+
+                // Update "attachments-TOTAL_FORMS" hidden count
+                totalFormsInput.value = formIndex + 1;
+            });
+
+            function addEventInNewFileInput(e, newFileDisplay) {
+                // Show the name of the selected file
+                if (e.target.files.length > 0) {
+                    const fileName = e.target.files[0].name;
+                    console.log(fileName);
+                    newFileDisplay.textContent = '{% trans 'Θα χρησιμοποιηθεί το αρχείο: ' %}' + fileName;
+                    newFileDisplay.classList.add('selected');
+                } else {
+                    // Clear the display content (name of the file) when no file is selected
+                    newFileDisplay.textContent = '';
+                    newFileDisplay.classList.remove('selected');
+                }
+            }
+        });
+    </script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const collectiveBodySelect = document.getElementById("id_collective_body");
+            const indexField = document.getElementById("id_index");
+
+            if (!collectiveBodySelect || !indexField) {
+                return;
+            }
+
+            // Clear index on page load
+            if (collectiveBodySelect.value === "") {
+                indexField.value = "";
+            }
+
+            function updateSubjectIndex() {
+                const collectiveBodyId = collectiveBodySelect.value;
+
+                if (!collectiveBodyId) {
+                    indexField.value = "";
+                    return;
+                }
+
+                fetch(`{{ nextIndexUrl }}?collective_body_id=${encodeURIComponent(collectiveBodyId)}`, {
+                    credentials: "same-origin" // when the request goes to the same origin, include cookies/auth credentials
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        indexField.value = data.next_index;
+                    });
+            }
+
+            if (window.jQuery && $.fn && $.fn.select2) {
+                $(collectiveBodySelect).on("select2:select", updateSubjectIndex);
+            }
+        });
+    </script>
+
+{% endblock %}

@@ -35,5 +35,5 @@ urlpatterns = [
     # URLs for Secretary autocomplete
     path('sec/subject/autocomplete', views.SecSubjectAutoComplete.as_view(), name='subject-autocomplete'),
     path('sec/subject-type/autocomplete', views.SecSubjectTypeAutoComplete.as_view(), name='subject-type-autocomplete'),
-    path('sec/subject-category/autocomplete', views.SecSubjectCategoryAutoComplete.as_view(), name='subject-category-autocomplete'),
+    path('sec/subject-category/autocomplete', views.SecSubjectCategoryAutoComplete.as_view(), name='subject-category-autocomplete')
 ]

@@ -139,7 +139,7 @@ class SecCollectiveBodyOverviewList(SecMultipleList):
         subjects = Subject.objects.filter(collective_body=body)
         self.tables = [
             Table(
-                fields=['index', 'type', 'category', 'applicant_user', 'program', 'department', 'school', 'notes'],
+                fields=['index', 'type', 'category', 'applicant_user', 'program', 'department', 'school', 'notes', 'attachments'],
                 table_title=_('Θέματα Συνεδριάσεων Συλλογικού Οργάνου'),
                 headers={
                     'index': _('Θέση'),
@@ -149,7 +149,8 @@ class SecCollectiveBodyOverviewList(SecMultipleList):
                     'program': _('Πρόγραμμα Σπουδών'),
                     'department': _('Τμήμα'),
                     'school': _('Σχολή'),
-                    'notes': _('Σημειώσεις')
+                    'notes': _('Σημειώσεις'),
+                    'attachments': _('Επισυναπτόμενα')
                 },
                 table_id='subject',
                 order=[[0, 'asc']],
@@ -178,11 +179,12 @@ class SecCollectiveBodyOverviewList(SecMultipleList):
                 next=self.request.path
             ),
             Table(
-                fields=['subject', 'title_gr'],
+                fields=['subject', 'title', 'attachments'],
                 table_title=_('Αποφάσεις για τα Θέματα'),
                 headers={
                     'subject': _('Θέμα'),
-                    'title_gr': _('Τελική Απόφαση')
+                    'title': _('Τελική Απόφαση'),
+                    'attachments': _('Επισυναπτόμενα')
                 },
                 table_id='decision',
                 order=[[0, 'asc'], [1, 'asc']],
@@ -346,7 +348,7 @@ class StaffCollectiveBodyOverviewList(StaffMultipleList):
         subjects = Subject.objects.filter(collective_body=body).order_by('index')
         self.tables = [
             Table(
-                fields=['type', 'category', 'program', 'department', 'school', 'notes'],
+                fields=['type', 'category', 'program', 'department', 'school', 'notes', 'attachments'],
                 table_title=_('Θέματα Συνεδριάσεων Συλλογικού Οργάνου'),
                 headers={
                     'type': _('Τύπος'),
@@ -355,6 +357,7 @@ class StaffCollectiveBodyOverviewList(StaffMultipleList):
                     'department': _('Τμήμα'),
                     'school': _('Σχολή'),
                     'notes': _('Σημειώσεις'),
+                    'attachments': _('Επισυναπτόμενα')
                 },
                 table_id='subject',
                 order=[[0, 'asc']],
@@ -364,11 +367,12 @@ class StaffCollectiveBodyOverviewList(StaffMultipleList):
                 next=self.request.path
             ),
             Table(
-                fields=['subject', 'title_gr'],
+                fields=['subject', 'title', 'attachments'],
                 table_title=_('Αποφάσεις για τα Θέματα'),
                 headers={
                     'subject': _('Θέμα'),
-                    'title_gr': _('Τελική Απόφαση')
+                    'title': _('Τελική Απόφαση'),
+                    'attachments': _('Επισυναπτόμενα')
                 },
                 table_id='decision',
                 order=[[0, 'asc'], [1, 'asc']],

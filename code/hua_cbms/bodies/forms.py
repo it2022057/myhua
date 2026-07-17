@@ -40,6 +40,8 @@ COLLECTIVEBODY_WIDGETS = {
 
 
 class SecCollectiveBodyForm(GenericModelForm):
+    scoped_fields = ['participants', 'president']
+
     class Meta:
         fields = COLLECTIVEBODY_FIELDS
         model = CollectiveBody
@@ -72,3 +74,14 @@ class SecCollectiveBodyForm(GenericModelForm):
                 Div(Field('end_date'), css_class='col-md-6'),
                 css_class="row"),
         )
+
+    def clean(self):
+        cleaned_data = super().clean()
+        start_date = cleaned_data['start_date']
+        end_date = cleaned_data['end_date']
+
+        if start_date and end_date:
+            if start_date > end_date:
+                self.add_error('start_date',
+                               _('H ημερομηνία έναρξης δεν μπορεί να είναι προγενέστερη της ημερομηνίας λήξης'))
+        return cleaned_data

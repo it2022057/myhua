@@ -45,7 +45,7 @@ MEETING_WIDGETS = {
 
 
 class SecMeetingForm(GenericModelForm):
-    scoped_fields = ['collective_body']
+    scoped_fields = ['collective_body', 'present', 'absent']
 
     class Meta:
         fields = MEETING_FIELDS

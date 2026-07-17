@@ -33,7 +33,6 @@ urlpatterns += i18n_patterns(
     path('admin/', admin.site.urls),
     path('', include('accounts.urls')),
     path('accounts/', include('django.contrib.auth.urls')),
-    # path('attachments/', include('attachments.urls')),
     path('bodies/', include('bodies.urls')),
     path('curricula/', include('curricula.urls')),
     path('meetings/', include('meetings.urls')),

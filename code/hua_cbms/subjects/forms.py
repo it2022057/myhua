@@ -1,17 +1,18 @@
+from crispy_forms.layout import Layout, Row, Div, Field
 from dal import autocomplete
 from django import forms
-from crispy_forms.layout import Layout, Row, Div, Field, HTML
 from django.utils.translation import gettext_lazy as _
 
 from accounts.checks import validate_subject_index
 from core.forms import GenericModelForm
 from subjects.models import Subject, Decision, SubjectType, SubjectCategory
 
-SUBJECT_FIELDS = ['index', 'type', 'category', 'applicant_user', 'program', 'department', 'school', 'collective_body', 'notes']
+SUBJECT_FIELDS = ['index', 'type', 'category', 'applicant_user', 'program', 'department', 'school', 'collective_body',
+                  'notes']
 
-DECISION_FIELDS = ['title_gr', 'title_en', 'subject']
+DECISION_FIELDS = ['subject', 'title']
 
-SUBJECT_TYPE_FIELDS = ['title_gr', 'title_en']
+SUBJECT_TYPE_CATEGORY_FIELDS = ['title_gr', 'title_en']
 
 FIELD_LABELS = {
     'index': _('Θέση'),
@@ -26,6 +27,7 @@ FIELD_LABELS = {
 
     'title_gr': _('Τίτλος (Ελληνικά)'),
     'title_en': _('Τίτλος (Αγγλικά)'),
+    'title': _('Τελική Απόφαση'),
     'subject': _('Θέμα')
 }
 
@@ -71,12 +73,15 @@ DECISION_WIDGETS = {
     'subject': autocomplete.ModelSelect2(
         url='subjects:subject-autocomplete',
         attrs={**BASE_ATTRS, 'data-placeholder': _('Επιλέξτε θέμα')}
+    ),
+    'title': autocomplete.ListSelect2(
+        attrs={**BASE_ATTRS}
     )
 }
 
 
 class SecSubjectForm(GenericModelForm):
-    scoped_fields = ['collective_body']
+    scoped_fields = ['type', 'category', 'program', 'department', 'collective_body']
 
     class Meta:
         fields = SUBJECT_FIELDS
@@ -86,6 +91,8 @@ class SecSubjectForm(GenericModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+
+        self.helper.form_tag = False
 
         self.helper.layout = Layout(
             Row(self.button_element_html,
@@ -124,14 +131,14 @@ class SecSubjectForm(GenericModelForm):
 
 class SecSubjectTypeForm(GenericModelForm):
     class Meta:
-        fields = SUBJECT_TYPE_FIELDS
+        fields = SUBJECT_TYPE_CATEGORY_FIELDS
         model = SubjectType
         labels = FIELD_LABELS
 
 
 class SecSubjectCategoryForm(GenericModelForm):
     class Meta:
-        fields = SUBJECT_TYPE_FIELDS
+        fields = SUBJECT_TYPE_CATEGORY_FIELDS
         model = SubjectCategory
         labels = FIELD_LABELS
 
@@ -144,3 +151,13 @@ class SecDecisionForm(GenericModelForm):
         model = Decision
         labels = FIELD_LABELS
         widgets = DECISION_WIDGETS
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        choices = list(self.fields['title'].choices)
+
+        self.fields['title'].choices = [
+            ('', _('Επιλέξτε τελική απόφαση')),
+            *[choice for choice in choices if choice[0] != ''],
+        ]
