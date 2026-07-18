@@ -1,6 +1,7 @@
 from django.contrib.auth import get_user_model
 from django.db import models
 from django.utils import timezone
+from django.utils.translation import gettext_lazy as _
 from romanize import romanize
 
 from core.utils import get_lang
@@ -58,9 +59,6 @@ class AttachmentFormSetMixin:
         formset_kwargs = {
             'instance': self.object,
             'prefix': self.attachment_prefix,
-            'form_kwargs': {
-                'user': self.request.user
-            }
         }
 
         # Add form_kwargs only it exists
@@ -81,7 +79,14 @@ class AttachmentFormSetMixin:
         """
         context = super().get_context_data(**kwargs)
 
-        context[self.attachment_context_name] = self.get_attachment_formset()
+        attachment_formset = self.get_attachment_formset()
+        context[self.attachment_context_name] = attachment_formset
+
+        if attachment_formset.can_delete:
+            for attachment_form in attachment_formset.forms:
+                if 'DELETE' in attachment_form.fields:
+                    attachment_form.fields['DELETE'].help_text = (
+                        _('Πατήστε για να σημειώσετε το συνημμένο προς διαγραφή. Η διαγραφή ολοκληρώνεται με την αποθήκευση !'))
 
         return context
 
@@ -94,7 +99,7 @@ class AttachmentFormSetMixin:
         attachment_formset = context[self.attachment_context_name]
 
         if not attachment_formset.is_valid():
-            return self.form_invalid(form)
+            return self.form_invalid(context)
 
         response = super().form_valid(form)
 
@@ -102,6 +107,9 @@ class AttachmentFormSetMixin:
         attachment_formset.save()
 
         return response
+
+    def form_invalid(self, context):
+        return self.render_to_response(context)
 
 
 class TrackedModel(models.Model):

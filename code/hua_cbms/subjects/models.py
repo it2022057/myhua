@@ -1,3 +1,6 @@
+import shutil
+from pathlib import Path
+
 from django.core.validators import MinValueValidator
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth import get_user_model
@@ -6,6 +9,7 @@ from romanize import romanize
 
 from core.models import TitleStrMixin, TrackedScopedProgramModel, TrackedModel
 from curricula.models import Department
+from hua_cbms import settings
 from scopes.models import ScopedQueryPrg, ScopedModelPrg
 
 User = get_user_model()
@@ -81,8 +85,8 @@ class Subject(TrackedScopedProgramModel):
         ordering = ['pk']
 
     index = models.PositiveIntegerField(validators=[MinValueValidator(1)])
-    type = models.ForeignKey(SubjectType, null=True, blank=True, on_delete=models.CASCADE)
-    category = models.ForeignKey(SubjectCategory, null=True, blank=True, on_delete=models.CASCADE)
+    type = models.ForeignKey(SubjectType, null=True, on_delete=models.CASCADE)
+    category = models.ForeignKey(SubjectCategory, null=True, on_delete=models.CASCADE)
     applicant_user = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
     program = models.ForeignKey('curricula.StudyProgram', null=True, on_delete=models.SET_NULL)
     department = models.ForeignKey('curricula.Department', null=True, on_delete=models.SET_NULL)
@@ -100,6 +104,21 @@ class Subject(TrackedScopedProgramModel):
 
     def save(self, *args, **kwargs):
         super().save(*args, update_user=self.updated_by, **kwargs)
+
+    def delete(self, *args, **kwargs):
+        attachments_path = (
+                Path(settings.MEDIA_ROOT) /
+                'attachments' /
+                'subjects' /
+                str(self.pk)
+        )
+
+        response = super().delete(*args, **kwargs)
+
+        if attachments_path.exists() and attachments_path.is_dir():
+            shutil.rmtree(attachments_path)
+
+        return response
 
 
 class DecisionQuery(ScopedQueryPrg):
@@ -132,8 +151,23 @@ class Decision(TrackedScopedProgramModel):
     def scope_query(self, scope):
         return scope['collective_bodies'].filter(id=self.subject.collective_body.id).exists()
 
+    def __str__(self):
+        return f"For Subject [{self.subject}], the final decision is: {self.get_title_display()}"
+
     def save(self, *args, **kwargs):
         super().save(*args, update_user=self.updated_by, **kwargs)
 
-    def __str__(self):
-        return f"For Subject [{self.subject}], the final decision is: {self.get_title_display()}"
+    def delete(self, *args, **kwargs):
+        attachments_path = (
+                Path(settings.MEDIA_ROOT) /
+                'attachments' /
+                'decisions' /
+                str(self.pk)
+        )
+
+        response = super().delete(*args, **kwargs)
+
+        if attachments_path.exists() and attachments_path.is_dir():
+            shutil.rmtree(attachments_path)
+
+        return response

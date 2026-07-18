@@ -1,3 +1,5 @@
+import hashlib
+
 from django.http import Http404
 from django.conf import settings
 from django.core.signing import TimestampSigner
@@ -10,6 +12,21 @@ def get_domain_uri(request):
     if 'http://' in domain:
         domain = domain.replace('http://', 'https://')
     return domain
+
+
+def get_file_hash(file):
+    hasher = hashlib.sha256()
+
+    if hasattr(file, 'open'):
+        file.open('rb')
+
+    for chunk in file.chunks():
+        hasher.update(chunk)
+
+    if hasattr(file, 'seek'):
+        file.seek(0)
+
+    return hasher.hexdigest()
 
 
 def send_password_link(request, email):

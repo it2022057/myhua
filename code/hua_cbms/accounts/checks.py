@@ -249,6 +249,11 @@ def validate_subject_index(index, collective_body, instance=None):
         raise forms.ValidationError(_('Υπάρχει ήδη θέμα με αυτόν τον αριθμό για το συγκεκριμένο συλλογικό όργανο'))
 
 
+def validate_file(file):
+    if not file:
+        raise forms.ValidationError(_('Παρακαλώ επιλέξτε αρχείο'))
+
+
 def can_download(parts, request_user):
     return True     # TEMPORARY
 

@@ -13,7 +13,7 @@
     {% endif %}
 
     {% block alert %}
-        {% if form.errors %}
+        {% if form.errors or attachment_formset.errors %}
             <div class="alert alert-danger" role="alert">
                 <p> {% trans 'Παρακαλούμε διορθώστε τα σφάλματα στην φόρμα όπως εμφανίζονται παρακάτω.' %}</p>
             </div>
@@ -72,27 +72,142 @@
 
                             <label for="{{ attachment_form.DELETE.id_for_label }}" class="delete_attachment_label">
                                 <span class="mto">delete</span>
-                                {% trans 'Διαγραφή' %}
+                                {% trans "Διαγραφή συνημμένου" %}
                             </label>
+
+                            {% if attachment_form.DELETE.help_text %}
+                                <div class="form-text text-muted">
+                                    {{ attachment_form.DELETE.help_text }}
+                                </div>
+                            {% endif %}
                         </div>
                     {% endif %}
                 {% endfor %}
             </div>
 
-            <button type="button" id="add_attachment" class="btn btn-default">
+            <button type="button" id="add_attachment" class="btn btn-default" style="margin-bottom: 20px">
                 <span class="mto">attach_file_add</span>
-                {% trans "Προσθήκη επισυναπτόμενου" %}
+                {% trans "Προσθήκη συνημμένου" %}
             </button>
         {% endif %}
 
     </form>
 
+    {% if confirm_modal %}
+        <div class="modal fade" id="updateConfirmModal" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+
+                    <div class="modal-header">
+                        <h5 class="modal-title">{{ confirm_modal_title }}</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+
+                    <div class="modal-body">
+                        {{ confirm_modal_question }}
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                            {{ confirm_modal_cancel }}
+                        </button>
+                        <button type="button" class="btn btn-primary" id="confirmUpdateBtn">
+                            {{ confirm_modal_ok }}
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+
+                // ===== UPDATE CONFIRMATION =====
+                const form = document.getElementById("crispyForm");
+                const updateModal = new bootstrap.Modal(
+                    document.getElementById("updateConfirmModal")
+                );
+                const confirmUpdateBtn = document.getElementById("confirmUpdateBtn");
+
+                let updateConfirmed = false;
+
+                if (form) {
+                    form.addEventListener("submit", function (e) {
+                        if (!updateConfirmed) {
+                            e.preventDefault();
+                            updateModal.show();
+                        }
+                    });
+                }
+
+                confirmUpdateBtn.addEventListener("click", function () {
+                    updateConfirmed = true;
+                    form.submit();
+                });
+            });
+        </script>
+    {% endif %}
+
+    {% if delete_url %}
+        {% if form.instance.pk %}
+            <p></p>
+            <div class="row">
+                <div class="col-sm-6">
+                    <button type="button" class="btn btn-danger" onclick="delete_obj()">
+                        <span class="mto">{{ delete_button_icon }}</span>{{ delete_text }}
+                    </button>
+                </div>
+                <div class="col-sm-6">
+                </div>
+            </div>
+
+            <script>
+                function sweetConfirm(message, confirmText = "{% trans 'Εντάξει' %}", cancelText = "{% trans 'Άκυρο' %}") {
+                    return Swal.fire({
+                        text: message,
+                        icon: "warning",
+                        showCancelButton: true,
+                        confirmButtonText: confirmText,
+                        cancelButtonText: cancelText,
+                        confirmButtonColor: "#d33",
+                        reverseButtons: true
+                    }).then((result) => {
+                        return result.isConfirmed;
+                    });
+                }
+
+                async function delete_obj() {
+                    var result = await sweetConfirm(
+                        "{% trans 'Είστε σίγουροι; ' %}",
+                        "{% trans 'Διαγραφή!' %}",
+                        "{% trans 'Άκυρο' %}"
+                    );
+                    if (result) {
+                        {% if success_url %}
+                            window.location.replace('{{ delete_url }}?next={{ success_url }}');
+                        {% else %}
+                            window.location.replace('{{ delete_url }}');
+                        {% endif %}
+                    }
+                }
+            </script>
+        {% endif %}
+    {% endif %}
+
     <style>
         /* Wrapper for the delete checkbox of an attachment */
         .delete_attachment_wrapper {
             display: flex;
-            align-items: center;
-            padding-inline-start: 93%;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 0.35rem;
+        }
+
+        .delete_attachment_wrapper .form-text {
+            max-width: 380px;
+            max-height: 60px;
+            text-align: end;
+            line-height: 1.25;
         }
 
         /* Hide the default checkbox, but keep it functional */
