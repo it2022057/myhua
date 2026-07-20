@@ -58,7 +58,7 @@ class AttachmentFormSetMixin:
 
         formset_kwargs = {
             'instance': self.object,
-            'prefix': self.attachment_prefix,
+            'prefix': self.attachment_prefix
         }
 
         # Add form_kwargs only it exists

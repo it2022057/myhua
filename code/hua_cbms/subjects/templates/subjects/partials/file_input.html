@@ -11,7 +11,9 @@
         </div>
 
         {% if field.value %}
-            <a href="{{ field.value.url }}" class="btn btn-primary" download>
+            {% media_download_url field.value as download_url %}
+
+            <a href="{{ download_url }}" class="btn btn-primary" download>
                 <span class="mto">docs</span>
                 <em>{{ field|get_filename }}</em>
             </a>
@@ -36,7 +38,9 @@
         </div>
         <label for="{{ field.auto_id }}" style="margin-top: -11px;">
             {% if field.value %}
-                <a href="{{ field.value.url }}" class="btn btn-secondary" download>
+                {% media_download_url field.value as download_url %}
+
+                <a href="{{ download_url }}" class="btn btn-secondary" download>
                     <span class="mto">download</span>
                     <em>{{ field|get_filename }}</em>
                 </a>

@@ -15,6 +15,8 @@ from django_auth_ldap.config import LDAPSearch
 import ldap
 import os
 
+from accounts import emails
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -277,14 +279,14 @@ MIN_LENGTH = 8
 # PASSWORD_SPECIAL_CHARS = r'[!@#\$%\^&\*\(\)_\+\-=\[\]\{\};:\"",\.<>\/\?\\\|~]'
 PASSWORD_SPECIAL_CHARS = '{}!@#$%^&*()-+'
 
-# # User registration options
-# MAX_AGE = 32000 # number seconds one time registration links are active
-# REGISTRATION_MESSAGE = emails.USER_REGISTRATION_MESSAGE
-# REGISTRATION_SUBJECT = 'Activate your account / Ενεργοποιήση του Λογαριασμού σας'
+# User registration options
+MAX_AGE = 32000 # number seconds one time registration links are active
+REGISTRATION_MESSAGE = emails.USER_REGISTRATION_MESSAGE
+REGISTRATION_SUBJECT = 'Activate your account / Ενεργοποιήση του Λογαριασμού σας'
 
-# FORGOT_PASSWORD_BODY = emails.USER_FORGOT_PASSWORD_BODY
-# FORGOT_PASSWORD_SUBJECT = 'Password Reset / Επαναφορά κωδικού'
-#
+FORGOT_PASSWORD_BODY = emails.USER_FORGOT_PASSWORD_BODY
+FORGOT_PASSWORD_SUBJECT = 'Password Reset / Επαναφορά κωδικού'
+
 # # reCAPTCHA settings
 # RECAPTCHA_PUBLIC_KEY = os.environ.get('RECAPTCHA_PUBLIC_KEY')
 # RECAPTCHA_PRIVATE_KEY = os.environ.get('RECAPTCHA_PRIVATE_KEY')

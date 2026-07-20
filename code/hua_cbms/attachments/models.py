@@ -3,9 +3,12 @@ import os
 from django import forms
 from django.db import models
 from django.forms.models import BaseInlineFormSet
+from django.urls import reverse
+from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
 
 from accounts.checks import validate_file
+from accounts.directories import subject_attachment_dir, decision_attachment_dir
 from accounts.utils import get_file_hash
 from core.models import TrackedModel
 
@@ -56,13 +59,16 @@ class AttachmentValidationFormSet(BaseInlineFormSet):
 
 
 class Attachment(TrackedModel):
+    class Meta:
+        verbose_name = _('Επισυναπτόμενο')
+        verbose_name_plural = _('Επισυναπτόμενα')
+
     def __str__(self):
         return self.name
 
     def save(self, *args, **kwargs):
         if self.file and not self.name:
-            file_name = self.file.name
-            name_split = file_name.split('.')
+            name_split = self.file.name.split('.')
             self.name = name_split[0]
 
         super().save(*args, update_user=self.updated_by, **kwargs)
@@ -75,9 +81,18 @@ class Attachment(TrackedModel):
         # Delete the database object
         super().delete(*args, **kwargs)
 
+    def download(self):
+        if not self.file:
+            return ''
 
-def subject_attachment_upload_to(instance, filename):
-    return os.path.join('attachments', 'subjects', str(instance.subject.pk), filename)
+        return format_html(
+            '<a href="{}" class="btn btn-secondary mb-2 download">'
+            '<span class="mto">download</span> '
+            '<em>{}</em>'
+            '</a>',
+
+            reverse('media_download', kwargs={'path': self.file.name}), self.name
+        )
 
 
 class SubjectAttachment(Attachment):
@@ -86,12 +101,8 @@ class SubjectAttachment(Attachment):
         verbose_name_plural = _('Επισυναπτόμενα Θεμάτων')
 
     name = models.CharField(max_length=100)
-    file = models.FileField(upload_to=subject_attachment_upload_to)
+    file = models.FileField(upload_to=subject_attachment_dir)
     subject = models.ForeignKey('subjects.Subject', null=True, on_delete=models.CASCADE, related_name='attachments')
-
-
-def decision_attachment_upload_to(instance, filename):
-    return os.path.join('attachments', 'decisions', str(instance.decision.pk), filename)
 
 
 class DecisionAttachment(Attachment):
@@ -100,5 +111,5 @@ class DecisionAttachment(Attachment):
         verbose_name_plural = _('Επισυναπτόμενα Αποφάσεων')
 
     name = models.CharField(max_length=100)
-    file = models.FileField(upload_to=decision_attachment_upload_to)
+    file = models.FileField(upload_to=decision_attachment_dir)
     decision = models.ForeignKey('subjects.Decision', null=True, on_delete=models.CASCADE, related_name='attachments')

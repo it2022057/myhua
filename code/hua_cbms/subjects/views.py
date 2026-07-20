@@ -48,10 +48,13 @@ class SecUpdateSubject(AttachmentFormSetMixin, views.ScopedSecUpdateView):
     success_message = _('Το θέμα ενημερώθηκε επιτυχώς.')
     attachment_formset_class = SubjectAttachmentFormSet
 
+    def get_attachment_form_kwargs(self):
+        return {'user': self.request.user}
+
 
 class SecListSubject(views.ScopedSecListView):
     model = Subject
-    fields = ['index', 'collective_body', 'type', 'category', 'program', 'department', 'school', 'notes', 'attachments']
+    fields = ['index', 'collective_body', 'type', 'category', 'program', 'department', 'school', 'notes', 'attachments.download']
     headers = {
         'index': _('Θέση'),
         'collective_body': _('Συλλογικό Όργανο'),
@@ -61,14 +64,13 @@ class SecListSubject(views.ScopedSecListView):
         'department': _('Τμήμα'),
         'school': _('Σχολή'),
         'notes': _('Σημειώσεις'),
-        'attachments': _('Επισυναπτόμενα')
+        'attachments.download': _('Επισυναπτόμενα')
     }
     table_title = _('Θέματα')
     ordering = ['type', 'category']
     create_url = 'subjects:sec_create_subject'
     update_url = 'subjects:sec_update_subject'
     back_url = reverse_lazy('bodies:sec_list_collectivebodies')
-
 
 class SecDeleteSubject(views.ScopedDeleteView):
     model = Subject
@@ -188,14 +190,17 @@ class SecUpdateDecision(AttachmentFormSetMixin, views.ScopedSecUpdateView):
     success_message = _('Η απόφαση ενημερώθηκε επιτυχώς.')
     attachment_formset_class = DecisionAttachmentFormSet
 
+    def get_attachment_form_kwargs(self):
+        return {'user': self.request.user}
+
 
 class SecListDecision(views.ScopedSecListView):
     model = Decision
-    fields = ['subject', 'title', 'attachments']
+    fields = ['subject', 'title', 'attachments.download']
     headers = {
         'subject': _('Θέμα'),
         'title': _('Τελική Απόφαση'),
-        'attachments': _('Επισυναπτόμενα')
+        'attachments.download': _('Επισυναπτόμενα')
     }
     table_title = _('Αποφάσεις')
     ordering = ['subject', 'title']
@@ -217,13 +222,13 @@ Staff Subject and Decision Views
 
 class StaffListSubject(views.StaffListView):
     model = Subject
-    fields = ['collective_body', 'type', 'category', 'notes', 'attachments']
+    fields = ['collective_body', 'type', 'category', 'notes', 'attachments.download']
     headers = {
         'collective_body': _('Συλλογικό Όργανο'),
         'type': _('Τύπος'),
         'category': _('Κατηγορία'),
         'notes': _('Σημειώσεις'),
-        'attachments': _('Επισυναπτόμενα')
+        'attachments.download': _('Επισυναπτόμενα')
     }
     table_title = _('Θέματα')
     ordering = ['collective_body', 'type', 'category']
@@ -234,11 +239,11 @@ class StaffListSubject(views.StaffListView):
 
 class StaffListDecision(views.StaffListView):
     model = Decision
-    fields = ['subject', 'title', 'attachments']
+    fields = ['subject', 'title', 'attachments.download']
     headers = {
         'subject': _('Θέμα'),
         'title': _('Τελική Απόφαση'),
-        'attachments': _('Επισυναπτόμενα')
+        'attachments.download': _('Επισυναπτόμενα')
     }
     table_title = _('Αποφάσεις')
     ordering = ['subject', 'title']

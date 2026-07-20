@@ -12,7 +12,7 @@ from accounts.models import StaffMember
 from curricula.models import StudyProgram
 from meetings.models import Meeting
 from scopes.utils import get_secretariat_scope
-from subjects.models import Subject
+from subjects.models import Subject, Decision
 
 User = get_user_model()
 
@@ -86,7 +86,7 @@ def is_department_secretariat(user):
 def likely_student_username(user):
     uid = user.username
     return (uid.startswith('it') or uid.startswith('csi') or uid.startswith('ap')) and not (
-                (uid == 'itsec') or (uid == 'applied') or (uid == 'apresvelou'))
+            (uid == 'itsec') or (uid == 'applied') or (uid == 'apresvelou'))
 
 
 def get_user_roles(user):
@@ -232,7 +232,8 @@ def validate_meeting_index(index, collective_body, instance=None):
         existing_meetings = existing_meetings.exclude(pk=instance.pk)
 
     if existing_meetings.exists():
-        raise forms.ValidationError(_('Υπάρχει ήδη συνεδρίαση με αυτόν τον αριθμό για το συγκεκριμένο συλλογικό όργανο'))
+        raise forms.ValidationError(
+            _('Υπάρχει ήδη συνεδρίαση με αυτόν τον αριθμό για το συγκεκριμένο συλλογικό όργανο'))
 
 
 def validate_subject_index(index, collective_body, instance=None):
@@ -255,69 +256,55 @@ def validate_file(file):
 
 
 def can_download(parts, request_user):
-    return True     # TEMPORARY
+    from attachments.models import SubjectAttachment, DecisionAttachment
 
-#     app_name = parts[0]
-#
-#     # Unauthenticated users not allowed
-#
-#     if app_name == 'subjects':
-#
-#         file_user = parts[1]
-#
-#         if isinstance(file_user, str):
-#             file_user = get_object_or_404(User, username=file_user)
-#
-#         if not request_user.is_authenticated:
-#             return False
-#
-#         student = get_object_or_404(Student, user = file_user, program__type = StudyProgram.DOCTORAL)
-#         thesis = get_object_or_404(PhdThesis, candidate = student)
-#         if student.user == request_user:
-#             return True
-#
-#         elif is_staff_member(request_user):
-#             staff_member = get_object_or_404(StaffMember, user = request_user)
-#             if (thesis.supervisor == staff_member) or (staff_member in thesis.committee.all()):
-#                 return True
-#
-#         else:
-#             scopes = get_secretariat_scope(user=request_user)
-#             if student.program in scopes['programs']:
-#                 return True
-#             else:
-#                 return False
-#
-#     elif app_name == 'phdapplications':
-#         domain = parts[1]
-#         if domain == 'public':
-#            return True
-#
-#         if not request_user.is_authenticated:
-#            return False
-#
-#         file_user = parts[2]
-#         instance_id = parts[3]
-#
-#
-#         if domain == 'applicants':
-#
-#             file_users = User.objects.filter(username = file_user)
-#             if file_users.exists():
-#                 if request_user == file_users.first():
-#                     return True
-#
-#
-#             if is_staff_member(request_user):
-#                 staff_member = get_object_or_404(StaffMember, user = request_user)
-#                 application = get_object_or_404(Application, id = int(instance_id), call__reviewers = staff_member)
-#                 return True
-#
-#
-#             if is_secretariat(request_user):
-#                 application = get_object_or_404(Application.objects.sc_filter(user=request_user), id = int(instance_id) )
-#                 if application.is_in_scope_of(request_user):
-#                     return True
-#
-#             return False
-#     return True
+    app_name = parts[0]
+
+    # Unauthenticated users not allowed
+
+    if app_name == 'attachments':
+
+        if not request_user.is_authenticated:
+            return False
+
+        attachment_type = parts[1]
+        object_id = parts[2]
+        file_path = '/'.join(parts)
+
+        if attachment_type == 'subjects':
+            subject = get_object_or_404(Subject, pk=object_id)
+
+            attachment_exists = SubjectAttachment.objects.filter(subject=subject, file=file_path).exists()
+
+            if not attachment_exists:
+                return False
+
+            if subject.applicant_user == request_user:
+                return True
+
+            if is_secretariat(request_user):
+                return Subject.objects.sc_filter(user=request_user).filter(pk=subject.pk).exists()
+            elif is_staff_member(request_user):
+                staff_member = get_object_or_404(StaffMember, user=request_user)
+                if subject.collective_body:
+                    return subject.collective_body.participants.filter(pk=staff_member.pk).exists()
+
+        elif attachment_type == 'decisions':
+            decision = get_object_or_404(Decision, pk=object_id)
+
+            attachment_exists = DecisionAttachment.objects.filter(decision=decision, file=file_path).exists()
+
+            if not attachment_exists:
+                return False
+
+            if decision.subject.applicant_user == request_user:
+                return True
+
+            if is_secretariat(request_user):
+                return Decision.objects.sc_filter(user=request_user).filter(pk=decision.pk).exists()
+            elif is_staff_member(request_user):
+                staff_member = get_object_or_404(StaffMember, user=request_user)
+                if decision.subject.collective_body:
+                    return decision.subject.collective_body.participants.filter(pk=staff_member.pk).exists()
+
+    return False

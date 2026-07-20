@@ -14,10 +14,10 @@ from core import views
 from core.utils import get_order_by_display_name
 from core.views import Section
 from hua_cbms import settings
+from mailer.gmail import notify
 from scopes.models import Secretariat
 from .checks import app_urls, is_secretariat, is_staff_member, is_applicant
-from .forms import SignUpForm, RegisterForm, PasswordForm, ForgotPasswordForm, SecStaffForm, SecPersonalInfoForm, \
-    SecParticipantsForm
+from .forms import SignUpForm, RegisterForm, PasswordForm, ForgotPasswordForm, SecStaffForm, SecPersonalInfoForm, SecParticipantsForm
 from .models import StaffMember, PersonalInfo
 from .utils import complexity_message, get_domain_uri, send_password_link
 
@@ -363,8 +363,8 @@ def register(request):
             email = form.cleaned_data['email1']
             signed_data = signer.sign_object({'email': email})
             url = domain + reverse_lazy('accounts:signup', kwargs={'token': signed_data})
-            # message_body = settings.REGISTRATION_MESSAGE.format(url=url)
-            # notify.delay(email, settings.REGISTRATION_SUBJECT, message_body)
+            message_body = settings.REGISTRATION_MESSAGE.format(url=url)
+            notify.delay(email, settings.REGISTRATION_SUBJECT, message_body)
             return redirect('accounts:register_success')
         else:
             return render(request, "accounts/register.html", {"form": form, "back_url": back_url})

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-07-19 01:27+0300\n"
+"POT-Creation-Date: 2026-07-19 20:00+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -75,20 +75,20 @@ msgstr "You have not used at least one lowercase Latin letter"
 msgid "Δεν έχετε χρησιμοποιήσει τουλάχιστον δύο ειδικούς χαρακτήρες"
 msgstr "You have not used at least two special characters"
 
-#: accounts/checks.py:235
+#: accounts/checks.py:236
 msgid ""
 "Υπάρχει ήδη συνεδρίαση με αυτόν τον αριθμό για το συγκεκριμένο συλλογικό "
 "όργανο"
 msgstr ""
 "There is already a meeting with this number for the specific collective body."
 
-#: accounts/checks.py:249
+#: accounts/checks.py:250
 msgid ""
 "Υπάρχει ήδη θέμα με αυτόν τον αριθμό για το συγκεκριμένο συλλογικό όργανο"
 msgstr ""
 "There is already a subject with this number for the specific collective body."
 
-#: accounts/checks.py:254
+#: accounts/checks.py:255
 msgid "Παρακαλώ επιλέξτε αρχείο"
 msgstr "Please select file"
 
@@ -691,30 +691,30 @@ msgid "Ο σύνδεσμος αυτός έχει λήξει."
 msgstr "This link has expired."
 
 #: attachments/forms.py:15
-msgid "Όνομα αρχείου"
-msgstr "File name"
+msgid "Όνομα συνημμένου"
+msgstr "Attachment's name"
 
 #: attachments/forms.py:16
-msgid "Αρχείο"
-msgstr "File"
+msgid "Συνημμένο"
+msgstr "Attachment"
 
-#: attachments/models.py:51 attachments/models.py:53
+#: attachments/models.py:54 attachments/models.py:56
 msgid "Το ίδιο αρχείο έχει ήδη προστεθεί σε άλλο συνημμένο"
 msgstr "The same file has already been added to another attachment."
 
-#: attachments/models.py:85
+#: attachments/models.py:99
 msgid "Επισυναπτόμενο Θέματος"
 msgstr "Subject Attachment"
 
-#: attachments/models.py:86
+#: attachments/models.py:100
 msgid "Επισυναπτόμενα Θεμάτων"
 msgstr "Subject Attachments"
 
-#: attachments/models.py:99
+#: attachments/models.py:109
 msgid "Επισυναπτόμενο Απόφασης"
 msgstr "Decision Attachment"
 
-#: attachments/models.py:100
+#: attachments/models.py:110
 msgid "Επισυναπτόμενα Αποφάσεων"
 msgstr "Decision Attachment"
 
@@ -760,29 +760,29 @@ msgstr "The start date cannot be earlier than the end date"
 
 #: bodies/models.py:42 meetings/forms.py:16 meetings/views.py:50
 #: meetings/views.py:86 subjects/forms.py:25 subjects/views.py:57
-#: subjects/views.py:222
+#: subjects/views.py:221
 msgid "Συλλογικό Όργανο"
 msgstr "Collective Body"
 
 #: bodies/templates/bodies/partials/bodies_menu.html:7
 #: bodies/templates/bodies/partials/bodies_menu.html:27 subjects/models.py:84
-#: subjects/views.py:66 subjects/views.py:228
+#: subjects/views.py:66 subjects/views.py:227
 msgid "Θέματα"
 msgstr "Subjects"
 
 #: bodies/templates/bodies/partials/bodies_menu.html:9
 #: bodies/templates/bodies/partials/bodies_menu.html:29 subjects/models.py:133
-#: subjects/views.py:200 subjects/views.py:243
+#: subjects/views.py:199 subjects/views.py:242
 msgid "Αποφάσεις"
 msgstr "Decisions"
 
 #: bodies/templates/bodies/partials/bodies_menu.html:11 subjects/models.py:30
-#: subjects/views.py:108
+#: subjects/views.py:107
 msgid "Τύποι Θεμάτων"
 msgstr "Subject Types"
 
 #: bodies/templates/bodies/partials/bodies_menu.html:14 subjects/models.py:57
-#: subjects/views.py:151
+#: subjects/views.py:150
 msgid "Κατηγορίες Θεμάτων"
 msgstr "Subject Categories"
 
@@ -813,8 +813,8 @@ msgid "Δημιουργία Συλλογικού Πανεπιστημιακού 
 msgstr "Create Collective Body"
 
 #: bodies/views.py:87 bodies/views.py:218 bodies/views.py:231
-#: bodies/views.py:265 bodies/views.py:291 subjects/views.py:106
-#: subjects/views.py:149
+#: bodies/views.py:265 bodies/views.py:291 subjects/views.py:105
+#: subjects/views.py:148
 msgid "Τίτλος"
 msgstr "Title"
 
@@ -845,12 +845,12 @@ msgid "Θέση"
 msgstr "Index"
 
 #: bodies/views.py:146 bodies/views.py:354 subjects/forms.py:19
-#: subjects/views.py:58 subjects/views.py:223
+#: subjects/views.py:58 subjects/views.py:222
 msgid "Τύπος"
 msgstr "Type"
 
 #: bodies/views.py:147 bodies/views.py:355 subjects/forms.py:20
-#: subjects/views.py:59 subjects/views.py:224
+#: subjects/views.py:59 subjects/views.py:223
 msgid "Κατηγορία"
 msgstr "Category"
 
@@ -861,13 +861,13 @@ msgstr "Applicant"
 #: bodies/views.py:152 bodies/views.py:205 bodies/views.py:359
 #: bodies/views.py:390 meetings/forms.py:19 meetings/views.py:53
 #: meetings/views.py:89 subjects/forms.py:26 subjects/views.py:63
-#: subjects/views.py:225
+#: subjects/views.py:224
 msgid "Σημειώσεις"
 msgstr "Notes"
 
 #: bodies/views.py:153 bodies/views.py:187 bodies/views.py:360
-#: bodies/views.py:375 subjects/views.py:64 subjects/views.py:198
-#: subjects/views.py:226 subjects/views.py:241
+#: bodies/views.py:375 subjects/views.py:64 subjects/views.py:197
+#: subjects/views.py:225 subjects/views.py:240
 msgid "Επισυναπτόμενα"
 msgstr "Attachments"
 
@@ -880,12 +880,12 @@ msgid "Αποφάσεις για τα Θέματα"
 msgstr "Decisions on the Subjects"
 
 #: bodies/views.py:185 bodies/views.py:373 subjects/forms.py:31
-#: subjects/models.py:83 subjects/views.py:196 subjects/views.py:239
+#: subjects/models.py:83 subjects/views.py:195 subjects/views.py:238
 msgid "Θέμα"
 msgstr "Subject"
 
 #: bodies/views.py:186 bodies/views.py:374 subjects/forms.py:30
-#: subjects/views.py:197 subjects/views.py:240
+#: subjects/views.py:196 subjects/views.py:239
 msgid "Τελική Απόφαση"
 msgstr "Final Decision"
 
@@ -951,25 +951,25 @@ msgstr ""
 
 #: core/templates/core/partials/file_input.html:19
 #: core/templates/core/partials/file_input_old.html:20
-#: subjects/templates/subjects/partials/file_input.html:19
+#: subjects/templates/subjects/partials/file_input.html:21
 msgid "Δεν υπάρχει αρχείο"
 msgstr "No file exists"
 
 #: core/templates/core/partials/file_input.html:46
-#: subjects/templates/subjects/partials/file_input.html:47
+#: subjects/templates/subjects/partials/file_input.html:51
 msgid "Αντικατάσταση"
 msgstr "Replace"
 
 #: core/templates/core/partials/file_input.html:48
 #: core/templates/core/partials/file_input2.html:27
 #: core/templates/core/partials/file_input_old.html:43
-#: subjects/templates/subjects/partials/file_input.html:49
+#: subjects/templates/subjects/partials/file_input.html:53
 msgid "Επιλέξτε αρχείο"
 msgstr "Select file"
 
 #: core/templates/core/partials/file_input.html:109
 #: core/templates/core/partials/file_input_old.html:104
-#: subjects/templates/subjects/partials/file_input.html:110
+#: subjects/templates/subjects/partials/file_input.html:114
 #: subjects/templates/subjects/show_object.html:288
 msgid "Θα χρησιμοποιηθεί το αρχείο: "
 msgstr "The file to be used is: "
@@ -1187,55 +1187,55 @@ msgstr "Subject has been successfully submitted."
 msgid "Το θέμα ενημερώθηκε επιτυχώς."
 msgstr "Subject has been successfully updated."
 
-#: subjects/views.py:76
+#: subjects/views.py:75
 msgid "Το θέμα διαγράφηκε."
 msgstr "Subject deleted."
 
-#: subjects/views.py:88
+#: subjects/views.py:87
 msgid "Δημιουργία Τύπου Θέματος"
 msgstr "Create Subject Type"
 
-#: subjects/views.py:90 subjects/views.py:99
+#: subjects/views.py:89 subjects/views.py:98
 msgid "Ο τύπος θέματος καταχωρήθηκε επιτυχώς."
 msgstr "Subject type has been successfully submitted."
 
-#: subjects/views.py:113
+#: subjects/views.py:112
 msgid "Ο τύπος θέματος ενημερώθηκε επιτυχώς."
 msgstr "Subject type has been successfully updated."
 
-#: subjects/views.py:119
+#: subjects/views.py:118
 msgid "Ο τύπος θέματος διαγράφηκε."
 msgstr "Subject type deleted."
 
-#: subjects/views.py:131
+#: subjects/views.py:130
 msgid "Δημιουργία Κατηγορίας Θέματος"
 msgstr "Create Subject Category"
 
-#: subjects/views.py:133
+#: subjects/views.py:132
 msgid "Η κατηγορία θέματος καταχωρήθηκε επιτυχώς."
 msgstr "Subject category has been successfully submitted."
 
-#: subjects/views.py:142
+#: subjects/views.py:141
 msgid "Η κατηγορία θέματος ενημερώθηκε επιτυχώς."
 msgstr "Subject category has been successfully updated."
 
-#: subjects/views.py:161
+#: subjects/views.py:160
 msgid "Η κατηγορία θέματος διαγράφηκε."
 msgstr "Subject category deleted"
 
-#: subjects/views.py:173
+#: subjects/views.py:172
 msgid "Δημιουργία Απόφασης"
 msgstr "Create Decision"
 
-#: subjects/views.py:175
+#: subjects/views.py:174
 msgid "Η απόφαση καταχωρήθηκε επιτυχώς."
 msgstr "Decision has been successfully submitted."
 
-#: subjects/views.py:188
+#: subjects/views.py:187
 msgid "Η απόφαση ενημερώθηκε επιτυχώς."
 msgstr "Decision has been successfully updated."
 
-#: subjects/views.py:210
+#: subjects/views.py:209
 msgid "Η απόφαση διαγράφηκε."
 msgstr "Decision deleted."
 

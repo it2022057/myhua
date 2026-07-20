@@ -7,6 +7,9 @@ from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
 from django.conf import settings
 
+from mailer.gmail import notify
+
+
 def get_domain_uri(request):
     domain = request.build_absolute_uri('/')[:-1]
     if 'http://' in domain:
@@ -36,9 +39,9 @@ def send_password_link(request, email):
     }
     signer = TimestampSigner()
     signed_data = signer.sign_object(invitation)
-    url = domain + reverse_lazy('myprofile:password_token', kwargs={'token' : signed_data})
+    url = domain + reverse_lazy('accounts:password_token', kwargs={'token' : signed_data})
     body = settings.FORGOT_PASSWORD_BODY.format(url=url)
-    #notify.delay(email, settings.FORGOT_PASSWORD_SUBJECT, body)
+    notify.delay(email, settings.FORGOT_PASSWORD_SUBJECT, body)
 
 def complexity_message():
     msg1 = _("Για το κωδικό σας πρέπει να χρησιμοποιήσετε κωδικό που να περιέχει τουλάχιστον %(num)d χαρακτήρες με:") % {

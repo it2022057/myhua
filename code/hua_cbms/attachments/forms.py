@@ -12,8 +12,8 @@ from subjects.models import Subject, Decision
 ATTACHMENT_FIELDS = ['name', 'file']
 
 FIELD_LABELS = {
-    'name': _('Όνομα αρχείου'),
-    'file': _('Αρχείο')
+    'name': _('Όνομα συνημμένου'),
+    'file': _('Συνημμένο')
 }
 
 

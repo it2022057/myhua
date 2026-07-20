@@ -590,8 +590,8 @@ def media_download(request, path):
     path = unquote(path)
     parts = path.split('/')
 
-    # Expecting: subjects/<username>/<filename>
-    if len(parts) < 2:
+    # Expecting: attachments/subjects/<subject_id>/<filename> and attachments/decisions/<decision_id>/<filename>
+    if len(parts) < 4:
         return HttpResponse(status=404)
 
 

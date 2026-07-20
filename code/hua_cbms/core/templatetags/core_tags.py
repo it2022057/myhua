@@ -1,6 +1,7 @@
 from django import template
 from django.db.models.fields.files import ImageFieldFile
 from django.db.models.manager import BaseManager
+from django.urls import reverse
 from django.utils.safestring import mark_safe
 from django.utils.translation import get_language
 
@@ -86,6 +87,13 @@ def get_filename(s):
     if len(filename) > 20:
         filename = filename[0:16] + '...'
     return filename
+
+@register.simple_tag
+def media_download_url(file):
+    if not file:
+        return ''
+
+    return reverse('media_download', kwargs={'path': file.name})
 
 @register.filter
 def is_image(obj):
