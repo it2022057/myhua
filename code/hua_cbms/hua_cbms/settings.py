@@ -62,9 +62,11 @@ INSTALLED_APPS = [
     'dal',
     'dal_select2',
     'accounts.apps.AccountsConfig',
-    'bodies.apps.BodiesConfig',
-    'meetings.apps.MeetingsConfig',
     'attachments.apps.AttachmentsConfig',
+    'bodies.apps.BodiesConfig',
+    'bodyapplications.apps.BodyapplicationsConfig',
+    'curricula.apps.CurriculaConfig',
+    'meetings.apps.MeetingsConfig',
     'subjects.apps.SubjectsConfig',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -78,9 +80,9 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     # 'django_recaptcha',
     'django_celery_results',
+    'api',
     'core',
-    'scopes',
-    'curricula',
+    'scopes'
 ]
 
 REST_FRAMEWORK = {
@@ -291,13 +293,19 @@ FORGOT_PASSWORD_SUBJECT = 'Password Reset / Επαναφορά κωδικού'
 # RECAPTCHA_PUBLIC_KEY = os.environ.get('RECAPTCHA_PUBLIC_KEY')
 # RECAPTCHA_PRIVATE_KEY = os.environ.get('RECAPTCHA_PRIVATE_KEY')
 
+# Validity period for application confirmation links
+APPLICATION_MAX_AGE_DAYS = 7 # Number of days that the application links are valid
+APPLICATION_MAX_AGE_SECS = APPLICATION_MAX_AGE_DAYS * 24 * 60 * 60
+
 # Reset password
 PASSWORD_RESET_LINK_AGE = 3600
 
 # Development server keywords
 DEV_SERVER_KEYWORDS = ['dev', 'localhost', '127.0.0.1']
 
-CELERY_BROKER_URL = "redis://redis:6379/0"
+# CELERY_BROKER_URL = "redis://redis:6379/0"
+CELERY_BROKER_URL = "redis://localhost:6379/0"
+CELERY_TASK_TRACK_STARTED = True
 CELERY_ACCEPT_CONTENT = ["json"]
 CELERY_TASK_SERIALIZER = "json"
 CELERY_RESULT_BACKEND = "django-db"

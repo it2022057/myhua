@@ -3,6 +3,8 @@
 {% if request.user|is_secretariat %}
     <div class="row">
         <div class="col d-flex justify-content-center">
+            <a href="{% url 'bodyapplications:sec_list_bodyapplications' %}" class="btn btn-primary me-3"><span
+                    class="mto">mail</span>{% trans 'Αιτήσεις' %}</a>
             <a href="{% url 'subjects:sec_list_subjects' %}" class="btn btn-primary me-3"><span
                     class="mto">subject</span>{% trans 'Θέματα' %}</a>
             <a href="{% url 'subjects:sec_list_decisions' %}" class="btn btn-primary me-3"><span

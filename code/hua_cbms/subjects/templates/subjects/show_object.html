@@ -85,10 +85,12 @@
                 {% endfor %}
             </div>
 
-            <button type="button" id="add_attachment" class="btn btn-default" style="margin-bottom: 20px">
-                <span class="mto">attach_file_add</span>
-                {% trans "Προσθήκη συνημμένου" %}
-            </button>
+            {% if not attachment_formset.empty_form.file.field.disabled %}
+                <button type="button" id="add_attachment" class="btn btn-default" style="margin-bottom: 20px">
+                    <span class="mto">attach_file_add</span>
+                    {% trans "Προσθήκη συνημμένου" %}
+                </button>
+            {% endif %}
         {% endif %}
 
     </form>

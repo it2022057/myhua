@@ -7,6 +7,10 @@ def subject_attachment_dir(instance, filename):
 def decision_attachment_dir(instance, filename):
     return "attachments/decisions/{0}/{1}".format(str(instance.decision.pk), filename)
 
+# Upload folder for application attachment files
+def application_attachment_dir(instance, filename):
+    return "attachments/bodyapplications/{0}/{1}".format(str(instance.application.applicant.username), filename)
+
 # Upload folder for project files
 def project_dir(instance, filename):
     return "projects/{0}/{1}".format(instance.coordinator.user.username, filename)

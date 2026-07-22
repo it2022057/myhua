@@ -144,7 +144,7 @@ class Decision(TrackedScopedProgramModel):
     )
 
     title = models.CharField(max_length=100, choices=TITLE_CHOICES)
-    subject = models.ForeignKey(Subject, null=True, on_delete=models.SET_NULL)
+    subject = models.ForeignKey(Subject, null=True, on_delete=models.CASCADE)
 
     objects = DecisionQuery.as_manager()
 

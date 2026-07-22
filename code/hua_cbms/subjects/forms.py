@@ -7,8 +7,7 @@ from accounts.checks import validate_subject_index
 from core.forms import GenericModelForm
 from subjects.models import Subject, Decision, SubjectType, SubjectCategory
 
-SUBJECT_FIELDS = ['index', 'type', 'category', 'applicant_user', 'program', 'department', 'school', 'collective_body',
-                  'notes']
+SUBJECT_FIELDS = ['index', 'type', 'category', 'applicant_user', 'program', 'department', 'school', 'collective_body', 'notes']
 
 DECISION_FIELDS = ['subject', 'title']
 

@@ -17,7 +17,7 @@ APPS = {
     'applicant' : [
         {
             'title': _('Οι αιτήσεις μου'),
-            'url': reverse_lazy('accounts:forgot_password'),
+            'url': reverse_lazy('bodyapplications:applicant_list_bodyapplications'),
         }
     ],
     'staff_member' : [

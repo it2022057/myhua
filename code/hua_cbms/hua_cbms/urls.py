@@ -34,6 +34,7 @@ urlpatterns += i18n_patterns(
     path('', include('accounts.urls')),
     path('accounts/', include('django.contrib.auth.urls')),
     path('bodies/', include('bodies.urls')),
+    path('bodyapplications/', include('bodyapplications.urls')),
     path('curricula/', include('curricula.urls')),
     path('meetings/', include('meetings.urls')),
     path('subjects/', include('subjects.urls')),

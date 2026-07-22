@@ -63,7 +63,7 @@ def is_external_staff_member(user):
 
 def is_secretariat(user):
     scope = get_secretariat_scope(user)
-    return (scope['departments'].count() > 0) | (scope['programs'].count() > 0)
+    return (scope['departments'].count() > 0) | (scope['programs'].count() > 0) | (scope['collective_bodies'].count() > 0)
 
 
 def is_doctoral_secretariat(user):
@@ -256,7 +256,8 @@ def validate_file(file):
 
 
 def can_download(parts, request_user):
-    from attachments.models import SubjectAttachment, DecisionAttachment
+    from attachments.models import SubjectAttachment, DecisionAttachment, ApplicationAttachment
+    from bodyapplications.models import Application
 
     app_name = parts[0]
 
@@ -306,5 +307,26 @@ def can_download(parts, request_user):
                 staff_member = get_object_or_404(StaffMember, user=request_user)
                 if decision.subject.collective_body:
                     return decision.subject.collective_body.participants.filter(pk=staff_member.pk).exists()
+
+        elif attachment_type == 'bodyapplications':
+            applicant_username = parts[2]
+
+            attachment = ApplicationAttachment.objects.filter(
+                application__applicant__username=applicant_username,
+                file=file_path
+            ).first()
+
+            if not attachment:
+                return False
+
+            if attachment.application.applicant == request_user:
+                return True
+
+            if is_secretariat(request_user):
+                return Application.objects.sc_filter(user=request_user).filter(pk=attachment.application.pk).exists()
+
+            return False
+
+        return False
 
     return False

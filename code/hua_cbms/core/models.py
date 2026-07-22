@@ -61,7 +61,7 @@ class AttachmentFormSetMixin:
             'prefix': self.attachment_prefix
         }
 
-        # Add form_kwargs only it exists
+        # Add form_kwargs only if it exists
         form_kwargs = self.get_attachment_form_kwargs()
 
         if form_kwargs:
@@ -99,7 +99,7 @@ class AttachmentFormSetMixin:
         attachment_formset = context[self.attachment_context_name]
 
         if not attachment_formset.is_valid():
-            return self.form_invalid(context)
+            return self.render_to_response(context)
 
         response = super().form_valid(form)
 
@@ -108,7 +108,16 @@ class AttachmentFormSetMixin:
 
         return response
 
-    def form_invalid(self, context):
+    def form_invalid(self, form):
+        """
+        Re-renders the page when the main form is invalid.
+        Also validates the attachment formset so its errors can be shown too.
+        """
+
+        context = self.get_context_data(form=form)
+        attachment_formset = context[self.attachment_context_name]
+        attachment_formset.is_valid()
+
         return self.render_to_response(context)
 
 

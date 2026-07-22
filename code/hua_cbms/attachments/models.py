@@ -8,7 +8,7 @@ from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
 
 from accounts.checks import validate_file
-from accounts.directories import subject_attachment_dir, decision_attachment_dir
+from accounts.directories import subject_attachment_dir, decision_attachment_dir, application_attachment_dir
 from accounts.utils import get_file_hash
 from core.models import TrackedModel
 
@@ -63,6 +63,8 @@ class Attachment(TrackedModel):
         verbose_name = _('Επισυναπτόμενο')
         verbose_name_plural = _('Επισυναπτόμενα')
 
+    name = models.CharField(max_length=100)
+
     def __str__(self):
         return self.name
 
@@ -100,7 +102,6 @@ class SubjectAttachment(Attachment):
         verbose_name = _('Επισυναπτόμενο Θέματος')
         verbose_name_plural = _('Επισυναπτόμενα Θεμάτων')
 
-    name = models.CharField(max_length=100)
     file = models.FileField(upload_to=subject_attachment_dir)
     subject = models.ForeignKey('subjects.Subject', null=True, on_delete=models.CASCADE, related_name='attachments')
 
@@ -110,6 +111,14 @@ class DecisionAttachment(Attachment):
         verbose_name = _('Επισυναπτόμενο Απόφασης')
         verbose_name_plural = _('Επισυναπτόμενα Αποφάσεων')
 
-    name = models.CharField(max_length=100)
     file = models.FileField(upload_to=decision_attachment_dir)
     decision = models.ForeignKey('subjects.Decision', null=True, on_delete=models.CASCADE, related_name='attachments')
+
+
+class ApplicationAttachment(Attachment):
+    class Meta:
+        verbose_name = _('Επισυναπτόμενο Αίτησης')
+        verbose_name_plural = _('Επισυναπτόμενα Αιτήσεων')
+
+    file = models.FileField(upload_to=application_attachment_dir)
+    application = models.ForeignKey('bodyapplications.Application', null=True, on_delete=models.CASCADE, related_name='attachments')

@@ -1,19 +1,25 @@
 from crispy_forms.layout import Layout, Row, Div, Field
 from django import forms
-from django.forms import inlineformset_factory
 from django.utils.translation import gettext_lazy as _
 
 from accounts.checks import validate_file
-from attachments.models import DecisionAttachment, SubjectAttachment, AttachmentValidationFormSet
+from attachments.models import DecisionAttachment, SubjectAttachment, ApplicationAttachment
 from core.forms import GenericModelForm
 from core.widgets import CustomFileInput
-from subjects.models import Subject, Decision
 
 ATTACHMENT_FIELDS = ['name', 'file']
 
 FIELD_LABELS = {
     'name': _('Όνομα συνημμένου'),
     'file': _('Συνημμένο')
+}
+
+ATTACHMENT_WIDGETS = {
+    'file': CustomFileInput(
+        attrs={
+            'accept': '.pdf, .doc, .docx, .png, .jpg, .jpeg, .webp',
+        }
+    ),
 }
 
 
@@ -51,13 +57,7 @@ class SecSubjectAttachmentForm(BaseAttachmentForm):
         model = SubjectAttachment
         fields = ATTACHMENT_FIELDS
         labels = FIELD_LABELS
-        widgets = {
-            'file': CustomFileInput(
-                attrs={
-                    'accept': '.pdf, .doc, .docx, .png, .jpg, .jpeg, .webp',
-                }
-            ),
-        }
+        widgets = ATTACHMENT_WIDGETS
 
 
 class SecDecisionAttachmentForm(BaseAttachmentForm):
@@ -65,43 +65,22 @@ class SecDecisionAttachmentForm(BaseAttachmentForm):
         model = DecisionAttachment
         fields = ATTACHMENT_FIELDS
         labels = FIELD_LABELS
-        widgets = {
-            'file': CustomFileInput(
-                attrs={
-                    'accept': '.pdf, .doc, .docx, .png, .jpg, .jpeg, .webp',
-                }
-            ),
-        }
+        widgets = ATTACHMENT_WIDGETS
 
 
-"""
-Create a small formset that can be placed inside the Subject form,
-so the secretary can optionally upload attachments connected to that Subject
-"""
-SubjectAttachmentFormSet = inlineformset_factory(
-    Subject,  # Parent model...Each attachment will belong to one Subject
-    SubjectAttachment,  # Child model that stores the Subject attachments
-    form=SecSubjectAttachmentForm,  # Custom form used for every attachment row in the formset
-    formset=AttachmentValidationFormSet, # Custom validation for all attachment forms that works at the formset level
-    fields=['name', 'file'],  # Fields to be displayed in each attachment form
-    extra=0,  # No empty attachment form is shown initially
-    min_num=0,  # Attachments are optional (could be 0)
-    validate_min=False,  # Since min_num is 0, this validation is not necessary
-    can_delete=True  # Allows the secretariat to remove attachments in the UpdateView
-)
+class SecApplicationAttachmentForm(BaseAttachmentForm):
+    disabled_fields = ['name', 'file']
 
-"""
-Create a small formset that can be placed inside the Decision form,
-so the secretary can optionally upload attachments connected to that Decision
-"""
-DecisionAttachmentFormSet = inlineformset_factory(
-    Decision,  # Parent model...Each attachment will belong to one Decision
-    DecisionAttachment,  # Child model that stores the Decision attachments
-    form=SecDecisionAttachmentForm,  # Custom form used for every attachment row in the formset
-    formset=AttachmentValidationFormSet, # Custom validation for all attachment forms that works at the formset level
-    fields=['name', 'file'],  # Fields to be displayed in each attachment form
-    extra=0,  # No empty attachment form is shown initially
-    min_num=0,  # Attachments are optional (could be 0)
-    validate_min=False,  # Since min_num is 0, this validation is not necessary
-    can_delete=True  # Allows the secretariat to remove attachments in the UpdateView
-)
+    class Meta:
+        model = ApplicationAttachment
+        fields = ATTACHMENT_FIELDS
+        labels = FIELD_LABELS
+        widgets = ATTACHMENT_WIDGETS
+
+
+class ApplicantApplicationAttachmentForm(BaseAttachmentForm):
+    class Meta:
+        model = ApplicationAttachment
+        fields = ATTACHMENT_FIELDS
+        labels = FIELD_LABELS
+        widgets = ATTACHMENT_WIDGETS

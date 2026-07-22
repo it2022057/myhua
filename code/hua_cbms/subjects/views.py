@@ -11,7 +11,7 @@ from core.utils import get_order_by_title
 from scopes.utils import get_secretariat_scope
 from subjects.models import Subject, SubjectType, SubjectCategory, Decision
 from . import forms
-from attachments.forms import SubjectAttachmentFormSet, DecisionAttachmentFormSet
+from attachments.formsets import SubjectAttachmentFormSet, DecisionAttachmentFormSet
 
 """
 Secretariat Subject Views
