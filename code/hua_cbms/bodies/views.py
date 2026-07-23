@@ -1,3 +1,5 @@
+from urllib.parse import urlencode
+
 from dal import autocomplete
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.core.exceptions import PermissionDenied
@@ -50,6 +52,10 @@ class SecDelete(views.ScopedDeleteView):
 
 class StaffMultipleList(views.StaffMultipleListView):
     template_name = 'bodies/multiple_tables.html'
+
+
+class ApplicantList(views.ApplicantListView):
+    template_name = 'core/list_objects.html'
 
 
 """
@@ -251,7 +257,7 @@ class SecCollectiveBodyAutoComplete(TitleStrMixin, LoginRequiredMixin, UserPasse
 
 
 """
-Staff Student Views
+Staff Member Views
 """
 
 
@@ -394,3 +400,29 @@ class StaffCollectiveBodyOverviewList(StaffMultipleList):
                 next=self.request.path
             ),
         ]
+
+
+"""
+Applicant views
+"""
+
+
+class ApplicantListCollectiveBody(ApplicantList):
+    model = CollectiveBody
+    fields = ['title_gr', 'secretariat']
+    headers = {
+        'title_gr': _('Τίτλος'),
+        'secretariat': _('Γραμματεία')
+    }
+    table_title = _('Συλλογικά Όργανα')
+    ordering = ['secretariat', get_order_by_title()]
+    create_button = False
+    update_buttons = False
+    extra_buttons = True
+    extra_text = _('Υποβολή Αιτήματος')
+    extra_button_icon = 'forward_to_inbox'
+    extra_url = 'bodyapplications:applicant_create_bodyapplication'
+    back_url = reverse_lazy('bodyapplications:applicant_list_bodyapplications')
+
+    def get_queryset(self):
+        return CollectiveBody.objects.active_now()

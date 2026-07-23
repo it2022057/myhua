@@ -17,4 +17,7 @@ urlpatterns = [
     # URLs for Staff Member
     path('staff/', views.StaffListCollectiveBody.as_view(), name='staff_list_collectivebodies'),
     path('staff/collectivebody/<int:pk>/overview', views.StaffCollectiveBodyOverviewList.as_view(), name='staff_overview_collectivebody'),
+
+    # URLs for Applicant
+    path('applicant/', views.ApplicantListCollectiveBody.as_view(), name='applicant_list_collectivebodies'),
 ]
