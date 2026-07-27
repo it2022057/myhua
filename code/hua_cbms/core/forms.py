@@ -66,17 +66,16 @@ class GenericModelForm(forms.ModelForm):
         self.disable_form_fields(fields=self.disabled_fields)
 
         for field_name, field in self.fields.items():
-            # Check whether the current model field accepts date input
-            if isinstance(field, forms.DateField):
-                field.input_formats = [self.date_format]
-                # field.widget.format = self.date_format
-                field.help_text = self.date_help_text
-                field.widget = DatePickerInput()
             # Check whether the current model field accepts date-time input
             if isinstance(field, forms.DateTimeField):
                 field.input_formats = [self.datetime_format]
                 field.help_text = self.date_help_text
-                field.widget = DateTimePickerInput()
+                field.widget = DateTimePickerInput(format=self.datetime_format)
+            # or date input
+            elif isinstance(field, forms.DateField):
+                field.input_formats = [self.date_format]
+                field.help_text = self.date_help_text
+                field.widget = DatePickerInput(format=self.date_format)
 
         for field_name in self.scoped_fields:
             form_model = self._meta.model

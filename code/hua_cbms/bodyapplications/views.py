@@ -1,16 +1,25 @@
 from django.contrib.auth import get_user_model
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.core.exceptions import PermissionDenied
-from django.shortcuts import render, get_object_or_404
+from django.core.signing import TimestampSigner, SignatureExpired, BadSignature
+from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
+from django.utils.html import escape
 from django.utils.translation import gettext_lazy as _
 
+from accounts.checks import is_secretariat
+from accounts.utils import get_domain_uri
 from attachments.formsets import SecApplicationAttachmentFormSet, ApplicantApplicationAttachmentFormSet
 from bodies.models import CollectiveBody
 from bodyapplications import forms
+from bodyapplications.emails import SEC_APPLICATION_NOTIFICATION_BODY, SEC_APPLICATION_NOTIFICATION_SUBJECT, \
+    SEC_APPLICATION_UPDATE_NOTIFICATION_SUBJECT, SEC_APPLICATION_UPDATE_NOTIFICATION_BODY
 from bodyapplications.models import Application
 from core import views
 from core.models import AttachmentFormSetMixin
 from core.views import Table
+from hua_cbms import settings
+from mailer.gmail import notify
 from scopes.models import Secretariat
 from scopes.utils import get_secretariat_scope
 
@@ -63,6 +72,38 @@ Secretariat Views
 """
 
 
+@login_required
+@user_passes_test(is_secretariat)
+def sec_show_application_via_link(request, token):
+    signer = TimestampSigner()
+    try:
+        unsigned = signer.unsign_object(token, max_age=settings.APPLICATION_MAX_AGE_SECS)
+        email = unsigned['email']
+        application_pk = unsigned['application_pk']
+        application = get_object_or_404(Application, pk=application_pk)
+    except SignatureExpired:
+        unsigned = signer.unsign_object(token)
+        application_pk = unsigned['application_pk']
+        application = get_object_or_404(Application, pk=application_pk)
+        message = _(
+            'Η προθεσμία για την απάντηση προς τον αιτούντα έχει λήξει. Η διαδικασία θα πρέπει να ξεκινήσει εκ νέου. '
+            'Εάν απαιτείται, μπορείτε να επικοινωνήσετε με τον αιτούντα στο email: ') + application.applicant.email
+        return render(request, 'accounts/message.html', context={'message': message})
+    except BadSignature:
+        message = _('O σύνδεσμος δεν είναι σωστός!')
+        return render(request, 'accounts/message.html', context={'message': message})
+
+    # A secretariat user could potentially open another secretariat’s email link if they somehow got the token
+    if not request.user.is_superuser and request.user.email != email:
+        raise PermissionDenied
+
+    if application.subject is not None:
+        message = _('Έχετε ήδη συνδέσει το αίτημα με ένα υπάρχον θέμα στο σύστημα.')
+        return render(request, 'accounts/message.html', context={'message': message})
+
+    return redirect('bodyapplications:sec_update_bodyapplication', pk=application.pk)
+
+
 class SecUpdateApplication(SecUpdate):
     model = Application
     form_class = forms.SecApplicationForm
@@ -71,8 +112,20 @@ class SecUpdateApplication(SecUpdate):
 
     def setup(self, *args, **kwargs):
         application = get_object_or_404(Application, pk=kwargs['pk'])
-        self.success_message = _('Το αίτημα του αιτών, με όνομα χρήστη %s, ενημερώθηκε επιτυχώς.' %str(application.applicant.username))
+        self.success_message = _(
+            'Το αίτημα του αιτών, με όνομα χρήστη %s, ενημερώθηκε επιτυχώς.' % str(application.applicant.username))
         super().setup(*args, **kwargs)
+
+    def form_valid(self, form):
+        application = get_object_or_404(Application, pk=self.kwargs['pk'])
+
+        response = super().form_valid(form)
+
+        email = application.applicant.user.email
+        message_body = SEC_APPLICATION_UPDATE_NOTIFICATION_BODY.format(appplicant_username=escape(application.applicant.user.username))
+        notify.delay(email, SEC_APPLICATION_UPDATE_NOTIFICATION_SUBJECT, message_body, cc=settings.ALWAYS_NOTIFY)
+
+        return response
 
     def get_attachment_form_kwargs(self):
         return {'user': self.request.user}
@@ -147,7 +200,8 @@ class SecDeleteApplication(SecDelete):
 
     def setup(self, *args, **kwargs):
         application = get_object_or_404(Application, pk=kwargs['pk'])
-        self.success_message = _('Το αίτημα του αιτών, με όνομα χρήστη %s, διαγράφηκε.' %str(application.applicant.username))
+        self.success_message = _(
+            'Το αίτημα του αιτών, με όνομα χρήστη %s, διαγράφηκε.' % str(application.applicant.username))
         super().setup(*args, **kwargs)
 
 
@@ -165,54 +219,41 @@ class ApplicantCreateApplication(ApplicantCreate):
 
     def form_valid(self, form):
         collective_body = get_object_or_404(CollectiveBody.objects.active_now(), pk=self.kwargs['pk'])
-        form.instance.applicant = self.request.user
+        applicant = get_object_or_404(User, pk=self.request.user.pk)
+        form.instance.applicant = applicant
 
         response = super().form_valid(form)
 
-        self.send_application_email(collective_body)
+        secretariat = collective_body.secretariat
+        if not secretariat or not secretariat.user or not secretariat.user.email:
+            return response
+
+        request_subject = form.cleaned_data['request_subject']
+        description = form.cleaned_data['description']
+        application = self.object
+
+        signer = TimestampSigner()
+        domain = get_domain_uri(self.request)
+        email = secretariat.user.email
+        signed_data = signer.sign_object({'email': email, 'application_pk': application.pk,})
+        url = domain + reverse_lazy('bodyapplications:sec_show_bodyapplication_from_email_link', kwargs={'token': signed_data})
+        message_body = SEC_APPLICATION_NOTIFICATION_BODY.format(
+            first_name=escape(applicant.first_name),
+            last_name=escape(applicant.last_name),
+            email=escape(applicant.email),
+            collective_body_title_gr=escape(collective_body.title_gr),
+            collective_body_title_en=escape(collective_body.title_en),
+            request_subject=escape(request_subject),
+            description=escape(description),
+            url=url,
+        )
+        attachment_paths = [attachment.file.path for attachment in application.attachments.all() if attachment.file]
+        notify.delay(settings.ALWAYS_NOTIFY, SEC_APPLICATION_NOTIFICATION_SUBJECT, message_body, attachments=attachment_paths, cc=email)
 
         return response
 
     def get_attachment_form_kwargs(self):
         return {'user': self.request.user}
-
-    # def send_application_email(self):
-    #     secretariat = self.collective_body.secretariat
-    #
-    #     if not secretariat:
-    #         return
-    #
-    #     if not secretariat.user or not secretariat.user.email:
-    #         return
-    #
-    #     to = secretariat.user.email
-    #
-    #     subject = _('Νέο αίτημα προς συλλογικό όργανο')
-    #
-    #     body = """
-    #         <p>Υποβλήθηκε νέο αίτημα προς το συλλογικό όργανο:</p>
-    #
-    #         <p><strong>{collective_body}</strong></p>
-    #
-    #         <p>
-    #             <strong>Αιτών:</strong> {applicant}<br>
-    #             <strong>Θέμα αιτήματος:</strong> {request_subject}
-    #         </p>
-    #
-    #         <p>
-    #             Παρακαλούμε συνδεθείτε στην πλατφόρμα για να το εξετάσετε.
-    #         </p>
-    #     """.format(
-    #         collective_body=escape(str(self.collective_body)),
-    #         applicant=escape(str(self.object.applicant)),
-    #         request_subject=escape(str(self.object.request_subject)),
-    #     )
-    #
-    #     notify.delay(
-    #         to=to,
-    #         subject=subject,
-    #         body=body
-    #     )
 
 
 class ApplicantUpdateApplication(ApplicantUpdate):

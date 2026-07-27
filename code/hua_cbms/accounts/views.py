@@ -1,3 +1,5 @@
+from urllib import response
+
 from dal import autocomplete
 from django.contrib.auth import get_user_model, logout, update_session_auth_hash
 from django.contrib.auth.decorators import login_required
@@ -302,9 +304,8 @@ def signup(request, token):
         unsigned = signer.unsign_object(token, max_age=settings.INVITATION_REFERENCE_MAX_AGE_SECS)
         email = unsigned['email']
     except SignatureExpired:
-        message = _('H πρόκληση να εγγραφείτε έχει λήξει. Θα πρέπει να επαναλάβετε την διαδικασία.')
+        message = _('H πρόσκληση να εγγραφείτε έχει λήξει. Θα πρέπει να επαναλάβετε την διαδικασία.')
         return render(request, 'accounts/message.html', context={'message': message})
-
     except BadSignature:
         message = _('O σύνδεσμος δεν είναι σωστός!')
         return render(request, 'accounts/message.html', context={'message': message})
@@ -511,19 +512,7 @@ class ApplicantAutocomplete(LoginRequiredMixin, UserPassesTestMixin, autocomplet
         return is_secretariat(self.request.user)
 
 
-class StaffMemberAutocomplete(LoginRequiredMixin, UserPassesTestMixin, autocomplete.Select2QuerySetView):
-    def get_queryset(self):
-        qs = StaffMember.objects.all()
-        if self.q:
-            qs = qs.filter(Q(display_name__icontains=self.q) | Q(display_name_en__icontains=self.q))
-
-        return qs.order_by(get_order_by_display_name())[:10]
-
-    def test_func(self):
-        return self.request.user.is_superuser or is_secretariat(self.request.user)
-
-
-class ParticipantAutocomplete(LoginRequiredMixin, UserPassesTestMixin, autocomplete.Select2QuerySetView):
+class ParticipantAutocomplete(ApplicantAutocomplete):
     def get_queryset(self):
         # Get selected collective body
         collective_body_id = self.forwarded.get('collective_body')
@@ -562,11 +551,31 @@ class ParticipantAutocomplete(LoginRequiredMixin, UserPassesTestMixin, autocompl
 
         return [value]
 
+
+class StaffMemberAutocomplete(ParticipantAutocomplete):
+    def get_queryset(self):
+        qs = StaffMember.objects.all()
+
+        participant_ids = self.get_forwarded_ids('participants')
+        if participant_ids:
+            # When selecting a president, exclude staff members already selected as participants
+            qs = qs.exclude(pk__in=participant_ids)
+
+        president_id = self.forwarded.get('president')
+        if president_id:
+            # When selecting participants, exclude the staff member already selected as president
+            qs = qs.exclude(pk=president_id)
+
+        if self.q:
+            qs = qs.filter(Q(display_name__icontains=self.q) | Q(display_name_en__icontains=self.q))
+
+        return qs.order_by(get_order_by_display_name())[:10]
+
     def test_func(self):
-        return is_secretariat(self.request.user)
+        return self.request.user.is_superuser or is_secretariat(self.request.user)
 
 
-class SecretariatAutocomplete(LoginRequiredMixin, UserPassesTestMixin, autocomplete.Select2QuerySetView):
+class SecretariatAutocomplete(ApplicantAutocomplete):
     def get_queryset(self):
         qs = Secretariat.objects.all()
         if self.q:

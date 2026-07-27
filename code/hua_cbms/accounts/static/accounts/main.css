@@ -1,9 +1,15 @@
 @import url('https://fonts.googleapis.com/css2?family=GFS+Neohellenic:wght@400;700&display=swap');
 
 .datepicker[readonly], .datetimepicker[readonly] {
-    background-color: #fff !important;
-    opacity: 1 !important;
-    cursor: pointer;
+  background-color: #fff !important;
+  opacity: 1 !important;
+  cursor: pointer;
+}
+
+.datepicker:disabled, .datetimepicker:disabled {
+  background-color: #e9ecef !important;
+  opacity: 1 !important;
+  cursor: not-allowed;
 }
 
 .btn.submit-app-button {

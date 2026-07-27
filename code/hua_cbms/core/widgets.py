@@ -8,27 +8,27 @@ from django.utils.translation import gettext_lazy as _
 class DatePickerInput(forms.DateInput):
     input_type = 'date'
 
-    def __init__(self, attrs=None):
+    def __init__(self, attrs=None, format=None):
         default_attrs = {
             'class': 'datepicker',
             'placeholder': _('Επιλέξτε')
         }
         if attrs:
             default_attrs.update(attrs)
-        super().__init__(attrs=default_attrs)
+        super().__init__(attrs=default_attrs, format=format)
 
 
 class DateTimePickerInput(forms.DateTimeInput):
     input_type = 'datetime-local'
 
-    def __init__(self, attrs=None):
+    def __init__(self, attrs=None, format=None):
         default_attrs = {
             'class': 'datetimepicker',
             'placeholder': _('Επιλέξτε')
         }
         if attrs:
             default_attrs.update(attrs)
-        super().__init__(attrs=default_attrs)
+        super().__init__(attrs=default_attrs, format=format)
 
 
 class ImageInput(forms.widgets.Input):

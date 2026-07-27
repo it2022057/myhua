@@ -119,3 +119,9 @@ def notify(self, to, subject, body, cc=None, attachments=[]):
         print('To: %s' % to)
         print('cc: %s' % cc)
         print('Message: %s' % body)
+        print('Attachments:')
+        if attachments:
+            for attachment in attachments:
+                print('▪ %s' % attachment)
+        else:
+            print('No attachments...')

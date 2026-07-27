@@ -1,10 +1,16 @@
 from django.contrib.auth import get_user_model
 from django.db import models
 from django.utils import timezone
+from django.utils.html import escape
 from django.utils.translation import gettext_lazy as _
 from romanize import romanize
 
+from bodies.emails import UPDATE_NOTIFICATION_BODY, SEC_CREATION_NOTIFICATION_BODY, CREATION_NOTIFICATION_SUBJECT, \
+    PRESIDENT_CREATION_NOTIFICATION_BODY, UPDATE_NOTIFICATION_SUBJECT, PARTICIPANT_ADDED_NOTIFICATION_BODY, \
+    PARTICIPANT_REMOVED_NOTIFICATION_BODY
 from core.models import TitleStrMixin, TrackedScopedProgramModel
+from hua_cbms import settings
+from mailer.gmail import notify
 from scopes.models import ScopedModelPrg, ScopedQueryPrg
 
 User = get_user_model()
@@ -57,8 +63,77 @@ class CollectiveBody(TitleStrMixin, TrackedScopedProgramModel):
     def scope_query(self, scope):
         return scope['collective_bodies'].filter(id=self.id).exists()
 
+    def build_participants_rows(self):
+        rows = ''
+
+        for participant in self.participants.all():
+            rows += """
+            <tr>
+              <td style="border:1px solid #e0e0e0;">{name}</td>
+              <td style="border:1px solid #e0e0e0;">{email}</td>
+            </tr>
+            """.format(name=escape(str(participant)), email=escape(participant.email or '-'))
+
+        if not rows:
+            rows = """
+            <tr>
+              <td colspan="2" style="border:1px solid #e0e0e0;">
+                -
+              </td>
+            </tr>
+            """
+
+        return rows
+
+    def notification_dict(self):
+        return {
+            'title_gr': escape(self.title_gr),
+            'title_en': escape(self.title_en),
+            'surname_gr': escape(self.president.surname),
+            'surname_en': escape(self.president.surname_en),
+            'president_display_name_gr': escape(self.president.display_name),
+            'president_display_name_en': escape(self.president.display_name_en),
+            'secretariat_email': escape(self.secretariat.user.email),
+            'start_date': escape(self.start_date.strftime(settings.DATETIME_FORMAT)),
+            'end_date': escape(self.end_date.strftime(settings.DATETIME_FORMAT)),
+            'active': escape('Ενεργό' if self.active else 'Μη ενεργό'),
+            'participants_rows': self.build_participants_rows(),
+        }
+
+    def participant_added_notification_body(self, url):
+        return PARTICIPANT_ADDED_NOTIFICATION_BODY.format(
+            **self.notification_dict(),
+            url=url,
+        )
+
+    def participant_removed_notification_body(self):
+        return PARTICIPANT_REMOVED_NOTIFICATION_BODY.format(**self.notification_dict())
+
+    def update_notification(self):
+        return UPDATE_NOTIFICATION_BODY.format(**self.notification_dict())
+
+    def sec_creation_notification(self):
+        return SEC_CREATION_NOTIFICATION_BODY.format(**self.notification_dict())
+
+    def president_creation_notification(self):
+        return PRESIDENT_CREATION_NOTIFICATION_BODY.format(**self.notification_dict())
+
+    def notify_creation(self):
+        notify.delay(self.secretariat.user.email, CREATION_NOTIFICATION_SUBJECT, self.sec_creation_notification(), cc=settings.ALWAYS_NOTIFY)
+        notify.delay(self.president.email, CREATION_NOTIFICATION_SUBJECT, self.president_creation_notification(), cc=settings.ALWAYS_NOTIFY)
+
+    def notify_update(self):
+        cc_emails = ', '.join([staff.email for staff in self.participants.all()])
+        notify.delay(self.president.email, UPDATE_NOTIFICATION_SUBJECT, self.update_notification(), cc=cc_emails)
+
     def save(self, *args, **kwargs):
+        new = self.id is None
         if not (self.title_en and (self.title_en != '')):
             self.title_en = romanize(self.title_gr)
 
         super().save(*args, update_user=self.updated_by, **kwargs)
+
+        if new:
+            self.notify_creation()
+        else:
+            self.notify_update()

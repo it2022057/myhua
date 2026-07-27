@@ -1,22 +1,26 @@
-from urllib.parse import urlencode
-
 from dal import autocomplete
+from django.contrib.auth.decorators import user_passes_test, login_required
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.core.exceptions import PermissionDenied
+from django.core.signing import TimestampSigner, SignatureExpired, BadSignature
 from django.db.models import Q
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, render, redirect
 from django.urls import reverse_lazy
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
-from accounts.checks import is_secretariat
+from accounts.checks import is_secretariat, is_staff_member
 from accounts.models import StaffMember
+from accounts.utils import get_domain_uri
 from bodies import forms
+from bodies.emails import PARTICIPANT_ADDED_NOTIFICATION_SUBJECT, PARTICIPANT_REMOVED_NOTIFICATION_SUBJECT
 from bodies.models import CollectiveBody
 from core import views
 from core.models import TitleStrMixin
 from core.utils import get_order_by_title
 from core.views import Table
+from hua_cbms import settings
+from mailer.gmail import notify
 from meetings.models import Meeting
 from scopes.models import Secretariat
 from scopes.utils import get_secretariat_scope
@@ -82,6 +86,45 @@ class SecUpdateCollectiveBody(SecUpdate):
     delete_url = 'bodies:sec_delete_collectivebody'
     confirm_modal = True
 
+    def form_valid(self, form):
+        old_participant_ids = set(self.object.participants.values_list('pk', flat=True))
+
+        response = super().form_valid(form)
+
+        collective_body = self.object
+
+        new_participant_ids = set(collective_body.participants.values_list('pk', flat=True))
+
+        added_participant_ids = new_participant_ids - old_participant_ids
+        removed_participant_ids = old_participant_ids - new_participant_ids
+
+        added_participants = collective_body.participants.filter(pk__in=added_participant_ids)
+        removed_participants = StaffMember.objects.filter(pk__in=removed_participant_ids)
+
+        for participant in added_participants:
+            if participant.email:
+                signer = TimestampSigner()
+                domain = get_domain_uri(self.request)
+                email = participant.email
+                signed_data = signer.sign_object({'email': email, 'collective_body_pk': collective_body.pk})
+                url = domain + reverse_lazy('bodies:staff_show_collectivebody_from_email_link',
+                                            kwargs={'token': signed_data})
+                notify.delay(
+                    participant.email,
+                    PARTICIPANT_ADDED_NOTIFICATION_SUBJECT,
+                    collective_body.participant_added_notification_body(url)
+                )
+
+        for participant in removed_participants:
+            if participant.email:
+                notify.delay(
+                    participant.email,
+                    PARTICIPANT_REMOVED_NOTIFICATION_SUBJECT,
+                    collective_body.participant_removed_notification_body()
+                )
+
+        return response
+
 
 class SecListCollectiveBody(SecList):
     model = CollectiveBody
@@ -95,7 +138,7 @@ class SecListCollectiveBody(SecList):
         'end_date': _('Ημερομηνία Λήξης')
     }
     table_title = _('Συλλογικά Όργανα')
-    ordering = ['end_date', 'start_date', 'president', get_order_by_title()]
+    ordering = ['end_date', 'start_date', 'secretariat', 'president', get_order_by_title()]
     update_url = 'bodies:sec_update_collectivebody'
     extra_buttons = True
     extra_text = _('Συμμετέχοντες')
@@ -142,7 +185,8 @@ class SecCollectiveBodyOverviewList(SecMultipleList):
         subjects = Subject.objects.filter(collective_body=body)
         self.tables = [
             Table(
-                fields=['index', 'type', 'category', 'applicant_user', 'program', 'department', 'school', 'notes', 'attachments'],
+                fields=['index', 'type', 'category', 'applicant_user', 'program', 'department', 'school', 'notes',
+                        'attachments'],
                 table_title=_('Θέματα Συνεδριάσεων Συλλογικού Οργάνου'),
                 headers={
                     'index': _('Θέση'),
@@ -261,6 +305,44 @@ Staff Member Views
 """
 
 
+@login_required
+@user_passes_test(is_staff_member)
+def staff_show_collectivebody_via_link(request, token):
+    signer = TimestampSigner()
+    try:
+        unsigned = signer.unsign_object(token, max_age=settings.INVITATION_REFERENCE_MAX_AGE_SECS)
+        email = unsigned['email']
+        collective_body_pk = unsigned['collective_body_pk']
+    except SignatureExpired:
+        message = _('Ο σύνδεσμος αυτός έχει λήξει.')
+        return render(request, 'accounts/message.html', context={'message': message})
+    except BadSignature:
+        message = _('O σύνδεσμος δεν είναι σωστός!')
+        return render(request, 'accounts/message.html', context={'message': message})
+
+    collective_body = get_object_or_404(CollectiveBody, pk=collective_body_pk)
+    staff_member = get_object_or_404(StaffMember, user=request.user)
+
+    if not request.user.is_superuser:
+        user_email = request.user.email
+        staff_email = staff_member.email
+
+        if email not in [user_email, staff_email]:
+            message = _('Ο σύνδεσμος δεν αντιστοιχεί στον λογαριασμό με τον οποίο έχετε συνδεθεί. '
+                        'Παρακαλούμε συνδεθείτε με τον σωστό λογαριασμό.')
+            return render(request, 'accounts/message.html', context={'message': message})
+
+        # User must be president or participant of the collective body
+        is_president = collective_body.president_id == staff_member.pk
+        is_participant = collective_body.participants.filter(pk=staff_member.pk).exists()
+
+        if not is_president and not is_participant:
+            message = _('Δεν έχετε δικαίωμα πρόσβασης στις πληροφορίες του συγκεκριμένου συλλογικού οργάνου.')
+            return render(request, 'accounts/message.html', context={'message': message})
+
+    return redirect('bodies:staff_overview_collectivebody', pk=collective_body_pk)
+
+
 class StaffListCollectiveBody(StaffMultipleList):
     model = CollectiveBody
     fields = ['title_gr', 'president', 'start_date', 'end_date']
@@ -272,20 +354,19 @@ class StaffListCollectiveBody(StaffMultipleList):
     }
     master_headline = _('Συλλογικά Όργανα')
     master_p = _('Παρακάτω ακολουθούν τα συλλογικά όργανα στα οποία συμμετέχετε ή έχετε συμμετάσχει στο παρελθόν...')
-    ordering = ['end_date', 'start_date', 'president', get_order_by_title()]
+    ordering = ['end_date', 'start_date', 'secretariat', 'president', get_order_by_title()]
 
     def get_queryset(self, current=True):
-        super().get_queryset()
         staff_member = get_object_or_404(StaffMember, user=self.request.user)
         today = timezone.now()
 
-        queryset = CollectiveBody.objects.filter(participants=staff_member)
+        queryset = CollectiveBody.objects.filter(Q(participants=staff_member) | Q(president=staff_member)).distinct()
         if current:
             queryset = queryset.filter(end_date__gte=today)
         else:
             queryset = queryset.filter(end_date__lt=today)
 
-        return queryset
+        return queryset.order_by(*self.ordering)
 
     def setup(self, *args, **kwargs):
         super().setup(*args, **kwargs)
@@ -303,6 +384,7 @@ class StaffListCollectiveBody(StaffMultipleList):
                 table_title=_('Παλιές Συμμετοχές'),
                 headers=headers,
                 table_id='old_participations',
+                order=[[3, 'asc']],
                 create_button=False,
                 update_buttons=False,
                 extra_buttons=True,
@@ -318,6 +400,7 @@ class StaffListCollectiveBody(StaffMultipleList):
                 table_title=_('Τρέχουσες Συμμετοχές'),
                 headers=headers,
                 table_id='new_participations',
+                order=[[3, 'asc']],
                 create_button=False,
                 update_buttons=False,
                 extra_buttons=True,
@@ -393,10 +476,9 @@ class StaffCollectiveBodyOverviewList(StaffMultipleList):
                     'notes': _('Σημειώσεις')
                 },
                 table_id='meeting',
-                order=[[1, 'asc']],
                 create_button=False,
                 update_buttons=False,
-                objects=Meeting.objects.filter(collective_body=body),
+                objects=Meeting.objects.filter(collective_body=body).order_by('index'),
                 next=self.request.path
             ),
         ]

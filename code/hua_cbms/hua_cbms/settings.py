@@ -195,6 +195,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 DATE_FORMAT = '%d/%m/%Y'
 DATE_INPUT_FORMATS = ['%d/%m/%Y']
+DATETIME_FORMAT = '%d/%m/%Y %H:%M'
+DATETIME_INPUT_FORMATS = ['%d/%m/%Y %H:%M']
 
 LOGGING = {
     'version': 1,
@@ -262,8 +264,10 @@ LEAVE_TEMPLATE = 'leave_template'
 PHD_APPLICATION_TEMPLATE = 'phdapplication'
 
 # Mailer settings
-ALWAYS_NOTIFY = 'ditdean@hua.gr,itsec@hua.gr'
-DEAN_EMAIL = 'thkam@hua.gr'
+ALWAYS_NOTIFY = 'byronlouki21@gmail.com, b.loukidelis@gmail.com'
+DEAN_EMAIL = 'it2022057@hua.gr'
+# ALWAYS_NOTIFY = 'ditdean@hua.gr,itsec@hua.gr'
+# DEAN_EMAIL = 'thkam@hua.gr'
 EMAIL_PLATFORM_URL = 'https://mydep.ditapps.hua.gr'
 
 # SIS settings
@@ -292,6 +296,10 @@ FORGOT_PASSWORD_SUBJECT = 'Password Reset / Επαναφορά κωδικού'
 # # reCAPTCHA settings
 # RECAPTCHA_PUBLIC_KEY = os.environ.get('RECAPTCHA_PUBLIC_KEY')
 # RECAPTCHA_PRIVATE_KEY = os.environ.get('RECAPTCHA_PRIVATE_KEY')
+
+# Settings for reference letter invitations
+INVITATION_REFERENCE_MAX_AGE = 30 # Number of days that the invitation links are valid
+INVITATION_REFERENCE_MAX_AGE_SECS = INVITATION_REFERENCE_MAX_AGE * 24 * 60 * 60
 
 # Validity period for application confirmation links
 APPLICATION_MAX_AGE_DAYS = 7 # Number of days that the application links are valid

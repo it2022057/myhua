@@ -26,10 +26,12 @@ BASE_ATTRS = {
 COLLECTIVEBODY_WIDGETS = {
     'participants': autocomplete.ModelSelect2Multiple(
         url='accounts:staff-autocomplete',
+        forward=['president'],
         attrs={**BASE_ATTRS, 'data-placeholder': _('Επιλέξτε συμμετέχοντες')}
     ),
     'president': autocomplete.ModelSelect2(
         url='accounts:staff-autocomplete',
+        forward=['participants'],
         attrs={**BASE_ATTRS, 'data-placeholder': _('Επιλέξτε πρόεδρο')}
     ),
     'secretariat': autocomplete.ModelSelect2(
@@ -53,7 +55,7 @@ class SecCollectiveBodyForm(GenericModelForm):
 
         # Only if the secretariat tries to update a collective body, the form disables the secretariat and president field
         if not self.user.is_superuser:
-            self.disable_form_fields(fields=['secretariat', 'president'])
+            self.disable_form_fields(fields=['secretariat', 'president', 'start_date', 'end_date'])
 
         self.helper.layout = Layout(
             Row(self.button_element_html,
@@ -79,6 +81,14 @@ class SecCollectiveBodyForm(GenericModelForm):
         cleaned_data = super().clean()
         start_date = cleaned_data['start_date']
         end_date = cleaned_data['end_date']
+        president = cleaned_data['president']
+        participants = cleaned_data['participants']
+
+        if president and participants and (president in participants):
+            self.add_error(
+                'participants',
+                _('Ο πρόεδρος δεν μπορεί να επιλεγεί και ως συμμετέχων του ίδιου συλλογικού οργάνου.')
+            )
 
         if start_date and end_date:
             if start_date > end_date:

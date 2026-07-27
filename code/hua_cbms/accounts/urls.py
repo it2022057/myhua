@@ -26,8 +26,7 @@ urlpatterns = [
 
     # URLs for customizing/listing a Collective Body's Participants
     path('sec/collectivebody/<int:pk>/participants', views.SecListParticipants.as_view(), name='sec_list_participants'),
-    path('sec/collectivebody/<int:pk>', views.SecUpdateParticipants.as_view(),
-         name='sec_update_participants'),
+    path('sec/collectivebody/<int:pk>', views.SecUpdateParticipants.as_view(), name='sec_update_participants'),
 
     # URLs for Secretary RUD for user's PersonalInfo
     path('sec/staff/<int:pk>/personal-info', views.SecPersonalInfoOverviewList.as_view(), name='sec_personal_info_overview'),
@@ -42,5 +41,4 @@ urlpatterns = [
     path('participant/autocomplete', views.ParticipantAutocomplete.as_view(), name='participant-autocomplete'),
     # URL for Secretariat autocomplete
     path('sec/autocomplete', views.SecretariatAutocomplete.as_view(), name='sec-autocomplete')
-
 ]

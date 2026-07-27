@@ -1,11 +1,16 @@
+from datetime import datetime, date
+
 from django import template
 from django.db.models.fields.files import ImageFieldFile
 from django.db.models.manager import BaseManager
 from django.urls import reverse
+from django.utils import timezone
+from django.utils.formats import date_format
 from django.utils.safestring import mark_safe
 from django.utils.translation import get_language
 
 from core.views import DEFAULT_CONTEXT_VALUES
+from hua_cbms import settings
 
 register = template.Library()
 
@@ -54,6 +59,28 @@ def get_attr(obj, attr):
                 new_part = part.split('_gr')[0] + '_en'
                 if hasattr(prev_obj, new_part):
                     return getattr(prev_obj, new_part)
+
+    # Format datetime fields
+    if isinstance(obj, datetime):
+        if timezone.is_aware(obj):
+            obj = timezone.localtime(obj)
+
+        if lang == 'en':
+            # e.g. July 22, 2026, 2:30 pm and August 17, 2027, 12:30 am
+            return obj.strftime('%B %-d, %Y, %-I:%M %P')
+
+        # e.g. Ιούλιος 22, 2026, 2:30 μ.μ. και Αύγουστος 30, 2027, 9:30 π.μ.
+        return (
+            f"{date_format(obj, 'F', use_l10n=True)} "
+            f"{obj.day}, "
+            f"{obj.year}, "
+            f"{obj.strftime('%-I:%M')} "
+            f"{'π.μ.' if obj.hour < 12 else 'μ.μ.'}"
+        )
+    # Format date fields
+    elif isinstance(obj, date):
+        # e.g. 25/02/2006
+        return obj.strftime(settings.DATE_FORMAT)
 
     return obj
 
