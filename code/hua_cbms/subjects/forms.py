@@ -160,3 +160,5 @@ class SecDecisionForm(GenericModelForm):
             ('', _('Επιλέξτε τελική απόφαση')),
             *[choice for choice in choices if choice[0] != ''],
         ]
+
+        self.helper.form_tag = False

@@ -121,8 +121,8 @@ class SecUpdateApplication(SecUpdate):
 
         response = super().form_valid(form)
 
-        email = application.applicant.user.email
-        message_body = SEC_APPLICATION_UPDATE_NOTIFICATION_BODY.format(appplicant_username=escape(application.applicant.user.username))
+        email = application.applicant.email
+        message_body = SEC_APPLICATION_UPDATE_NOTIFICATION_BODY.format(applicant_username=escape(application.applicant.username))
         notify.delay(email, SEC_APPLICATION_UPDATE_NOTIFICATION_SUBJECT, message_body, cc=settings.ALWAYS_NOTIFY)
 
         return response
@@ -168,24 +168,25 @@ class SecMultipleListApplication(SecMultipleList):
                     'attachments.download': _('Επισυναπτόμενα')
                 },
                 table_id='pending_applications',
-                order=[[2, 'asc'], [3, 'asc'], [0, 'asc']],
+                order=[[2, 'desc'], [3, 'asc'], [0, 'asc']],
                 create_button=False,
                 update_url='bodyapplications:sec_update_bodyapplication',
                 objects=pending_applications,
                 next=self.request.path,
             ),
             Table(
-                fields=['request_subject', 'description', 'subject', 'applicant', 'attachments.download'],
+                fields=['request_subject', 'description', 'updated_at', 'subject', 'applicant', 'attachments.download'],
                 table_title=_('Διευθετημένες Αιτήσεις'),
                 headers={
                     'request_subject': _('Θέμα Αιτήματος'),
                     'description': _('Περιγραφή'),
+                    'updated_at': _('Ημ/νία Ενημέρωσης'),
                     'subject': _('Θέμα'),
                     'applicant': _('Αιτών'),
                     'attachments.download': _('Επισυναπτόμενα')
                 },
                 table_id='resolved_applications',
-                order=[[2, 'asc'], [3, 'asc']],
+                order=[[2, 'desc'], [4, 'asc'], [3, 'asc'], [0, 'asc']],
                 create_button=False,
                 update_url='bodyapplications:sec_update_bodyapplication',
                 objects=resolved_applications,
@@ -268,10 +269,12 @@ class ApplicantUpdateApplication(ApplicantUpdate):
 
 class ApplicantListApplication(ApplicantList):
     model = Application
-    fields = ['request_subject', 'description', 'attachments.download']
+    fields = ['request_subject', 'description', 'subject.decision', 'subject.collective_body', 'attachments.download']
     headers = {
         'request_subject': _('Θέμα Αιτήματος'),
         'description': _('Περιγραφή'),
+        'subject.decision': _('Απόφαση'),
+        'subject.collective_body': _('Προς'),
         'attachments.download': _('Επισυναπτόμενα')
     }
     table_title = _('Αιτήσεις')

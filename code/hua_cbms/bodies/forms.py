@@ -5,7 +5,7 @@ from django.utils.translation import gettext_lazy as _
 from bodies.models import CollectiveBody
 from core.forms import GenericModelForm
 
-COLLECTIVEBODY_FIELDS = ['title_gr', 'title_en', 'participants', 'president', 'secretariat', 'start_date', 'end_date']
+COLLECTIVEBODY_FIELDS = ['title_gr', 'title_en', 'participants', 'president', 'secretariat', 'start_date', 'end_date', 'active']
 
 FIELD_LABELS = {
     'title_gr': _('Τίτλος (Ελληνικά)'),
@@ -14,7 +14,8 @@ FIELD_LABELS = {
     'president': _('Πρόεδρος'),
     'secretariat': _('Γραμματεία'),
     'start_date': _('Ημερομηνία Έναρξης'),
-    'end_date': _('Ημερομηνία Λήξης')
+    'end_date': _('Ημερομηνία Λήξης'),
+    'active': _('Ενεργό')
 }
 
 BASE_ATTRS = {
@@ -55,11 +56,14 @@ class SecCollectiveBodyForm(GenericModelForm):
 
         # Only if the secretariat tries to update a collective body, the form disables the secretariat and president field
         if not self.user.is_superuser:
-            self.disable_form_fields(fields=['secretariat', 'president', 'start_date', 'end_date'])
+            self.disable_form_fields(fields=['secretariat', 'president', 'start_date', 'end_date', 'active'])
 
         self.helper.layout = Layout(
             Row(self.button_element_html,
                 css_class="row"),
+            Row(
+                Div(Field('active')),
+                css_class='row'),
             Row(
                 Div(Field('title_gr'), css_class='col-lg-6'),
                 Div(Field('title_en'), css_class='col-lg-6'),
@@ -85,10 +89,8 @@ class SecCollectiveBodyForm(GenericModelForm):
         participants = cleaned_data['participants']
 
         if president and participants and (president in participants):
-            self.add_error(
-                'participants',
-                _('Ο πρόεδρος δεν μπορεί να επιλεγεί και ως συμμετέχων του ίδιου συλλογικού οργάνου.')
-            )
+            self.add_error('participants',
+                           _('Ο πρόεδρος δεν μπορεί να επιλεγεί και ως συμμετέχων του ίδιου συλλογικού οργάνου.'))
 
         if start_date and end_date:
             if start_date > end_date:

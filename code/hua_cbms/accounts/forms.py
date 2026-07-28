@@ -4,6 +4,8 @@ from django import forms
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.utils.translation import gettext_lazy as _
+from django_recaptcha.fields import ReCaptchaField
+from django_recaptcha.widgets import ReCaptchaV2Checkbox
 
 from bodies.models import CollectiveBody
 from core.forms import GenericModelForm

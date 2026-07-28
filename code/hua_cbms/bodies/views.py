@@ -15,6 +15,7 @@ from accounts.utils import get_domain_uri
 from bodies import forms
 from bodies.emails import PARTICIPANT_ADDED_NOTIFICATION_SUBJECT, PARTICIPANT_REMOVED_NOTIFICATION_SUBJECT
 from bodies.models import CollectiveBody
+from bodyapplications.models import Application
 from core import views
 from core.models import TitleStrMixin
 from core.utils import get_order_by_title
@@ -128,14 +129,15 @@ class SecUpdateCollectiveBody(SecUpdate):
 
 class SecListCollectiveBody(SecList):
     model = CollectiveBody
-    fields = ['title_gr', 'president', 'secretariat', 'start_date', 'end_date']
+    fields = ['title_gr', 'president', 'secretariat', 'start_date', 'end_date', 'active']
     headers = {
         'title_gr': _('Τίτλος'),
         'participants': _('Συμμετέχοντες'),
         'president': _('Πρόεδρος'),
         'secretariat': _('Γραμματεία'),
         'start_date': _('Ημερομηνία Έναρξης'),
-        'end_date': _('Ημερομηνία Λήξης')
+        'end_date': _('Ημερομηνία Λήξης'),
+        'active': _('Ενεργό')
     }
     table_title = _('Συλλογικά Όργανα')
     ordering = ['end_date', 'start_date', 'secretariat', 'president', get_order_by_title()]
@@ -185,8 +187,7 @@ class SecCollectiveBodyOverviewList(SecMultipleList):
         subjects = Subject.objects.filter(collective_body=body)
         self.tables = [
             Table(
-                fields=['index', 'type', 'category', 'applicant_user', 'program', 'department', 'school', 'notes',
-                        'attachments'],
+                fields=['index', 'type', 'category', 'applicant_user', 'program', 'department', 'school', 'notes', 'attachments'],
                 table_title=_('Θέματα Συνεδριάσεων Συλλογικού Οργάνου'),
                 headers={
                     'index': _('Θέση'),
@@ -284,6 +285,25 @@ class SecCollectiveBodyOverviewList(SecMultipleList):
                 objects=SubjectCategory.objects.filter(id__in=subjects.values_list("category_id", flat=True)),
                 next=self.request.path
             ),
+            Table(
+                fields=['request_subject', 'description', 'created_at', 'subject', 'applicant', 'subject.decision', 'attachments.download'],
+                table_title=_('Αιτήσεις προς το Συλλογικό Όργανο'),
+                headers={
+                    'request_subject': _('Θέμα Αιτήματος'),
+                    'description': _('Περιγραφή'),
+                    'created_at': _('Ημ/νία Υποβολής'),
+                    'subject': _('Θέμα'),
+                    'applicant': _('Αιτών'),
+                    'subject.decision': _('Απόφαση'),
+                    'attachments.download': _('Επισυναπτόμενα')
+                },
+                table_id='applications',
+                order=[[4, 'asc'], [3, 'asc'], [2, 'asc']],
+                update_url='bodyapplications:sec_update_bodyapplication',
+                create_button=False,
+                objects=Application.objects.filter(subject__in=subjects).distinct(),
+                next=self.request.path
+            ),
         ]
 
 
@@ -360,11 +380,16 @@ class StaffListCollectiveBody(StaffMultipleList):
         staff_member = get_object_or_404(StaffMember, user=self.request.user)
         today = timezone.now()
 
+        # Get all collective bodies where the staff member participates either as a regular participant or as president
         queryset = CollectiveBody.objects.filter(Q(participants=staff_member) | Q(president=staff_member)).distinct()
         if current:
-            queryset = queryset.filter(end_date__gte=today)
+            # Current participations: show only active collective bodies that have started and have not ended yet
+            queryset = queryset.active_now()
         else:
-            queryset = queryset.filter(end_date__lt=today)
+            # Past/Inactive participations: show collective bodies that have either ended or have been marked inactive.
+            # Although inactive collective it is more of an administrative/secretariat state
+            # and not something the staff member needs to track, they keep access to their historical participation data
+            queryset = queryset.filter(Q(end_date__lt=today) | Q(active=False)).distinct()
 
         return queryset.order_by(*self.ordering)
 
@@ -381,9 +406,9 @@ class StaffListCollectiveBody(StaffMultipleList):
         self.tables = [
             Table(
                 fields=fields,
-                table_title=_('Παλιές Συμμετοχές'),
+                table_title=_('Παλαιότερες / Ανενεργές Συμμετοχές'),
                 headers=headers,
-                table_id='old_participations',
+                table_id='archived_participations',
                 order=[[3, 'asc']],
                 create_button=False,
                 update_buttons=False,

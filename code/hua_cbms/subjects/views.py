@@ -170,6 +170,7 @@ Secretariat Decision Views
 
 class SecCreateDecision(AttachmentFormSetMixin, views.ScopedSecCreateView):
     model = Decision
+    template_name = 'subjects/show_object.html'
     form_class = forms.SecDecisionForm
     success_url = 'subjects:sec_list_decisions'
     headline = _('Δημιουργία Απόφασης')
@@ -183,6 +184,7 @@ class SecCreateDecision(AttachmentFormSetMixin, views.ScopedSecCreateView):
 
 class SecUpdateDecision(AttachmentFormSetMixin, views.ScopedSecUpdateView):
     model = Decision
+    template_name = 'subjects/show_object.html'
     form_class = forms.SecDecisionForm
     success_url = 'subjects:sec_list_decisions'
     delete_url = 'subjects:sec_delete_decision'
