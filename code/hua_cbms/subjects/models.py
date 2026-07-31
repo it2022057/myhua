@@ -30,8 +30,8 @@ class SubjectType(TitleStrMixin, TrackedScopedProgramModel):
         verbose_name_plural = _('Τύποι Θεμάτων')
         ordering = ['pk']
 
-    title_gr = models.CharField(max_length=100)
-    title_en = models.CharField(null=True, blank=True, max_length=100)
+    title_gr = models.CharField(max_length=100, verbose_name=_('Τίτλος (Ελληνικά)'))
+    title_en = models.CharField(null=True, blank=True, max_length=100, verbose_name=_('Τίτλος (Αγγλικά)'))
 
     objects = SubjectTypeQuery.as_manager()
 
@@ -57,8 +57,8 @@ class SubjectCategory(TitleStrMixin, TrackedScopedProgramModel):
         verbose_name_plural = _('Κατηγορίες Θεμάτων')
         ordering = ['pk']
 
-    title_gr = models.CharField(max_length=100)
-    title_en = models.CharField(null=True, blank=True, max_length=100)
+    title_gr = models.CharField(max_length=100, verbose_name=_('Τίτλος (Ελληνικά)'))
+    title_en = models.CharField(null=True, blank=True, max_length=100, verbose_name=_('Τίτλος (Αγγλικά)'))
 
     objects = SubjectCategoryQuery.as_manager()
 
@@ -84,15 +84,17 @@ class Subject(TrackedScopedProgramModel):
         verbose_name_plural = _('Θέματα')
         ordering = ['pk']
 
-    index = models.PositiveIntegerField(validators=[MinValueValidator(1)])
-    type = models.ForeignKey(SubjectType, null=True, on_delete=models.CASCADE)
-    category = models.ForeignKey(SubjectCategory, null=True, on_delete=models.CASCADE)
-    applicant_user = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
-    program = models.ForeignKey('curricula.StudyProgram', null=True, on_delete=models.SET_NULL)
-    department = models.ForeignKey('curricula.Department', null=True, on_delete=models.SET_NULL)
-    school = models.ForeignKey('curricula.School', null=True, on_delete=models.SET_NULL)
-    collective_body = models.ForeignKey('bodies.CollectiveBody', null=True, on_delete=models.SET_NULL)
-    notes = models.TextField(null=True, blank=True)
+    index = models.PositiveIntegerField(validators=[MinValueValidator(1)], verbose_name=_('Θέση'))
+    type = models.ForeignKey(SubjectType, null=True, on_delete=models.CASCADE, verbose_name=_('Τύπος'))
+    category = models.ForeignKey(SubjectCategory, null=True, on_delete=models.CASCADE, verbose_name=_('Κατηγορία'))
+    applicant_user = models.ForeignKey(User, null=True, on_delete=models.SET_NULL, verbose_name=_('Αιτών'))
+    program = models.ForeignKey('curricula.StudyProgram', null=True, on_delete=models.SET_NULL,
+                                verbose_name=_('Πρόγραμμα Σπουδών'))
+    department = models.ForeignKey('curricula.Department', null=True, on_delete=models.SET_NULL, verbose_name=_('Τμήμα'))
+    school = models.ForeignKey('curricula.School', null=True, on_delete=models.SET_NULL, verbose_name=_('Σχολή'))
+    collective_body = models.ForeignKey('bodies.CollectiveBody', null=True, on_delete=models.SET_NULL,
+                                        verbose_name=_('Συλλογικό Όργανο'))
+    notes = models.TextField(null=True, blank=True, verbose_name=_('Σημειώσεις'))
 
     objects = SubjectQuery.as_manager()
 
@@ -143,8 +145,9 @@ class Decision(TrackedScopedProgramModel):
         (TITLE_PENDING, _('Σε εκκρεμότητα ⏳')),
     )
 
-    title = models.CharField(max_length=100, choices=TITLE_CHOICES)
-    subject = models.ForeignKey(Subject, null=True, on_delete=models.CASCADE, related_name='decision')
+    title = models.CharField(max_length=100, choices=TITLE_CHOICES, verbose_name=_('Τελική Απόφαση'))
+    subject = models.ForeignKey(Subject, null=True, on_delete=models.CASCADE, related_name='decision',
+                                verbose_name=_('Θέμα'))
 
     objects = DecisionQuery.as_manager()
 
@@ -152,7 +155,7 @@ class Decision(TrackedScopedProgramModel):
         return scope['collective_bodies'].filter(id=self.subject.collective_body.id).exists()
 
     def __str__(self):
-        return f"For Subject [{self.subject}], the final decision is: {self.get_title_display()}"
+        return _('Για το Θέμα [%s], η τελική απόφαση είναι: %s') % (self.subject, self.get_title_display())
 
     def save(self, *args, **kwargs):
         super().save(*args, update_user=self.updated_by, **kwargs)

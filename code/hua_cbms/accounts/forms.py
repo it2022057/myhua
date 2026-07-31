@@ -61,7 +61,33 @@ BASE_ATTRS = {
 }
 
 
-class SecStaffForm(GenericModelForm):
+# Form used in admin site, in order to validate the internal_department field when the is_internal = True
+class StaffMemberAdminForm(GenericModelForm):
+    class Meta:
+        model = StaffMember
+        fields = '__all__'
+
+    def clean(self):
+        cleaned_data = super().clean()
+
+        is_internal = cleaned_data['is_internal']
+        internal_department = cleaned_data['internal_department']
+
+        if not is_internal:
+            # External staff members must not have internal department
+            cleaned_data['internal_department'] = None
+
+        # Optional: if internal staff must always have department
+        elif is_internal and not internal_department:
+            self.add_error(
+                'internal_department',
+                _('Το εσωτερικό τμήμα είναι υποχρεωτικό για εσωτερικά μέλη.')
+            )
+
+        return cleaned_data
+
+
+class SecStaffForm(StaffMemberAdminForm):
     scoped_fields = ['internal_department']
 
     class Meta:

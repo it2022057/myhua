@@ -15,3 +15,14 @@ def get_order_by_display_name():
         return 'display_name'
     else:
         return 'display_name_en'
+
+def get_ordinal(number):
+    if get_lang() == 'el':
+        return f'{number}η'
+    else:
+        if 10 <= number % 100 <= 20:
+            suffix = 'th'
+        else:
+            suffix = {1: 'st', 2: 'nd', 3: 'rd'}.get(number % 10, 'th')
+
+        return f'{number}{suffix}'

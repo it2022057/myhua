@@ -14,9 +14,9 @@ class Secretariat(models.Model):
         verbose_name = _('Γραμματεία')
         verbose_name_plural = _('Γραμματείες')
 
-    user = models.ForeignKey(User, null=True, blank=True, on_delete=models.CASCADE)
-    programs = models.ManyToManyField('curricula.StudyProgram', blank=True)
-    departments = models.ManyToManyField('curricula.Department', blank=True)
+    user = models.ForeignKey(User, null=True, blank=True, on_delete=models.CASCADE, verbose_name=_('Χρήστης'))
+    programs = models.ManyToManyField('curricula.StudyProgram', blank=True, verbose_name=_('Προγράμματα Σπουδών'))
+    departments = models.ManyToManyField('curricula.Department', blank=True, verbose_name=_('Τμήματα'))
 
     def __str__(self):
         if self.user:

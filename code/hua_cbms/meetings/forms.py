@@ -10,7 +10,7 @@ from .models import Meeting
 MEETING_FIELDS = ['index', 'present', 'absent', 'collective_body', 'location', 'date_and_time', 'notes']
 
 FIELD_LABELS = {
-    'index': _('Θέση'),
+    'index': _('Αριθμός Συνεδρίασης'),
     'present': _('Παρών'),
     'absent': _('Απών'),
     'collective_body': _('Συλλογικό Όργανο'),

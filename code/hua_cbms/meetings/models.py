@@ -4,6 +4,7 @@ from django.utils.translation import gettext_lazy as _
 from django.db import models
 
 from core.models import TrackedModel, TrackedScopedProgramModel
+from core.utils import get_ordinal
 from hua_cbms import settings
 from mailer.gmail import notify
 from meetings.emails import MEETING_CREATION_NOTIFICATION_SUBJECT, MEETING_CREATION_NOTIFICATION_BODY, \
@@ -26,15 +27,21 @@ class Meeting(TrackedScopedProgramModel):
         verbose_name_plural = _('Συνεδριάσεις')
         ordering = ['pk']
 
-    index = models.PositiveIntegerField(validators=[MinValueValidator(1)])
-    present = models.ManyToManyField('accounts.StaffMember', blank=True, related_name='meeting_present')
-    absent = models.ManyToManyField('accounts.StaffMember', blank=True, related_name='meeting_absent')
-    collective_body = models.ForeignKey('bodies.CollectiveBody', null=True, on_delete=models.SET_NULL)
-    location = models.CharField(max_length=30, default='Ομήρου 9, 17778, Αθήνα, Ελλάδα')
-    date_and_time = models.DateTimeField()
-    notes = models.TextField(null=True, blank=True)
+    index = models.PositiveIntegerField(validators=[MinValueValidator(1)], verbose_name=_('Αριθμός Συνεδρίασης'))
+    present = models.ManyToManyField('accounts.StaffMember', blank=True, verbose_name=_('Απών'),
+                                     related_name='meeting_present')
+    absent = models.ManyToManyField('accounts.StaffMember', blank=True, verbose_name=_('Παρών'),
+                                    related_name='meeting_absent')
+    collective_body = models.ForeignKey('bodies.CollectiveBody', null=True, on_delete=models.CASCADE,
+                                        verbose_name=_('Συλλογικό Όργανο'))
+    location = models.CharField(max_length=30, default='Ομήρου 9, 17778, Αθήνα, Ελλάδα', verbose_name=_('Τοποθεσία'))
+    date_and_time = models.DateTimeField(verbose_name=_('Ημερομηνία & ώρα'))
+    notes = models.TextField(null=True, blank=True, verbose_name=_('Σημειώσεις'))
 
     objects = MeetingQuery.as_manager()
+
+    def __str__(self):
+        return _('%s Συνεδρίαση του Συλλογικού Οργάνου %s') % (get_ordinal(self.index), self.collective_body)
 
     def scope_query(self, scope):
         return scope['collective_bodies'].filter(id=self.collective_body.id).exists()
@@ -58,15 +65,16 @@ class Meeting(TrackedScopedProgramModel):
 
     def notify_creation(self):
         emails = (
-            self.collective_body.president.email + ', ' +
-            ', '.join([staff.email for staff in self.collective_body.participants.all()])
+                self.collective_body.president.email + ', ' +
+                ', '.join([staff.email for staff in self.collective_body.participants.all()])
         )
-        notify.delay(emails, MEETING_CREATION_NOTIFICATION_SUBJECT, self.creation_notification(), cc=settings.DEAN_EMAIL)
+        notify.delay(emails, MEETING_CREATION_NOTIFICATION_SUBJECT, self.creation_notification(),
+                     cc=settings.DEAN_EMAIL)
 
     def notify_update(self):
         emails = (
-            self.collective_body.president.email + ', ' +
-            ', '.join([staff.email for staff in self.collective_body.participants.all()])
+                self.collective_body.president.email + ', ' +
+                ', '.join([staff.email for staff in self.collective_body.participants.all()])
         )
         notify.delay(emails, MEETING_UPDATE_NOTIFICATION_SUBJECT, self.update_notification(), cc=settings.DEAN_EMAIL)
 

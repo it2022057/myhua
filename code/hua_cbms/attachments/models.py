@@ -1,5 +1,3 @@
-import os
-
 from django import forms
 from django.db import models
 from django.forms.models import BaseInlineFormSet
@@ -63,7 +61,7 @@ class Attachment(TrackedModel):
         verbose_name = _('Επισυναπτόμενο')
         verbose_name_plural = _('Επισυναπτόμενα')
 
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100, verbose_name=_('Όνομα Αρχείου'))
 
     def __str__(self):
         return self.name
@@ -102,8 +100,9 @@ class SubjectAttachment(Attachment):
         verbose_name = _('Επισυναπτόμενο Θέματος')
         verbose_name_plural = _('Επισυναπτόμενα Θεμάτων')
 
-    file = models.FileField(upload_to=subject_attachment_dir)
-    subject = models.ForeignKey('subjects.Subject', null=True, on_delete=models.CASCADE, related_name='attachments')
+    file = models.FileField(upload_to=subject_attachment_dir, verbose_name=_('Αρχείο'))
+    subject = models.ForeignKey('subjects.Subject', null=True, on_delete=models.CASCADE, verbose_name=_('Θέμα'),
+                                related_name='attachments')
 
 
 class DecisionAttachment(Attachment):
@@ -112,7 +111,8 @@ class DecisionAttachment(Attachment):
         verbose_name_plural = _('Επισυναπτόμενα Αποφάσεων')
 
     file = models.FileField(upload_to=decision_attachment_dir)
-    decision = models.ForeignKey('subjects.Decision', null=True, on_delete=models.CASCADE, related_name='attachments')
+    decision = models.ForeignKey('subjects.Decision', null=True, on_delete=models.CASCADE, verbose_name=_('Απόφαση'),
+                                 related_name='attachments')
 
 
 class ApplicationAttachment(Attachment):
@@ -121,4 +121,5 @@ class ApplicationAttachment(Attachment):
         verbose_name_plural = _('Επισυναπτόμενα Αιτήσεων')
 
     file = models.FileField(upload_to=application_attachment_dir)
-    application = models.ForeignKey('bodyapplications.Application', null=True, on_delete=models.CASCADE, related_name='attachments')
+    application = models.ForeignKey('bodyapplications.Application', null=True, on_delete=models.CASCADE,
+                                    verbose_name=_('Αίτηση'), related_name='attachments')

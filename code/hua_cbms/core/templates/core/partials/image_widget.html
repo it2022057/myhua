@@ -70,52 +70,60 @@
     const previous_src = img_preview.src;
 
     document.addEventListener('DOMContentLoaded', function () {
+        // Get the clear image checkbox if it exists
         const clear_checkbox = document.getElementById('{{ widget.checkbox_id }}');
 
-        {# When refreshing the page with the clear_checkbox checked, it is better to keep the default preview image #}
+        // Keep the default preview image when the clear checkbox is checked after a page refresh
         if (clear_checkbox && clear_checkbox.checked) {
             img_preview.src = '{% static widget.default_pic %}';
         }
+
+        // Clear any selected file from the input
         img_input.value = '';
     });
 
     document.addEventListener('change', function (event) {
-            const target = event.target;
+        const target = event.target;
 
-            if (target.classList.contains('imageinput')) {
-                const file = target.files[0];
+        if (target.classList.contains('imageinput')) {
+            const file = target.files[0];
 
-                if (!img_preview) return;
+            // Stop if the preview image does not exist
+            if (!img_preview) return;
 
-                if (file) {
-                    img_preview.src = URL.createObjectURL(file);
+            // Update the preview with the selected image
+            if (file) {
+                img_preview.src = URL.createObjectURL(file);
 
-                    const clear_checkbox = target
-                        .closest('.image-widget')
-                        .querySelector('.image-clear-checkbox');
+                // Uncheck the clear checkbox when a new image is selected
+                const clear_checkbox = target.closest('.image-widget').querySelector('.image-clear-checkbox');
 
-                    if (clear_checkbox) {
-                        clear_checkbox.checked = false;
-                    }
+                if (clear_checkbox) {
+                    clear_checkbox.checked = false;
                 }
-
-                return;
             }
 
-            if (target.classList.contains('image-clear-checkbox')) {
+            return;
+        }
 
-                if (!img_preview) return;
+        // Handle clear image checkbox changes
+        if (target.classList.contains('image-clear-checkbox')) {
 
-                if (target.checked) {
-                    img_preview.src = '{% static widget.default_pic %}';
+            // Stop if the preview image does not exist
+            if (!img_preview) return;
 
-                    if (img_input) {
-                        img_input.value = '';
-                    }
-                } else {
-                    img_preview.src = previous_src;
+            if (target.checked) {
+                // Show the default preview image
+                img_preview.src = '{% static widget.default_pic %}';
+
+                // Clear the selected file from the input
+                if (img_input) {
+                    img_input.value = '';
                 }
+            } else {
+                // If the user unchecks clear, restore the previously saved image
+                img_preview.src = previous_src;
             }
         }
-    );
+    });
 </script>

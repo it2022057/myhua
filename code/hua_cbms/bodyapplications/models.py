@@ -1,3 +1,4 @@
+from django.utils.translation import gettext_lazy as _
 from django.contrib.auth import get_user_model
 from django.db import models
 from django.db.models import Q
@@ -27,14 +28,26 @@ class ApplicationQuery(ScopedQueryPrg):
         )
 
 
-
 class Application(TrackedScopedProgramModel):
-    applicant = models.ForeignKey(User, on_delete=models.CASCADE, related_name='bodyapplications')
-    request_subject = models.CharField(max_length=100)
-    description = models.TextField(null=True, blank=True)
-    subject = models.ForeignKey('subjects.Subject', null=True, on_delete=models.SET_NULL, related_name='applications')
+    class Meta:
+        verbose_name = _('Αίτηση')
+        verbose_name_plural = _('Αιτήσεις')
+        ordering = ['pk']
+
+    applicant = models.ForeignKey(User, on_delete=models.CASCADE, related_name='bodyapplications',
+                                  verbose_name=_('Αιτών'))
+    request_subject = models.CharField(max_length=100, verbose_name=_('Θέμα Αιτήματος'))
+    description = models.TextField(null=True, blank=True, verbose_name=_('Περιγραφή'))
+    subject = models.ForeignKey('subjects.Subject', null=True, on_delete=models.SET_NULL, verbose_name=_('Θέμα'),
+                                related_name='applications')
 
     objects = ApplicationQuery.as_manager()
+
+    def __str__(self):
+        return _('Αίτηση από τον/την %(applicant)s: %(subject)s') % {
+            'applicant': self.applicant.username,
+            'subject': self.request_subject,
+        }
 
     def scope_query(self, scope):
         # Pending applications are not linked to an official subject yet,

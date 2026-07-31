@@ -49,14 +49,17 @@ class CollectiveBody(TitleStrMixin, TrackedScopedProgramModel):
         verbose_name_plural = _('Συλλογικά Όργανα')
         ordering = ['pk']
 
-    title_gr = models.CharField(max_length=100)
-    title_en = models.CharField(null=True, blank=True, max_length=100)
-    participants = models.ManyToManyField('accounts.StaffMember', blank=True, related_name='collectivebody_participants')
-    president = models.ForeignKey('accounts.StaffMember', null=True, on_delete=models.SET_NULL, related_name='collectivebody_president')
-    secretariat = models.ForeignKey('scopes.Secretariat', null=True, on_delete=models.SET_NULL)
-    start_date = models.DateTimeField()
-    end_date = models.DateTimeField()
-    active = models.BooleanField(default=True)
+    title_gr = models.CharField(max_length=100, verbose_name=_('Τίτλος (Ελληνικά)'))
+    title_en = models.CharField(null=True, blank=True, max_length=100, verbose_name=_('Τίτλος (Αγγλικά)'))
+    participants = models.ManyToManyField('accounts.StaffMember', blank=True, verbose_name=_('Συμμετέχοντες'),
+                                          related_name='collectivebody_participants')
+    president = models.ForeignKey('accounts.StaffMember', null=True, on_delete=models.SET_NULL,
+                                  verbose_name=_('Πρόεδρος'), related_name='collectivebody_president')
+    secretariat = models.ForeignKey('scopes.Secretariat', null=True, on_delete=models.SET_NULL,
+                                    verbose_name=_('Γραμματεία'))
+    start_date = models.DateTimeField(verbose_name=_('Ημερομηνία Έναρξης'))
+    end_date = models.DateTimeField(verbose_name=_('Ημερομηνία Λήξης'))
+    active = models.BooleanField(default=True, verbose_name=_('Ενεργό'))
 
     objects = CollectiveBodyQuery.as_manager()
 
@@ -119,8 +122,10 @@ class CollectiveBody(TitleStrMixin, TrackedScopedProgramModel):
         return PRESIDENT_CREATION_NOTIFICATION_BODY.format(**self.notification_dict())
 
     def notify_creation(self):
-        notify.delay(self.secretariat.user.email, CREATION_NOTIFICATION_SUBJECT, self.sec_creation_notification(), cc=settings.ALWAYS_NOTIFY)
-        notify.delay(self.president.email, CREATION_NOTIFICATION_SUBJECT, self.president_creation_notification(), cc=settings.ALWAYS_NOTIFY)
+        notify.delay(self.secretariat.user.email, CREATION_NOTIFICATION_SUBJECT, self.sec_creation_notification(),
+                     cc=settings.ALWAYS_NOTIFY)
+        notify.delay(self.president.email, CREATION_NOTIFICATION_SUBJECT, self.president_creation_notification(),
+                     cc=settings.ALWAYS_NOTIFY)
 
     def notify_update(self):
         cc_emails = ', '.join([staff.email for staff in self.participants.all()])

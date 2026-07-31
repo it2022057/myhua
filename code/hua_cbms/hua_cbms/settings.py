@@ -29,8 +29,8 @@ SECRET_KEY = 'django-insecure-^n3wa82vhfu)z!y79a8rkerj&h)=&x+t9=&muhg#22u*c8p%us
 # SECURITY WARNING: don't run with debug turned on in production!
 # DEBUG = os.environ.get('DEBUG') == 'True'
 # DUMMY_EMAILS = os.environ.get('DUMMY_EMAILS') == 'True'
-DEBUG = 'True'
-DUMMY_EMAILS = 'True'
+DEBUG = True
+DUMMY_EMAILS = True
 
 if DUMMY_EMAILS:
     print('Outputting email messages to console because env variable DUMMY_EMAILS is set to True.')
@@ -61,14 +61,7 @@ INSTALLED_APPS = [
     'django_extensions',
     'dal',
     'dal_select2',
-    'accounts.apps.AccountsConfig',
-    'attachments.apps.AttachmentsConfig',
-    'bodies.apps.BodiesConfig',
-    'bodyapplications.apps.BodyapplicationsConfig',
-    'curricula.apps.CurriculaConfig',
-    'meetings.apps.MeetingsConfig',
-    'subjects.apps.SubjectsConfig',
-    'django.contrib.admin',
+    'hua_cbms.apps.HuaAdminSiteConfig', # replaces django.contrib.admin, because a custom AdminSite is used
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -80,9 +73,16 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     # 'django_recaptcha',
     'django_celery_results',
+    'accounts',
     'api',
+    'attachments',
+    'bodies',
+    'bodyapplications',
     'core',
-    'scopes'
+    'curricula',
+    'meetings',
+    'scopes',
+    'subjects'
 ]
 
 REST_FRAMEWORK = {

@@ -17,12 +17,12 @@ class Institution(TitleStrMixin, models.Model):
         verbose_name_plural = _('Ιδρύματα')
         ordering = ['pk']
 
-    title_gr = models.CharField(max_length=100)
-    title_en = models.CharField(max_length=100)
-    short_gr = models.CharField(max_length=20, null=True, blank=True)
-    short_en = models.CharField(max_length=20, null=True, blank=True)
-    code_gr = models.CharField(max_length=20, null=True, blank=True)
-    code_en = models.CharField(max_length=20, null=True, blank=True)
+    title_gr = models.CharField(max_length=100, verbose_name=_('Τίτλος (Ελληνικά)'))
+    title_en = models.CharField(max_length=100, verbose_name=_('Τίτλος (Αγγλικά)'))
+    short_gr = models.CharField(max_length=20, null=True, blank=True, verbose_name=_('Συντομογραφία (Ελληνικά)'))
+    short_en = models.CharField(max_length=20, null=True, blank=True, verbose_name=_('Συντομογραφία (Αγγλικά)'))
+    code_gr = models.CharField(max_length=20, null=True, blank=True, verbose_name=_('Κωδικός (Ελληνικά)'))
+    code_en = models.CharField(max_length=20, null=True, blank=True, verbose_name=_('Κωδικός (Αγγλικά)'))
 
 
 class School(TitleStrMixin, models.Model):
@@ -31,13 +31,13 @@ class School(TitleStrMixin, models.Model):
         verbose_name_plural = _('Σχολές')
         ordering = ['pk']
 
-    title_gr = models.CharField(max_length=100)
-    title_en = models.CharField(max_length=100)
-    short_gr = models.CharField(max_length=20, null=True, blank=True)
-    short_en = models.CharField(max_length=20, null=True, blank=True)
-    code_gr = models.CharField(max_length=20, null=True, blank=True)
-    code_en = models.CharField(max_length=20, null=True, blank=True)
-    institution = models.ForeignKey('Institution', null=True, on_delete=models.SET_NULL)
+    title_gr = models.CharField(max_length=100, verbose_name=_('Τίτλος (Ελληνικά)'))
+    title_en = models.CharField(max_length=100, verbose_name=_('Τίτλος (Αγγλικά)'))
+    short_gr = models.CharField(max_length=20, null=True, blank=True, verbose_name=_('Συντομογραφία (Ελληνικά)'))
+    short_en = models.CharField(max_length=20, null=True, blank=True, verbose_name=_('Συντομογραφία (Αγγλικά)'))
+    code_gr = models.CharField(max_length=20, null=True, blank=True, verbose_name=_('Κωδικός (Ελληνικά)'))
+    code_en = models.CharField(max_length=20, null=True, blank=True, verbose_name=_('Κωδικός (Αγγλικά)'))
+    institution = models.ForeignKey('Institution', null=True, on_delete=models.SET_NULL, verbose_name=_('Ίδρυμα'))
 
 
 class DepartmentQuery(ScopedQueryPrg):
@@ -52,13 +52,13 @@ class Department(TitleStrMixin, ScopedModelPrg):
         verbose_name_plural = _('Τμήματα')
         ordering = ['pk']
 
-    title_gr = models.CharField(max_length=100)
-    title_en = models.CharField(max_length=100)
-    short_gr = models.CharField(max_length=20, null=True, blank=True)
-    short_en = models.CharField(max_length=20, null=True, blank=True)
-    code_gr = models.CharField(max_length=20, null=True, blank=True)
-    code_en = models.CharField(max_length=20, null=True, blank=True)
-    school = models.ForeignKey('School', null=True, on_delete=models.SET_NULL)
+    title_gr = models.CharField(max_length=100, verbose_name=_('Τίτλος (Ελληνικά)'))
+    title_en = models.CharField(max_length=100, verbose_name=_('Τίτλος (Αγγλικά)'))
+    short_gr = models.CharField(max_length=20, null=True, blank=True, verbose_name=_('Συντομογραφία (Ελληνικά)'))
+    short_en = models.CharField(max_length=20, null=True, blank=True, verbose_name=_('Συντομογραφία (Αγγλικά)'))
+    code_gr = models.CharField(max_length=20, null=True, blank=True, verbose_name=_('Κωδικός (Ελληνικά)'))
+    code_en = models.CharField(max_length=20, null=True, blank=True, verbose_name=_('Κωδικός (Αγγλικά)'))
+    school = models.ForeignKey('School', null=True, on_delete=models.SET_NULL, verbose_name=_('Σχολή'))
     objects = DepartmentQuery.as_manager()
 
     def scope_query(self, scope):
@@ -119,25 +119,25 @@ class StudyProgram(TitleStrMixin, ScopedModelPrg):
     # 1557 = MSC Mphil
     # 1560 = MSC Προηγμένες Τεχνολογίες Πληροφορικής και Εφαρμογές
     # 1552 = Phd
-    title_gr = models.CharField(max_length=100)
-    title_en = models.CharField(max_length=100, null=True)
+    title_gr = models.CharField(max_length=100, verbose_name=_('Τίτλος (Ελληνικά)'))
+    title_en = models.CharField(max_length=100, null=True, verbose_name=_('Τίτλος (Αγγλικά)'))
 
-    short_gr = models.CharField(max_length=20, null=True, blank=True)
-    short_en = models.CharField(max_length=20, null=True, blank=True)
+    short_gr = models.CharField(max_length=20, null=True, blank=True, verbose_name=_('Συντομογραφία (Ελληνικά)'))
+    short_en = models.CharField(max_length=20, null=True, blank=True, verbose_name=_('Συντομογραφία (Αγγλικά)'))
 
-    code_gr = models.CharField(max_length=20, null=True, blank=True)
-    code_en = models.CharField(max_length=20, null=True, blank=True)
+    code_gr = models.CharField(max_length=20, null=True, blank=True, verbose_name=_('Κωδικός (Ελληνικά)'))
+    code_en = models.CharField(max_length=20, null=True, blank=True, verbose_name=_('Κωδικός (Αγγλικά)'))
 
-    department = models.ForeignKey('Department', null=True, on_delete=models.SET_NULL)
-    type = models.CharField(max_length=100, choices=STUDY_CHOICES)
+    department = models.ForeignKey('Department', null=True, on_delete=models.SET_NULL, verbose_name=_('Τμήμα'))
+    type = models.CharField(max_length=100, choices=STUDY_CHOICES, verbose_name=_('Τύπος'))
 
-    sis_code = models.CharField(null=True, blank=True, choices=SIS_CODE_CHOICES)
-    active = models.BooleanField(null=True, default=True)
+    sis_code = models.CharField(null=True, blank=True, choices=SIS_CODE_CHOICES, verbose_name=_('Κωδικός SIS'))
+    active = models.BooleanField(null=True, default=True, verbose_name=_('Ενεργό'))
 
-    has_thesis = models.BooleanField(null=True, default=True)
-    thesis_semesters = models.IntegerField(null=True, default=2)
-    thesis_report_semesters = models.IntegerField(null=True, default=1)
-    thesis_has_report = models.BooleanField(null=True, default=False)
+    has_thesis = models.BooleanField(null=True, default=True, verbose_name=_('Έχει διπλωματική εργασία'))
+    thesis_semesters = models.IntegerField(null=True, default=2, verbose_name=_('Ακαδημαϊκά εξάμηνα διπλωματικής εργασίας'))
+    thesis_report_semesters = models.IntegerField(null=True, default=1, verbose_name=_('Ακαδημαϊκά εξάμηνα αναφοράς'))
+    thesis_has_report = models.BooleanField(null=True, default=False, verbose_name=_('Διπλωματική έχει αναφορά'))
     objects = StudyProgramQuery.as_manager()
 
     def save(self, *args, **kwargs):

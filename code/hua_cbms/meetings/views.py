@@ -72,7 +72,7 @@ class SecListMeeting(views.ScopedSecListView):
     model = Meeting
     fields = ['index', 'present', 'absent', 'collective_body', 'location', 'date_and_time', 'notes']
     headers = {
-        'index': _('Θέση'),
+        'index': _('Αριθμός Συνεδρίασης'),
         'present': _('Παρών'),
         'absent': _('Απών'),
         'collective_body': _('Συλλογικό Όργανο'),

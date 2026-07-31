@@ -125,12 +125,12 @@ class TrackedModel(models.Model):
     class Meta:
         abstract = True
 
-    created_at = models.DateTimeField(null=True, blank=True)
-    updated_at = models.DateTimeField(null=True, blank=True)
+    created_at = models.DateTimeField(null=True, blank=True, verbose_name=_('Δημιουργήθηκε στις'))
+    updated_at = models.DateTimeField(null=True, blank=True, verbose_name=_('Ενημερώθηκε στις'))
     created_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True,
-                                   related_name="%(app_label)s_%(class)s_created")
+                                   verbose_name=_('Δημιουργήθηκε από'), related_name="%(app_label)s_%(class)s_created")
     updated_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True,
-                                   related_name="%(app_label)s_%(class)s_updated")
+                                   verbose_name=_('Ενημερώθηκε από'), related_name="%(app_label)s_%(class)s_updated")
 
     def save(self, *args, update_user=None, **kwargs):
 

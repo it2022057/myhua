@@ -10,6 +10,8 @@ from hua_cbms import settings
 from scopes.models import ScopedModelDep, ScopedQueryDep
 
 User = get_user_model()
+
+
 # Create your models here.
 
 def create_user_if_required(email):
@@ -48,35 +50,41 @@ class PersonalInfo(TrackedScopedProgramModel):
         (GENDER_OTHER, _("Άλλο")),
     )
 
-    user = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True)
-    given_name = models.CharField(max_length=200, null=True)
-    surname = models.CharField(max_length=200, null=True)
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True, verbose_name=_('Χρήστης'))
+    given_name = models.CharField(max_length=200, null=True, verbose_name=_('Όνομα'))
+    surname = models.CharField(max_length=200, null=True, verbose_name=_('Επώνυμο'))
 
-    department = models.ForeignKey(Department, on_delete=models.SET_NULL, blank=True, null=True)
-    program = models.ForeignKey(StudyProgram, on_delete=models.SET_NULL, blank=True, null=True)
-    email = models.EmailField(null=True)
-    secondary_email = models.EmailField(null=True)
-    fathers_name = models.CharField(max_length=50, null=True, blank=True)
-    date_of_birth = models.DateField(blank=True, null=True)
-    tin = models.CharField(max_length=50, null=True, blank=True)
-    ssn = models.CharField(max_length=50, null=True, blank=True)
-    gender = models.CharField(max_length=1, choices=GENDER_CHOICES, null=True)
+    department = models.ForeignKey(Department, on_delete=models.SET_NULL, blank=True, null=True,
+                                   verbose_name=_('Τμήμα'))
+    program = models.ForeignKey(StudyProgram, on_delete=models.SET_NULL, blank=True, null=True,
+                                verbose_name=_('Πρόγραμμα Σπουδών'))
+    email = models.EmailField(null=True, verbose_name=_('Email'))
+    secondary_email = models.EmailField(null=True, verbose_name=_('Δεύτερο Email'))
+    fathers_name = models.CharField(max_length=50, null=True, blank=True, verbose_name=_('Όνομα Πατέρα'))
+    date_of_birth = models.DateField(blank=True, null=True, verbose_name=_('Ημ/νία Γέννησης'))
+    tin = models.CharField(max_length=50, null=True, blank=True, verbose_name=_('ΑΦΜ'))
+    ssn = models.CharField(max_length=50, null=True, blank=True, verbose_name=_('ΑΜΚΑ'))
+    gender = models.CharField(max_length=1, choices=GENDER_CHOICES, null=True, verbose_name=_('Φύλο'))
 
-    home_address_street = models.CharField(max_length=70, null=True, blank=True)
-    home_address_no = models.IntegerField(null=True, blank=True)
-    home_address_po_box = models.CharField(max_length=30, null=True, blank=True)
-    home_address_city = models.CharField(max_length=70, null=True, blank=True)
-    home_address_country = models.CharField(max_length=70, null=True, default='Ελλάδα', blank=True)
-    mobile_phone = models.CharField(max_length=30, blank=True, null=True)
-    home_phone = models.CharField(max_length=30, blank=True, null=True)
+    home_address_street = models.CharField(max_length=70, null=True, blank=True, verbose_name=_('Οδός Κατοικίας'))
+    home_address_no = models.IntegerField(null=True, blank=True, verbose_name=_('Αριθμός Κατοικίας'))
+    home_address_po_box = models.CharField(max_length=30, null=True, blank=True, verbose_name=_('Τ.Κ. Κατοικίας'))
+    home_address_city = models.CharField(max_length=70, null=True, blank=True, verbose_name=_('Πόλη Κατοικίας'))
+    home_address_country = models.CharField(max_length=70, null=True, default='Ελλάδα', blank=True,
+                                            verbose_name=_('Χώρα Κατοικίας'))
+    mobile_phone = models.CharField(max_length=30, blank=True, null=True, verbose_name=_('Κινητό Τηλέφωνο'))
+    home_phone = models.CharField(max_length=30, blank=True, null=True, verbose_name=_('Τηλέφωνο Κατοικίας'))
 
-    work_address_street = models.CharField(max_length=70, null=True, default='Ομήρου')
-    work_address_no = models.CharField(max_length=10, null=True, default='9')
-    work_address_po_box = models.CharField(max_length=30, null=True, default='17778')
-    work_address_city = models.CharField(max_length=70, null=True, default='Αθήνα')
-    work_address_country = models.CharField(max_length=70, null=True, default='Ελλάδα')
-    work_phone = models.CharField(max_length=20, blank=True, null=True)
-    pic = models.ImageField(null=True, blank=True, upload_to='images/')
+    work_address_street = models.CharField(max_length=70, null=True, default='Ομήρου', verbose_name=_('Οδός Εργασίας'))
+    work_address_no = models.CharField(max_length=10, null=True, default='9', verbose_name=_('Αριθμός Εργασίας'))
+    work_address_po_box = models.CharField(max_length=30, null=True, default='17778', verbose_name=_('Τ.Κ. Εργασίας'))
+    work_address_city = models.CharField(max_length=70, null=True, default='Αθήνα', verbose_name=_('Πόλη Εργασίας'))
+    work_address_country = models.CharField(max_length=70, null=True, default='Ελλάδα', verbose_name=_('Χώρα Εργασίας'))
+    work_phone = models.CharField(max_length=20, blank=True, null=True, verbose_name=_('Τηλέφωνο Εργασίας'))
+    pic = models.ImageField(null=True, blank=True, upload_to='images/', verbose_name=_('Εικόνα'))
+
+    def __str__(self):
+        return _('Προσωπικά στοιχεία χρήστη: ') + self.given_name + ' ' + self.surname
 
     def scope_query(self, scope):
         if self.staffmember_set.exists():
@@ -126,30 +134,35 @@ class StaffMember(PersonStrMixin, ScopedModelDep):
         verbose_name_plural = _('Μέλη Προσωπικού')
         ordering = ['pk']
 
-    user = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True)
-    email = models.EmailField(null=True)
-    given_name = models.CharField(max_length=50)
-    given_name_en = models.CharField(null=True, max_length=50)
-    surname = models.CharField(max_length=70)
-    surname_en = models.CharField(null=True, max_length=70)
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True, verbose_name=_('Χρήστης'))
+    email = models.EmailField(null=True, verbose_name=_('Email'))
+    given_name = models.CharField(max_length=50, verbose_name=_('Όνομα'))
+    given_name_en = models.CharField(null=True, max_length=50, verbose_name=_('Όνομα (Αγγλικά)'))
+    surname = models.CharField(max_length=70, verbose_name=_('Επώνυμο'))
+    surname_en = models.CharField(null=True, max_length=70, verbose_name=_('Επώνυμο (Αγγλικά)'))
 
-    display_name = models.CharField(max_length=150, null=True, blank=True)
-    display_name_en = models.CharField(max_length=150, null=True, blank=True)
-    display_name_full = models.CharField(max_length=200, null=True, blank=True)
+    display_name = models.CharField(max_length=150, null=True, blank=True, verbose_name=_('Ονοματεπώνυμο'))
+    display_name_en = models.CharField(max_length=150, null=True, blank=True, verbose_name=_('Ονοματεπώνυμο (Αγγλικά)'))
+    display_name_full = models.CharField(max_length=200, null=True, blank=True,
+                                         verbose_name=_('Ονοματεπώνυμο και Ιδιότητα'))
 
-    is_internal = models.BooleanField(null=True, default=True)
-    institution = models.CharField(max_length=100, blank=True, null=True)
-    school = models.CharField(max_length=100, blank=True, null=True)
-    department = models.CharField(max_length=100, blank=True, null=True)
-    internal_department = models.ForeignKey(Department, blank=True, null=True, on_delete=models.SET_NULL)
-    title = models.CharField(max_length=200, null=True)
-    personal_info = models.ForeignKey(PersonalInfo, blank=True, null=True, on_delete=models.SET_NULL)
+    is_internal = models.BooleanField(null=True, default=True, verbose_name=_('Εσωτερικός Χρήστης'))
+    institution = models.CharField(max_length=100, blank=True, null=True, verbose_name=_('Ίδρυμα'))
+    school = models.CharField(max_length=100, blank=True, null=True, verbose_name=_('Σχολή'))
+    department = models.CharField(max_length=100, blank=True, null=True, verbose_name=_('Τμήμα'))
+    internal_department = models.ForeignKey(Department, blank=True, null=True, on_delete=models.SET_NULL,
+                                            verbose_name=_('Εσωτερικό Τμήμα'))
+    title = models.CharField(max_length=200, null=True, verbose_name=_('Ιδιότητα'))
+    personal_info = models.ForeignKey(PersonalInfo, blank=True, null=True, on_delete=models.SET_NULL,
+                                      verbose_name=_('Προσωπικά Στοιχεία'))
 
     objects = ScopedStaffMemberQuery.as_manager()
 
-    can_apply_for_phd = models.BooleanField(null=True, default=False)
-    can_review_phd_apps = models.BooleanField(null=True, default=True)
-    can_post_theses = models.BooleanField(null=True, default=True)
+    can_apply_for_phd = models.BooleanField(null=True, default=False,
+                                            verbose_name=_('Δυνατότητα υποβολής αίτησης για διδακτορικό'))
+    can_review_phd_apps = models.BooleanField(null=True, default=True,
+                                              verbose_name=_('Δυνατότητα αξιολόγησης αιτήσεων για διδακτορικό'))
+    can_post_theses = models.BooleanField(null=True, default=True, verbose_name=_('Δυνατότητα δημοσίευσης διατριβών'))
 
     def scope_query(self, scope):
         return scope['collective_bodies'].filter(id__in=self.collectivebody_participants.values('id')).exists()
