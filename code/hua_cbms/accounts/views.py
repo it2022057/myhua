@@ -33,7 +33,7 @@ def render_unauthorized_staff(request):
 
 
 """
-StaffMember CRUD views
+Secretary CRUD views
 """
 
 
@@ -169,7 +169,8 @@ class SecUpdatePersonalInfo(views.ScopedSecUpdateView):
 
 class SecDeletePersonalInfo(views.ScopedDeleteView):
     model = PersonalInfo
-    success_url = 'accounts:sec_personal_info_overview'
+    pk_url_kwarg = 'pi_pk'
+    success_url = 'accounts:sec_list_staff_members'
     success_message = _('Τα προσωπικά στοιχεία του μέλους διαγράφηκαν.')
 
 
@@ -193,8 +194,8 @@ class SecPersonalInfoOverviewList(views.SecMultipleSectionView):
 
     def setup(self, *args, **kwargs):
         super().setup(*args, **kwargs)
-        staff_member = StaffMember.objects.get(pk=self.kwargs['pk'])
-        obj = PersonalInfo.objects.get(id=staff_member.personal_info_id)
+        staff_member = get_object_or_404(StaffMember, pk=self.kwargs['pk'])
+        obj = get_object_or_404(PersonalInfo, id=staff_member.personal_info_id)
 
         if staff_member:
             self.master_headline = _('Προσωπικά Στοιχεία: ') + '%s' % str(staff_member)

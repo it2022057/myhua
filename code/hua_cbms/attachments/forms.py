@@ -28,6 +28,8 @@ class BaseAttachmentForm(GenericModelForm):
         super().__init__(*args, **kwargs)
 
         self.fields['name'].required = False
+        # Disable the form tag to avoid nested forms and submit attachments together with the main form,
+        # either that is a Subject, Decision or Application form
         self.helper.form_tag = False
 
         self.helper.layout = Layout(

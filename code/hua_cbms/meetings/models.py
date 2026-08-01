@@ -46,6 +46,7 @@ class Meeting(TrackedScopedProgramModel):
     def scope_query(self, scope):
         return scope['collective_bodies'].filter(id=self.collective_body.id).exists()
 
+    # Prepares escaped meeting data for notification message body
     def notification_dict(self):
         return {
             'collective_body_title_gr': escape(self.collective_body.title_gr),
@@ -57,35 +58,42 @@ class Meeting(TrackedScopedProgramModel):
             'notes': escape(self.notes),
         }
 
+    # Generates the meeting update notification
     def update_notification(self):
         return MEETING_UPDATE_NOTIFICATION_BODY.format(**self.notification_dict())
 
+    # Generate the meeting creation notification body
     def creation_notification(self):
         return MEETING_CREATION_NOTIFICATION_BODY.format(**self.notification_dict())
 
+    # Notifies the meeting's collective body members (including the president) after meeting creation
     def notify_creation(self):
         emails = (
                 self.collective_body.president.email + ', ' +
-                ', '.join([staff.email for staff in self.collective_body.participants.all()])
+                ', '.join([staff.email for staff in self.collective_body.participants.all() if staff.email])
         )
         notify.delay(emails, MEETING_CREATION_NOTIFICATION_SUBJECT, self.creation_notification(),
                      cc=settings.DEAN_EMAIL)
 
+    # Notifies the meeting's collective body members (including the president) after meeting update
     def notify_update(self):
         emails = (
                 self.collective_body.president.email + ', ' +
-                ', '.join([staff.email for staff in self.collective_body.participants.all()])
+                ', '.join([staff.email for staff in self.collective_body.participants.all() if staff.email])
         )
         notify.delay(emails, MEETING_UPDATE_NOTIFICATION_SUBJECT, self.update_notification(), cc=settings.DEAN_EMAIL)
 
     def notify_collective_body_change(self, old_collective_body, new_collective_body):
+        # Retrieve the participants of the previous and current collective bodies
         old_members = old_collective_body.participants.all()
         new_members = new_collective_body.participants.all()
 
+        # Get the actual participant objects affected by the collective body update
         previous_members = old_members.exclude(pk__in=new_members.values_list('pk', flat=True))
         new_members_to_notify = new_members.exclude(pk__in=old_members.values_list('pk', flat=True))
 
-        emails = ', '.join([member.email for member in previous_members])
+        # Notify participants removed from the meeting's collective body
+        emails = ', '.join([member.email for member in previous_members if member.email])
         message_body = MEETING_CHANGED_BODY_OLD_MEMBERS_BODY.format(
             **self.notification_dict(),
             old_collective_body_title_en=escape(old_collective_body.title_en),
@@ -94,12 +102,14 @@ class Meeting(TrackedScopedProgramModel):
         )
         notify.delay(emails, MEETING_CHANGED_BODY_OLD_MEMBERS_SUBJECT, message_body)
 
-        emails = ', '.join([member.email for member in new_members_to_notify])
+        # Notify participants added to the new collective body
+        emails = ', '.join([member.email for member in new_members_to_notify if member.email])
         notify.delay(emails, MEETING_CHANGED_BODY_NEW_MEMBERS_SUBJECT, self.creation_notification())
 
     def save(self, *args, **kwargs):
         new = self.id is None
         super().save(*args, update_user=self.updated_by, **kwargs)
 
+        # Send the creation notification only for new meetings
         if new:
             self.notify_creation()

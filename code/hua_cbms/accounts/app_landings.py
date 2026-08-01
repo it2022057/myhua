@@ -8,12 +8,6 @@ APPS = {
             'url': reverse_lazy('bodies:sec_list_collectivebodies'),
         },
     ],
-    # 'president': [
-    #     {
-    #         'title': 'President',
-    #         'url': reverse_lazy('accounts:forgot_password')
-    #     },
-    # ],
     'applicant' : [
         {
             'title': _('Οι αιτήσεις μου'),

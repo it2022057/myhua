@@ -17,6 +17,7 @@ def get_order_by_display_name():
         return 'display_name_en'
 
 def get_ordinal(number):
+    # Return the correct ordinal representation according to the current language
     if get_lang() == 'el':
         return f'{number}η'
     else:

@@ -3,7 +3,6 @@ from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from rest_framework.reverse import reverse_lazy
 
-from accounts.checks import is_secretariat
 from accounts.models import StaffMember
 from bodies.models import CollectiveBody
 from core import views
@@ -11,7 +10,7 @@ from . import forms
 from .models import Meeting
 
 """
-Secretariat Subject Views
+Secretariat CRUD Meeting Views
 """
 
 
@@ -26,6 +25,7 @@ class SecCreateMeeting(views.ScopedSecCreateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        # Add the API endpoint for retrieving the next meeting index
         context['nextIndexUrl'] = reverse_lazy('api:next_meeting_index')
 
         return context
@@ -40,28 +40,34 @@ class SecUpdateMeeting(views.ScopedSecUpdateView):
     success_message = _('Η συνεδρίαση ενημερώθηκε επιτυχώς.')
 
     def form_valid(self, form):
+        # Preserve the old meeting and collective body before saving the updated ones
         old_meeting = Meeting.objects.get(pk=self.object.pk)
         old_collective_body = old_meeting.collective_body
 
+        # Save the updated meeting
         response = super().form_valid(form)
 
         meeting = self.object
         new_collective_body = meeting.collective_body
 
+        # Notify old and new members of the collective body, when it changes
         if old_collective_body != new_collective_body:
             meeting.notify_collective_body_change(
                 old_collective_body=old_collective_body,
                 new_collective_body=new_collective_body
             )
+            # Reset attendance
             meeting.present.clear()
             meeting.absent.clear()
 
+        # Detect changes to the basic meeting details
         meeting_basic_info_change = (
-                old_meeting.date_and_time != meeting.date_and_time or
-                old_meeting.location != meeting.location or
-                old_meeting.notes != meeting.notes
+            old_meeting.date_and_time != meeting.date_and_time or
+            old_meeting.location != meeting.location or
+            old_meeting.notes != meeting.notes
         )
 
+        # Notify participants when the basic meeting details change
         if meeting_basic_info_change:
             meeting.notify_update()
 
@@ -107,6 +113,11 @@ class SecDeleteMeeting(views.ScopedDeleteView):
     model = Meeting
     success_url = 'meetings:sec_list_meetings'
     success_message = _('Η συνεδρίαση διαγράφηκε.')
+
+
+"""
+StaffMember Meeting ListView
+"""
 
 
 class StaffListMeeting(views.StaffListView):

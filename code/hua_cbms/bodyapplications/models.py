@@ -1,9 +1,13 @@
+import shutil
+from pathlib import Path
+
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth import get_user_model
 from django.db import models
 from django.db.models import Q
 
 from core.models import TrackedScopedProgramModel
+from hua_cbms import settings
 from scopes.models import ScopedQueryPrg
 
 User = get_user_model()
@@ -64,3 +68,20 @@ class Application(TrackedScopedProgramModel):
 
     def save(self, *args, **kwargs):
         super().save(*args, update_user=self.updated_by, **kwargs)
+
+    def delete(self, *args, **kwargs):
+        attachments_path = (
+                Path(settings.MEDIA_ROOT) /
+                'attachments' /
+                'bodyapplications' /
+                str(self.applicant.username)
+        )
+
+        # Delete the application from the database
+        response = super().delete(*args, **kwargs)
+
+        # Remove the attachment directory if it exists
+        if attachments_path.exists() and attachments_path.is_dir():
+            shutil.rmtree(attachments_path)
+
+        return response

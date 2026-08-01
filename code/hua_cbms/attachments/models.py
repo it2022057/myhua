@@ -21,38 +21,46 @@ class AttachmentValidationFormSet(BaseInlineFormSet):
     """
 
     def clean(self):
+        # Apply the default formset validation
         super().clean()
 
+        # Variable that stores uploaded files by their hash and size
         seen_files = {}
 
         for form in self.forms:
+            # Skip forms that were not cleaned successfully
             if not hasattr(form, 'cleaned_data'):
                 continue
 
+            # Ignore forms marked for deletion
             if self.can_delete and form.cleaned_data.get('DELETE'):
                 continue
 
             file = form.cleaned_data.get('file')
 
+            # Require a valid file in newly added attachment forms
             if form in self.extra_forms:
                 try:
                     validate_file(file)
                 except forms.ValidationError as e:
                     form.add_error('file', e)
 
+            # Skip next validation when no file is available
             if not file:
                 continue
 
             file_hash = get_file_hash(file)
             file_size = getattr(file, 'size', None)
-
+            # Generate a unique key for the uploaded file, based on its hash and size
             file_key = (file_hash, file_size)
 
             if file_key in seen_files:
+                # Add validation errors to attachment forms that have the same file chosen
                 form.add_error('file', _('Το ίδιο αρχείο έχει ήδη προστεθεί σε άλλο συνημμένο'))
 
                 seen_files[file_key].add_error('file', _('Το ίδιο αρχείο έχει ήδη προστεθεί σε άλλο συνημμένο'))
             else:
+                # Add the new uploaded file to the selected ones
                 seen_files[file_key] = form
 
 
@@ -85,6 +93,7 @@ class Attachment(TrackedModel):
         if not self.file:
             return ''
 
+        # Generates a download button for the attached file
         return format_html(
             '<a href="{}" class="btn btn-secondary mb-2 download">'
             '<span class="mto">download</span> '

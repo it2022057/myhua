@@ -1,9 +1,43 @@
 @import url('https://fonts.googleapis.com/css2?family=GFS+Neohellenic:wght@400;700&display=swap');
 
-.datepicker[readonly], .datetimepicker[readonly] {
-    background-color: #fff !important;
-    opacity: 1 !important;
+/* Bigger checkbox */
+.form-check-input {
+    width: 1.5rem;
+    height: 1.5rem;
+    margin-top: 0.2rem;
     cursor: pointer;
+}
+
+/* Green when checked */
+.form-check-input:checked {
+    background-color: #198754;
+    border-color: #198754;
+}
+
+/* Nice focus effect */
+.form-check-input:focus {
+    box-shadow: 0 0 0 .25rem rgba(25, 135, 84, .25);
+}
+
+/* Larger label */
+.form-check-label {
+    font-size: 1.05rem;
+    font-weight: bold;
+    margin-left: .4rem;
+    margin-top: 0.2rem;
+    padding-top: 0;
+}
+
+.datepicker[readonly], .datetimepicker[readonly] {
+  background-color: #fff !important;
+  opacity: 1 !important;
+  cursor: pointer;
+}
+
+.datepicker:disabled, .datetimepicker:disabled {
+  background-color: #e9ecef !important;
+  opacity: 1 !important;
+  cursor: not-allowed;
 }
 
 .btn.submit-app-button {

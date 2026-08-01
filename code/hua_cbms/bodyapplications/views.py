@@ -121,6 +121,7 @@ class SecUpdateApplication(SecUpdate):
 
         response = super().form_valid(form)
 
+        # Sends an email notification to the applicant that the application he/she made, just got updated
         email = application.applicant.email
         message_body = SEC_APPLICATION_UPDATE_NOTIFICATION_BODY.format(applicant_username=escape(application.applicant.username))
         notify.delay(email, SEC_APPLICATION_UPDATE_NOTIFICATION_SUBJECT, message_body, cc=settings.ALWAYS_NOTIFY)
@@ -141,14 +142,18 @@ class SecMultipleListApplication(SecMultipleList):
         super().setup(request, *args, **kwargs)
         sec = Secretariat.objects.filter(user=request.user).first()
 
+        # Deny access to users without secretariat or superuser privileges
         if sec is None and not request.user.is_superuser:
             raise PermissionDenied
 
+        # Retrieve applications that have not yet been associated with a subject
         pending_applications = Application.objects.filter(subject__isnull=True)
 
         if request.user.is_superuser:
+            # Allow superusers to access all resolved applications
             resolved_applications = Application.objects.filter(subject__isnull=False)
         else:
+            # Whereas secretariats have access to resolved applications from the collective bodies within their scope
             scope = get_secretariat_scope(user=request.user)
 
             resolved_applications = Application.objects.filter(
@@ -225,16 +230,20 @@ class ApplicantCreateApplication(ApplicantCreate):
 
         response = super().form_valid(form)
 
+        # Skip the email notification when no valid secretariat email is available
         secretariat = collective_body.secretariat
         if not secretariat or not secretariat.user or not secretariat.user.email:
             return response
 
+        # Retrieve the submitted application details
         request_subject = form.cleaned_data['request_subject']
         description = form.cleaned_data['description']
         application = self.object
 
+        # Generate a signed link for secure access to the application, when the receiver of the email presses it
         signer = TimestampSigner()
         domain = get_domain_uri(self.request)
+        # Sends an email notification to the secretariat that a new application just got submitted by an applicant
         email = secretariat.user.email
         signed_data = signer.sign_object({'email': email, 'application_pk': application.pk,})
         url = domain + reverse_lazy('bodyapplications:sec_show_bodyapplication_from_email_link', kwargs={'token': signed_data})

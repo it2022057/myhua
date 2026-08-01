@@ -91,6 +91,7 @@ class SecSubjectForm(GenericModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
+        # Disable the form tag to allow submission together with the SubjectAttachment formset
         self.helper.form_tag = False
 
         self.helper.layout = Layout(
@@ -161,4 +162,5 @@ class SecDecisionForm(GenericModelForm):
             *[choice for choice in choices if choice[0] != ''],
         ]
 
+        # Disable the form tag to allow submission together with the DecisionAttachment formset
         self.helper.form_tag = False

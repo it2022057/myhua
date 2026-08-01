@@ -38,24 +38,29 @@
 
     <h4> {{ headline }} </h4>
 
+    {# Use one parent form to submit the main form and all attachment formset data together #}
+    {# The crispy forms use form_tag = False to avoid invalid nested form elements #}
+    {# The multipart encoding is added only when file uploads are available #}
     <form id="crispyForm" method="post"
           {% if form.is_multipart or attachment_formset.is_multipart %}enctype="multipart/form-data"{% endif %}>
 
         {% csrf_token %}
 
+        {# Render the main form without generating a separate form tag #}
         {% crispy form %}
 
         {% if attachment_formset %}
+            {# Include the management data required by Django formsets #}
+            {# e.g. TOTAL_FORMS, INITIAL_FORMS, MIN_NUM_FORMS, MAX_NUM_FORMS #}
             {{ attachment_formset.management_form }}
 
-            <!-- Hidden empty form template.
-            This is not submitted as a real form yet.
-            JavaScript will copy it when the user clicks the add button.
-            -->
+            {# Stores an unsubmitted attachment form template for dynamic duplication. #}
+            {# JavaScript will copy and format it accordingly when the user clicks the add button. #}
             <template id="empty_attachment_form" style="display: none">
                 {% crispy attachment_formset.empty_form %}
             </template>
 
+            {# Render all existing attachment forms inside the same parent form #}
             <div id="attachments_form">
                 {% for attachment_form in attachment_formset %}
                     <!-- Very important: renders hidden id field for existing attachments -->
@@ -63,6 +68,7 @@
                         {{ hidden }}
                     {% endfor %}
 
+                    {# Render the attachment form without generating a nested form tag #}
                     {% crispy attachment_form %}
 
                     <!-- Render the delete checkbox only for existing attachments -->
@@ -85,6 +91,7 @@
                 {% endfor %}
             </div>
 
+            {# Button for adding attachments exists only when the file field is enabled #}
             {% if not attachment_formset.empty_form.file.field.disabled %}
                 <button type="button" id="add_attachment" class="btn btn-default" style="margin-bottom: 20px">
                     <span class="mto">attach_file_add</span>
@@ -245,6 +252,7 @@
     </style>
 
     <script>
+        // Handle dynamic attachment forms
         document.addEventListener("DOMContentLoaded", function () {
             const addButton = document.getElementById("add_attachment");
             const attachmentsForm = document.getElementById("attachments_form");
@@ -255,6 +263,7 @@
                 return;
             }
 
+            // Adds a new attachment form
             addButton.addEventListener("click", function () {
                 // Read how many forms currently exist.
                 // Example: if TOTAL_FORMS = 0, the next form must be attachments-0.
@@ -303,6 +312,7 @@
             const collectiveBodySelect = document.getElementById("id_collective_body");
             const indexField = document.getElementById("id_index");
 
+            // Stop if the required fields are not available
             if (!collectiveBodySelect || !indexField) {
                 return;
             }
@@ -312,19 +322,23 @@
                 indexField.value = "";
             }
 
+            // Retrieves the next available subject index of the collective body selected
             function updateSubjectIndex() {
                 const collectiveBodyId = collectiveBodySelect.value;
 
+                // Clear the index when no collective body is selected
                 if (!collectiveBodyId) {
                     indexField.value = "";
                     return;
                 }
 
+                // Request the next subject index from the server endpoint
                 fetch(`{{ nextIndexUrl }}?collective_body_id=${encodeURIComponent(collectiveBodyId)}`, {
                     credentials: "same-origin" // when the request goes to the same origin, include cookies/auth credentials
                 })
                     .then(response => response.json())
                     .then(data => {
+                        // Update the index field with the returned value of the request response
                         indexField.value = data.next_index;
                     });
             }

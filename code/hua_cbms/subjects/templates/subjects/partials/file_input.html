@@ -11,6 +11,7 @@
         </div>
 
         {% if field.value %}
+            {# Generate the secure download URL for the stored file #}
             {% media_download_url field.value as download_url %}
 
             <a href="{{ download_url }}" class="btn btn-primary" download>
@@ -26,6 +27,7 @@
                name="{{ field.html_name }}"
                id="{{ field.auto_id }}"
                class="form-control"
+               {# Add to the file input field the declared widget attributes #}
                {% include "subjects/partials/attrs.html" %}/>
 
         <div>
@@ -38,6 +40,7 @@
         </div>
         <label for="{{ field.auto_id }}" style="margin-top: -11px;">
             {% if field.value %}
+                {# Generate the secure download URL for the uploaded file #}
                 {% media_download_url field.value as download_url %}
 
                 <a href="{{ download_url }}" class="btn btn-secondary" download>

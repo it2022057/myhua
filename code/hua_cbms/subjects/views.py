@@ -14,7 +14,7 @@ from . import forms
 from attachments.formsets import SubjectAttachmentFormSet, DecisionAttachmentFormSet
 
 """
-Secretariat Subject Views
+Secretariat CRUD Subject views
 """
 
 
@@ -30,6 +30,7 @@ class SecCreateSubject(AttachmentFormSetMixin, views.ScopedSecCreateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        # Add the API endpoint for retrieving the next subject index
         context['nextIndexUrl'] = reverse_lazy('api:next_subject_index')
 
         return context
@@ -79,7 +80,7 @@ class SecDeleteSubject(views.ScopedDeleteView):
 
 
 """
-Secretariat SubjectType Views
+Secretariat CRUD SubjectType Views
 """
 
 
@@ -122,7 +123,7 @@ class SecDeleteSubjectType(views.ScopedDeleteView):
 
 
 """
-Secretariat SubjectCategory Views
+Secretariat CRUD SubjectCategory Views
 """
 
 
@@ -164,7 +165,7 @@ class SecDeleteSubjectCategory(views.ScopedDeleteView):
 
 
 """
-Secretariat Decision Views
+Secretariat CRUD Decision Views
 """
 
 
@@ -218,7 +219,7 @@ class SecDeleteDecision(views.ScopedDeleteView):
 
 
 """
-Staff Subject and Decision Views
+StaffMember Subject and Decision Views
 """
 
 
@@ -261,6 +262,7 @@ Subject AutoComplete forms
 
 class SecSubjectAutoComplete(LoginRequiredMixin, UserPassesTestMixin, autocomplete.Select2QuerySetView):
     def get_queryset(self):
+        # Get the subjects within the secretariat scope
         scopes = get_secretariat_scope(self.request.user)
         qs = Subject.objects.filter(collective_body__in=scopes['collective_bodies'])
 

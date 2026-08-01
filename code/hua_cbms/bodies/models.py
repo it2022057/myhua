@@ -69,6 +69,7 @@ class CollectiveBody(TitleStrMixin, TrackedScopedProgramModel):
     def build_participants_rows(self):
         rows = ''
 
+        # Build the HTML table rows for all collective body participants
         for participant in self.participants.all():
             rows += """
             <tr>
@@ -77,6 +78,7 @@ class CollectiveBody(TitleStrMixin, TrackedScopedProgramModel):
             </tr>
             """.format(name=escape(str(participant)), email=escape(participant.email or '-'))
 
+        # Display an empty row when no participants are assigned
         if not rows:
             rows = """
             <tr>
@@ -88,6 +90,7 @@ class CollectiveBody(TitleStrMixin, TrackedScopedProgramModel):
 
         return rows
 
+    # Prepares escaped collective body data for notification message body
     def notification_dict(self):
         return {
             'title_gr': escape(self.title_gr),
@@ -103,32 +106,39 @@ class CollectiveBody(TitleStrMixin, TrackedScopedProgramModel):
             'participants_rows': self.build_participants_rows(),
         }
 
+    # Generates the notification body for a newly added participant
     def participant_added_notification_body(self, url):
         return PARTICIPANT_ADDED_NOTIFICATION_BODY.format(
             **self.notification_dict(),
             url=url,
         )
 
+    # Generates the notification body for a removed participant
     def participant_removed_notification_body(self):
         return PARTICIPANT_REMOVED_NOTIFICATION_BODY.format(**self.notification_dict())
 
+    # Generates the collective body update notification
     def update_notification(self):
         return UPDATE_NOTIFICATION_BODY.format(**self.notification_dict())
 
+    # Generates the creation notification for the secretariat
     def sec_creation_notification(self):
         return SEC_CREATION_NOTIFICATION_BODY.format(**self.notification_dict())
 
+    # Generates the creation notification for the president
     def president_creation_notification(self):
         return PRESIDENT_CREATION_NOTIFICATION_BODY.format(**self.notification_dict())
 
+    # Notifies the secretariat and president after collective body creation
     def notify_creation(self):
         notify.delay(self.secretariat.user.email, CREATION_NOTIFICATION_SUBJECT, self.sec_creation_notification(),
                      cc=settings.ALWAYS_NOTIFY)
         notify.delay(self.president.email, CREATION_NOTIFICATION_SUBJECT, self.president_creation_notification(),
                      cc=settings.ALWAYS_NOTIFY)
 
+    # Notifies the president and participants after an update
     def notify_update(self):
-        cc_emails = ', '.join([staff.email for staff in self.participants.all()])
+        cc_emails = ', '.join([staff.email for staff in self.participants.all() if staff.email])
         notify.delay(self.president.email, UPDATE_NOTIFICATION_SUBJECT, self.update_notification(), cc=cc_emails)
 
     def save(self, *args, **kwargs):

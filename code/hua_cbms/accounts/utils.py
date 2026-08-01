@@ -18,14 +18,18 @@ def get_domain_uri(request):
 
 
 def get_file_hash(file):
+    # Create an SHA-256 hash object
     hasher = hashlib.sha256()
 
+    # Open the file when supported by the file object
     if hasattr(file, 'open'):
         file.open('rb')
 
+    # Process the file in chunks to support large uploads
     for chunk in file.chunks():
         hasher.update(chunk)
 
+    # Restore the file pointer
     if hasattr(file, 'seek'):
         file.seek(0)
 

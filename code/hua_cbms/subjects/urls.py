@@ -8,7 +8,6 @@ urlpatterns = [
     path('sec/subject/<int:pk>', views.SecUpdateSubject.as_view(), name='sec_update_subject'),
     path('sec/', views.SecListSubject.as_view(), name='sec_list_subjects'),
     path('sec/subject/<int:pk>/delete', views.SecDeleteSubject.as_view(), name='sec_delete_subject'),
-    #path('sec/subject/<int:pk>/overview', views.SecSubjectOverviewList.as_view(), name='sec_overview_phd_student'),
 
     # URLs for Secretary CRUD for SubjectTypes
     path('sec/subject-type/new', views.SecCreateSubjectType.as_view(), name='sec_create_subject-type'),
@@ -28,7 +27,7 @@ urlpatterns = [
     path('sec/decisions', views.SecListDecision.as_view(), name='sec_list_decisions'),
     path('sec/decision/<int:pk>/delete', views.SecDeleteDecision.as_view(), name='sec_delete_decision'),
 
-    # URLs for Staff Member
+    # URLs for Staff Member for reading subjects and decisions
     path('staff/', views.StaffListSubject.as_view(), name='staff_list_subjects'),
     path('staff/decisions', views.StaffListDecision.as_view(), name='staff_list_decisions'),
 

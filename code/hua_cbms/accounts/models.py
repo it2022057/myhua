@@ -187,6 +187,9 @@ class StaffMember(PersonStrMixin, ScopedModelDep):
         super().save(*args, **kwargs)
 
     def delete(self, *args, **kwargs):
+        """
+        When deleting a staff member, makes sure his/her personal info does too
+        """
         personal_info = self.personal_info
         super().delete(*args, **kwargs)
 

@@ -7,18 +7,22 @@ from core.utils import get_lang
 # Register your models here.
 
 
+# Provide common audit functionality for all admin models
 class AuditModelAdmin(admin.ModelAdmin):
     readonly_fields = ['created_at', 'updated_at', 'created_by', 'updated_by']
     list_per_page = 20
 
     def save_model(self, request, obj, form, change):
+        # Assign the creator only when the object is first created
         if not change or not obj.created_by_id:
             obj.created_by = request.user
         obj.updated_by = request.user
         super().save_model(request, obj, form, change)
 
 
+# Provide display fields according to the current language for the admin site
 class DisplayFieldAdminMixin:
+    # Return the value that matches the current language
     def get_current_language_value(self, obj, greek_field, english_field):
         if get_lang() == 'en':
             return getattr(obj, english_field, None)

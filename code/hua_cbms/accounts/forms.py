@@ -181,8 +181,7 @@ class SecPersonalInfoForm(GenericModelForm):
         super().__init__(*args, **kwargs)
 
         # Pass the PersonalInfo instance to the image widget.
-        # Used to determine which default profile image to display,
-        # when the user has not uploaded a custom picture
+        # Used to determine which default profile image to display, when the user has not uploaded a custom picture
         pi = kwargs.get('instance')
         self.fields['pic'].widget.pi = pi
 

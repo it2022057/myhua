@@ -27,16 +27,22 @@ class CustomApiView(APIView):
     missing_param_message = 'Missing the collective body param.'
 
     def get(self, request, *args, **kwargs):
+        # Retrieve the filtering parameter from the request
         param_value = request.query_params.get(self.query_param)
 
+        # Reject requests without the required parameter
         if not param_value:
             return Response({'detail': self.missing_param_message}, status=status.HTTP_400_BAD_REQUEST)
 
+        # Build the filtering criteria dynamically
         filter_kwargs = {self.filter_field: param_value}
 
         objects = self.model.objects.filter(**filter_kwargs)
+
+        # Serialize the query results
         serializer = self.serializer_class(objects, many=True)
 
+        # Return the serialized objects as JSON response
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
@@ -52,13 +58,17 @@ class NextIndexApiView(CustomApiView):
     filter_field = 'collective_body_id'
 
     def get(self, request, *args, **kwargs):
+        # Retrieve the collective body's id from the request.
+        # The GET request looks like this: http(s)://<server>/api/subjects/next-index/?collective_body_id=5
         param_value = request.query_params.get(self.query_param)
 
+        # Reject requests without the required parameter
         if not param_value:
             return Response({'detail': self.missing_param_message}, status=status.HTTP_400_BAD_REQUEST)
 
         filter_kwargs = {self.filter_field: param_value}
 
+        # Retrieves the highest assigned index for the selected collective body
         previous_index = (
                 self.model.objects
                 .filter(**filter_kwargs)
@@ -66,6 +76,7 @@ class NextIndexApiView(CustomApiView):
                 or 0
         )
 
+        # Returns the next available index
         return Response({'next_index': previous_index + 1}, status=status.HTTP_200_OK)
 
 

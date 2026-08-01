@@ -45,26 +45,31 @@
             const collectiveBodySelect = document.getElementById("id_collective_body");
             const indexField = document.getElementById("id_index");
 
-            // Clear index on page load
-            indexField.value = "";
-
+            // Stop if the required fields are not available
             if (!collectiveBodySelect || !indexField) {
                 return;
             }
 
+            // Clear index on page load
+            indexField.value = "";
+
+            // Retrieves the next available meeting index of the collective body selected
             function updateMeetingIndex() {
                 const collectiveBodyId = collectiveBodySelect.value;
 
+                // Clear the index when no collective body is selected
                 if (!collectiveBodyId) {
                     indexField.value = "";
                     return;
                 }
 
+                // Request the next meeting index from the server endpoint
                 fetch(`{{ nextIndexUrl }}?collective_body_id=${encodeURIComponent(collectiveBodyId)}`, {
                     credentials: 'same-origin' // when the request goes to the same origin, include cookies/auth credentials
                 })
                     .then(response => response.json())
                     .then(data => {
+                        // Update the index field with the returned value of the request response
                         indexField.value = data.next_index;
                     });
             }

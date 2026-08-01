@@ -48,11 +48,13 @@ class SecApplicationForm(GenericModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
+        # Restrict the applicant field to the selected applicant during updates, else it does not get shown
         applicant = self.instance.applicant
         if applicant:
             self.fields['applicant'].queryset = User.objects.filter(pk=applicant.pk)
             self.fields['applicant'].initial = applicant
 
+        # Disable the form tag to allow submission together with the ApplicationAttachment formset
         self.helper.form_tag = False
 
         self.helper.layout = Layout(
@@ -81,4 +83,5 @@ class ApplicationForm(GenericModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
+        # Disable the form tag to allow submission together with the ApplicationAttachment formset
         self.helper.form_tag = False

@@ -114,9 +114,10 @@ class Subject(TrackedScopedProgramModel):
                 'subjects' /
                 str(self.pk)
         )
-
+        # Delete the subject from the database
         response = super().delete(*args, **kwargs)
 
+        # Remove the attachment directory if it exists
         if attachments_path.exists() and attachments_path.is_dir():
             shutil.rmtree(attachments_path)
 
@@ -167,9 +168,10 @@ class Decision(TrackedScopedProgramModel):
                 'decisions' /
                 str(self.pk)
         )
-
+        # Delete the decision from the database
         response = super().delete(*args, **kwargs)
 
+        # Remove the attachment directory if it exists
         if attachments_path.exists() and attachments_path.is_dir():
             shutil.rmtree(attachments_path)
 

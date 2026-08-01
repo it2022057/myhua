@@ -88,20 +88,26 @@ class SecUpdateCollectiveBody(SecUpdate):
     confirm_modal = True
 
     def form_valid(self, form):
+        # Store the old participant ids before saving the changes
         old_participant_ids = set(self.object.participants.values_list('pk', flat=True))
 
+        # Save the collective body
         response = super().form_valid(form)
 
         collective_body = self.object
 
+        # Retrieve the updated participant ids after saving the changes
         new_participant_ids = set(collective_body.participants.values_list('pk', flat=True))
 
+        # Calculate the participants added to or removed from the collective body
         added_participant_ids = new_participant_ids - old_participant_ids
         removed_participant_ids = old_participant_ids - new_participant_ids
 
+        # Get the actual affected, from the change, objects
         added_participants = collective_body.participants.filter(pk__in=added_participant_ids)
         removed_participants = StaffMember.objects.filter(pk__in=removed_participant_ids)
 
+        # Notify every newly added participant
         for participant in added_participants:
             if participant.email:
                 signer = TimestampSigner()
@@ -116,6 +122,7 @@ class SecUpdateCollectiveBody(SecUpdate):
                     collective_body.participant_added_notification_body(url)
                 )
 
+        # Notify every removed participant
         for participant in removed_participants:
             if participant.email:
                 notify.delay(
@@ -151,13 +158,14 @@ class SecListCollectiveBody(SecList):
     extra_text2 = _('Πληροφορίες')
     extra_url2 = 'bodies:sec_overview_collectivebody'
 
-    # If the user is the admin show the create_button and assign a create_url, else hide it
     def setup(self, request, *args, **kwargs):
         super().setup(request, *args, **kwargs)
 
         if request.user.is_superuser:
+            # If the user is the admin, show the create_button and assign a create_url
             self.create_url = 'bodies:sec_create_collectivebody'
         else:
+            # else hide it, because only the admin can create a new collective body
             self.create_button = False
             self.create_url = None
 
@@ -309,6 +317,7 @@ class SecCollectiveBodyOverviewList(SecMultipleList):
 
 class SecCollectiveBodyAutoComplete(TitleStrMixin, LoginRequiredMixin, UserPassesTestMixin, autocomplete.Select2QuerySetView):
     def get_queryset(self):
+        # Show only the active collective bodies within the secretariat scope
         scopes = get_secretariat_scope(self.request.user)
         qs = scopes['collective_bodies'].active_now()
         if self.q:
@@ -321,7 +330,7 @@ class SecCollectiveBodyAutoComplete(TitleStrMixin, LoginRequiredMixin, UserPasse
 
 
 """
-Staff Member Views
+StaffMember Views
 """
 
 
@@ -510,7 +519,7 @@ class StaffCollectiveBodyOverviewList(StaffMultipleList):
 
 
 """
-Applicant views
+Applicant view
 """
 
 
@@ -532,4 +541,5 @@ class ApplicantListCollectiveBody(ApplicantList):
     back_url = reverse_lazy('bodyapplications:applicant_list_bodyapplications')
 
     def get_queryset(self):
+        # Return only the currently active collective bodies, because the applicant cannot apply to inactive ones
         return CollectiveBody.objects.active_now()
