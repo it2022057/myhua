@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-01 19:02+0300\n"
+"POT-Creation-Date: 2026-08-06 00:58+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -148,7 +148,7 @@ msgstr[0] "Removed permission to post master's theses for %d Staff Member."
 msgstr[1] "Removed permission to post master's theses for %d Staff Members."
 
 #: accounts/admin.py:173 accounts/views.py:205 bodies/admin.py:24
-#: curricula/admin.py:68 scopes/admin.py:21 subjects/admin.py:17
+#: curricula/admin.py:68 scopes/admin.py:22 subjects/admin.py:17
 msgid "Βασικά Στοιχεία"
 msgstr "Basic Information"
 
@@ -194,7 +194,7 @@ msgid "Ημ/νία Γέννησης"
 msgstr "Date of Birth"
 
 #: accounts/app_landings.py:7 bodies/models.py:49 bodies/views.py:149
-#: bodies/views.py:384 bodies/views.py:533
+#: bodies/views.py:384 bodies/views.py:533 scopes/admin.py:38
 msgid "Συλλογικά Όργανα"
 msgstr "Collective Bodies"
 
@@ -519,7 +519,7 @@ msgid "Χρήστης"
 msgstr "User"
 
 #: accounts/models.py:61 accounts/models.py:138
-#: accounts/templates/registration/login.html:52
+#: accounts/templates/registration/login.html:51
 msgid "Email"
 msgstr "Email"
 
@@ -741,15 +741,15 @@ msgstr "Please log in with your account."
 msgid "Συνθηματικό"
 msgstr "Password"
 
-#: accounts/templates/registration/login.html:61
+#: accounts/templates/registration/login.html:62
 msgid "Εισοδος"
 msgstr "Login"
 
-#: accounts/templates/registration/login.html:66
+#: accounts/templates/registration/login.html:68
 msgid "Εγγραφή"
 msgstr "Register"
 
-#: accounts/templates/registration/login.html:71
+#: accounts/templates/registration/login.html:74
 msgid "Ξέχασα τον κωδικό μου"
 msgstr "I forgot my password"
 
@@ -999,11 +999,11 @@ msgstr "Application"
 
 #: bodies/admin.py:27
 msgid "Σύνθεση"
-msgstr ""
+msgstr "Lineup"
 
 #: bodies/admin.py:30
 msgid "Διάρκεια"
-msgstr ""
+msgstr "Duration"
 
 #: bodies/admin.py:39 bodies/forms.py:16 bodies/models.py:60
 #: bodies/views.py:145 bodies/views.py:381 bodies/views.py:411
@@ -1645,11 +1645,11 @@ msgstr "Code (English)"
 msgid "Σχολές"
 msgstr "Schools"
 
-#: curricula/models.py:52 scopes/admin.py:33 scopes/models.py:19
+#: curricula/models.py:52 scopes/admin.py:34 scopes/models.py:19
 msgid "Τμήματα"
 msgstr "Departments"
 
-#: curricula/models.py:77 scopes/admin.py:29 scopes/models.py:18
+#: curricula/models.py:77 scopes/admin.py:30 scopes/models.py:18
 msgid "Προγράμματα Σπουδών"
 msgstr "Study Programs"
 
@@ -1738,7 +1738,7 @@ msgstr "Meeting has been successfully updated."
 msgid "Η συνεδρίαση διαγράφηκε."
 msgstr "Meeting deleted."
 
-#: scopes/admin.py:24
+#: scopes/admin.py:25
 msgid "Πρόσβαση"
 msgstr "Access"
 

@@ -1,0 +1,48 @@
+# Virtual environments
+venv
+.venv
+env
+.env
+ENV
+
+# PostgreSQL runtime data
+data/
+
+# Byte-compiled files
+__pycache__
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Git
+.git/
+.gitignore
+
+# Environment / secrets
+.env
+.env.*
+!.env.example
+
+# Docker files not available to COPY
+Dockerfile*
+docker-compose*
+.dockerignore
+
+# IDE
+.vscode
+.idea
+*.swp
+
+# Logs
+*.log
+
+# Temp files
+*.tmp
+*.bak
+*.swp
+
+# Documentation
+docs
+**/*.md
+LICENSE

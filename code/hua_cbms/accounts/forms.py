@@ -273,7 +273,7 @@ class RegisterForm(forms.Form):
     email1 = forms.EmailField(label=_('Το e-mail σας:'))
     email2 = forms.EmailField(label=_('Το e-mail σας (ξανά):'))
 
-    # captcha = ReCaptchaField(widget=ReCaptchaV2Checkbox)
+    captcha = ReCaptchaField(widget=ReCaptchaV2Checkbox)
 
     def clean(self):
         cleaned_data = super().clean()
@@ -300,7 +300,7 @@ class ForgotPasswordForm(forms.Form):
     email1 = forms.EmailField(label=_('Το e-mail σας:'))
     email2 = forms.EmailField(label=_('Το e-mail σας (ξανά):'))
 
-    # captcha = ReCaptchaField(widget=ReCaptchaV2Checkbox)
+    captcha = ReCaptchaField(widget=ReCaptchaV2Checkbox)
 
     def clean(self):
         cleaned_data = super().clean()

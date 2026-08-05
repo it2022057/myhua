@@ -521,8 +521,15 @@ class ParticipantAutocomplete(ApplicantAutocomplete):
         if not collective_body_id:
             return StaffMember.objects.none()
 
+
+        collective_body = CollectiveBody.objects.get(pk=collective_body_id)
+
         # Start from the participants of this collective body only
-        qs = CollectiveBody.objects.get(pk=collective_body_id).participants.all()
+        qs = collective_body.participants.all()
+
+        if collective_body.president:
+            # Also include the president, since he/she is not stored in the participants list
+            qs = qs | StaffMember.objects.filter(pk=collective_body.president.pk)
 
         # Get the staff members that are already selected as present or absent
         present_ids = self.get_forwarded_ids('present')

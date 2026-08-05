@@ -27,17 +27,16 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-^n3wa82vhfu)z!y79a8rkerj&h)=&x+t9=&muhg#22u*c8p%us'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-# DEBUG = os.environ.get('DEBUG') == 'True'
-# DUMMY_EMAILS = os.environ.get('DUMMY_EMAILS') == 'True'
-DEBUG = True
-DUMMY_EMAILS = True
+DEBUG = os.environ.get('DEBUG') == 'True'
+DUMMY_EMAILS = os.environ.get('DUMMY_EMAILS') == 'True'
 
 if DUMMY_EMAILS:
     print('Outputting email messages to console because env variable DUMMY_EMAILS is set to True.')
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1']
-CSRF_TRUSTED_ORIGINS = ['https://mydep.ditapps.hua.gr', 'https://myfaculty-dev.ditapps.hua.gr', 'http://localhost:8080',
-                        'http://127.0.0.1:8080']
+ALLOWED_HOSTS = ['myfaculty-dev.ditapps.hua.gr', 'localhost', '127.0.0.1', '10.100.59.105', '192.168.2.109',
+                 '192.168.2.10', '10.100.59.214', 'mydep.ditapps.hua.gr']
+CSRF_TRUSTED_ORIGINS = ['https://mydep.ditapps.hua.gr', 'https://myfaculty-dev.ditapps.hua.gr', 'http://localhost:30100',
+                        'http://127.0.0.1:30100']
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
@@ -51,6 +50,9 @@ if not os.path.isdir(MEDIA_TMP_EXPORT):
 
 STATIC_URL = 'static/'
 STATIC_ROOT = BASE_DIR / 'static'
+
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+USE_X_FORWARDED_HOST = True
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 CRISPY_TEMPLATE_PACK = "bootstrap5"
@@ -71,7 +73,7 @@ INSTALLED_APPS = [
     'crispy_bootstrap5',
     'rest_framework',
     'rest_framework.authtoken',
-    # 'django_recaptcha',
+    'django_recaptcha',
     'django_celery_results',
     'accounts',
     'api',
@@ -132,11 +134,11 @@ WSGI_APPLICATION = 'hua_cbms.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'hua_cbms',  # os.environ.get('POSTGRES_NAME'),
-        'USER': 'hua_cbms',  # os.environ.get('POSTGRES_USER'),
-        'PASSWORD': 'hua_cbms',  # os.environ.get('POSTGRES_PASSWORD'),
-        'HOST': '127.0.0.1',  # os.environ.get('POSTGRES_HOST'),
-        'PORT': '5432',  # os.environ.get('POSTGRES_PORT'),
+        'NAME': os.environ.get('POSTGRES_NAME'),
+        'USER': os.environ.get('POSTGRES_USER'),
+        'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
+        'HOST': os.environ.get('POSTGRES_HOST'),
+        'PORT': '',
 
     }
 }
@@ -178,7 +180,7 @@ USE_I18N = True
 USE_TZ = True
 
 LANGUAGES = [
-    ("el", "Ελληνικά"),
+    ("el", "Greek"),
     ("en", "English"),
 ]
 
@@ -230,13 +232,9 @@ LOGGING = {
 }
 
 # LDAP options
-# AUTH_LDAP_SERVER_URI = os.environ.get('AUTH_LDAP_SERVER_URI')
-# AUTH_LDAP_BIND_DN = os.environ.get('AUTH_LDAP_BIND_DN')
-# AUTH_LDAP_BIND_PASSWORD = os.environ.get('AUTH_LDAP_BIND_PASSWORD')
-# AUTH_LDAP_SERVER_URI = "ldap://10.100.51.117"
-AUTH_LDAP_SERVER_URI = "ldap://ldap3.ditapps.hua.gr"
-AUTH_LDAP_BIND_DN = "uid=it2022057,ou=People,dc=hua,dc=gr"
-AUTH_LDAP_BIND_PASSWORD = "go&U2E5$U$"
+AUTH_LDAP_SERVER_URI = os.environ.get('AUTH_LDAP_SERVER_URI')
+AUTH_LDAP_BIND_DN = os.environ.get('AUTH_LDAP_BIND_DN')
+AUTH_LDAP_BIND_PASSWORD = os.environ.get('AUTH_LDAP_BIND_PASSWORD')
 AUTH_LDAP_USER_SEARCH = LDAPSearch(
     "dc=hua,dc=gr",
     ldap.SCOPE_SUBTREE,
@@ -247,7 +245,6 @@ AUTH_LDAP_USER_ATTR_MAP = {
     "last_name": "sn",
     "email": "email"
 }
-# AUTH_LDAP_START_TLS = os.getenv('AUTH_LDAP_START_TLS') == 'True'
 AUTH_LDAP_START_TLS = True
 AUTH_LDAP_GLOBAL_OPTIONS = {
     ldap.OPT_X_TLS_REQUIRE_CERT: ldap.OPT_X_TLS_NEVER
@@ -293,9 +290,9 @@ REGISTRATION_SUBJECT = 'Activate your account / Ενεργοποιήση του 
 FORGOT_PASSWORD_BODY = emails.USER_FORGOT_PASSWORD_BODY
 FORGOT_PASSWORD_SUBJECT = 'Password Reset / Επαναφορά κωδικού'
 
-# # reCAPTCHA settings
-# RECAPTCHA_PUBLIC_KEY = os.environ.get('RECAPTCHA_PUBLIC_KEY')
-# RECAPTCHA_PRIVATE_KEY = os.environ.get('RECAPTCHA_PRIVATE_KEY')
+# reCAPTCHA settings
+RECAPTCHA_PUBLIC_KEY = os.environ.get('RECAPTCHA_PUBLIC_KEY')
+RECAPTCHA_PRIVATE_KEY = os.environ.get('RECAPTCHA_PRIVATE_KEY')
 
 # Settings for reference letter invitations
 INVITATION_REFERENCE_MAX_AGE = 30 # Number of days that the invitation links are valid
@@ -311,12 +308,11 @@ PASSWORD_RESET_LINK_AGE = 3600
 # Development server keywords
 DEV_SERVER_KEYWORDS = ['dev', 'localhost', '127.0.0.1']
 
-# CELERY_BROKER_URL = "redis://redis:6379/0"
-CELERY_BROKER_URL = "redis://localhost:6379/0"
+CELERY_BROKER_URL = os.environ.get('CELERY_BROKER_URL')
 CELERY_TASK_TRACK_STARTED = True
-CELERY_ACCEPT_CONTENT = ["json"]
-CELERY_TASK_SERIALIZER = "json"
-CELERY_RESULT_BACKEND = "django-db"
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_BACKEND = 'django-db'
 
 # Budibase key used for migrations:
 BUDI_KEY = os.environ.get('BUDI_KEY')

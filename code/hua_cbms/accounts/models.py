@@ -112,7 +112,7 @@ def create_personal_info_if_required(obj):
     surname = obj.surname
     pis = PersonalInfo.objects.filter(email=email)
     if not pis.exists():
-        pi = PersonalInfo(email=email, given_name=given_name, surname=surname)
+        pi = PersonalInfo(user=obj.user, email=email, given_name=given_name, surname=surname)
         pi.save()
     else:
         pi = pis.first()
