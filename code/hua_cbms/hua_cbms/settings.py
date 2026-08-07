@@ -261,10 +261,8 @@ LEAVE_TEMPLATE = 'leave_template'
 PHD_APPLICATION_TEMPLATE = 'phdapplication'
 
 # Mailer settings
-ALWAYS_NOTIFY = 'byronlouki21@gmail.com, b.loukidelis@gmail.com'
-DEAN_EMAIL = 'it2022057@hua.gr'
-# ALWAYS_NOTIFY = 'ditdean@hua.gr,itsec@hua.gr'
-# DEAN_EMAIL = 'thkam@hua.gr'
+ALWAYS_NOTIFY = 'ditdean@hua.gr,itsec@hua.gr'
+DEAN_EMAIL = 'thkam@hua.gr'
 EMAIL_PLATFORM_URL = 'https://mydep.ditapps.hua.gr'
 
 # SIS settings
