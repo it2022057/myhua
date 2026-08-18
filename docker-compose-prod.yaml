@@ -40,8 +40,8 @@ services:
   nginx:
     image: nginx
     volumes:
-      - ./code/hua_cbms/static:/static
-      - ./code/hua_cbms/media:/media
+      - ./code/hua_cbms/static:/static	# This allows NGINX to serve static and uploaded media files
+      - ./code/hua_cbms/media:/media	# directly instead of sending those requests through Django
       - ./nginx:/etc/nginx/conf.d
     restart: unless-stopped
     ports: 
