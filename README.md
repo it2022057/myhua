@@ -1,8 +1,8 @@
 # 🚀 myhua application repository
 
----
+## ℹ️ About
 
-`myhua` is a web application developed as part of a thesis project in Harokopio University of Athens titled: **«Σύστημα διαχείρισης πανεπιστημιακών οργάνων σε Python/Django»**.
+`myhua` is a web application developed as part of an undergraduate thesis project for the [Harokopio University of Athens](https://www.hua.gr/), titled: **«Σύστημα διαχείρισης πανεπιστημιακών οργάνων σε Python/Django»**.
 
 The `myhua` project is an attempt to streamline the collective body operations of the University. Ιt is implemented using **Python/Django** and is containerized with **Docker**.
 
