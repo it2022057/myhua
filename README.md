@@ -98,18 +98,48 @@ The main services are:
 
 ## 🗃️ Installation
 
-Clone the repo using:
+Since this is a **private repository**, you must first have access to it as a collaborator.
+
+You can clone the repository using either **SSH** or **HTTPS**.
+
+### 🔑 Option 1 — SSH (Recommended)
+
+If you have an SSH key configured with your GitHub account, clone the repository using:
+
+```
+git clone git@github.com:it2022057/myhua.git
+```
+
+> ⚠️ Make sure your public SSH key has been added to your GitHub account before cloning the repository.
+
+### 🎟️ Option 2 — HTTPS
+
+Alternatively, clone the repository using HTTPS:
 
 ```
 git clone https://github.com/it2022057/myhua.git
+```
+
+When prompted for authentication, use:
+
+- **Username:** Your GitHub username
+- **Password:** Your GitHub Personal Access Token (PAT)
+
+> ⚠️ GitHub account passwords cannot be used for Git operations over HTTPS. You must use a **Personal Access Token (PAT)** instead.
+
+> 💡 Each collaborator should authenticate using their **own GitHub account and credentials**. Never share Personal Access Tokens or private SSH keys.
+
+### ➡️ Move into the cloned repository's root directory
+
+```
 cd myhua
 ```
 
-### Where does the code live?
+### 📂 Where does the code live?
 
 The code lives in the `code/` folder of the root directory. This is volume-mounted in the `web` container and it already contains a Django project named `hua_cbms`.
 
-### Data persistence
+### 💾 Data persistence
 
 The folder `data/` is volume-mounted to the `postgres` container to enable database persistence when the container is stopped.
 
@@ -213,6 +243,15 @@ To create a superuser issue:
 docker compose exec web python manage.py createsuperuser
 ```
 
+### 🗄️ Initial data
+
+You can run scripts to create some initial data.
+
+```
+docker compose exec web python manage.py runscript initial_data
+docker compose exec web python manage.py runscript initial_data2
+```
+
 ### 🌐 Compile messages
 
 To run the multilingual site we also need to compile the messages:
@@ -286,6 +325,15 @@ To create a superuser issue:
 
 ```
 docker compose -f docker-compose-prod.yaml exec web python manage.py createsuperuser
+```
+
+### 🗄️ Initial data
+
+You can run scripts to create some initial data.
+
+```
+docker compose -f docker-compose-prod.yaml exec web python manage.py runscript initialdata
+docker compose -f docker-compose-prod.yaml exec web python manage.py runscript initial_data2
 ```
 
 ### 🌐 Compile messages

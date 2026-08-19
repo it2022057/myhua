@@ -40,7 +40,7 @@ class SchoolAdmin(DisplayFieldAdminMixin, AuditModelAdmin):
 @admin.register(Department)
 class DepartmentAdmin(DisplayFieldAdminMixin, AuditModelAdmin):
     readonly_fields = []
-    list_display = ['id', 'current_title', 'current_short', 'current_code', 'school__institution', 'school']
+    list_display = ['id', 'current_title', 'current_short', 'current_code', 'institution', 'school']
     list_display_links = ['current_title']
     search_fields = ['title_gr', 'title_en', 'short_gr', 'short_en']
     list_filter = ['school', 'school__institution']
@@ -51,6 +51,12 @@ class DepartmentAdmin(DisplayFieldAdminMixin, AuditModelAdmin):
             'fields': ('title_gr', 'title_en', 'short_gr', 'short_en', 'code_gr', 'code_en', 'school')
         }),
     ]
+    
+    @admin.display(description=_('Ίδρυμα'), ordering='school__institution')
+    def institution(self, obj):
+        if obj.school:
+            return obj.school.institution
+        return None
 
 
 @admin.register(StudyProgram)
