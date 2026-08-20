@@ -30,6 +30,21 @@ class SecCreateMeeting(views.ScopedSecCreateView):
 
         return context
 
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+
+        next_url = self.request.GET.get('next', '')
+
+        # Check if the create view was opened from a collective body overview page
+        if '/bodies/sec/collectivebody/' in next_url and '/overview' in next_url:
+            collective_body_id = next_url.split('collectivebody/')[1].split('/')[0]
+
+            # Pass the CollectiveBody's id to the form only if it is valid
+            if collective_body_id.isdigit():
+                kwargs['collective_body_id'] = collective_body_id
+
+        return kwargs
+
 
 class SecUpdateMeeting(views.ScopedSecUpdateView):
     model = Meeting

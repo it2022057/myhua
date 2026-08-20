@@ -436,7 +436,7 @@ SECRETARIATS = {
         'first_name': 'Γραμματεία',
         'last_name': 'mysec',
         'programs': None,
-        'departments': None,
+        'departments': ['IT'],
         'class_type': Secretariat,
     }
 }

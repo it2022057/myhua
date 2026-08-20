@@ -100,7 +100,7 @@ COLLECTIVE_BODY = {
                          'cdiou@hua.gr', 'michalak@hua.gr', 'evangelf@hua.gr', 'prizomil@hua.gr'],
         'president': 'president@gmail.com',
         'secretariat': 'mysec@hua.gr',
-        'start_date': '01/01/2025 09:00',
+        'start_date': '02/01/2026 09:00',
         'end_date': '01/01/2027 09:00',
         'class_type': CollectiveBody,
     },
@@ -303,41 +303,57 @@ SUBJECT_TYPES = {
     'Ακαδημαϊκό': {
         'title_gr': 'Ακαδημαϊκό',
         'title_en': 'Academic ',
+        'created_by': 'apresvelou@hua.gr',
+	'updated_by': 'apresvelou@hua.gr',
         'class_type': SubjectType,
     },
     'Διοικητικό': {
         'title_gr': 'Διοικητικό',
         'title_en': 'Administrative',
+        'created_by': 'apresvelou@hua.gr',
+	'updated_by': 'apresvelou@hua.gr',
         'class_type': SubjectType,
     },
     'Οικονομικό': {
         'title_gr': 'Οικονομικό',
         'title_en': 'Financial',
+        'created_by': 'mysec@hua.gr',
+	'updated_by': 'mysec@hua.gr',
         'class_type': SubjectType,
     },
     'Προσωπικού': {
         'title_gr': 'Προσωπικού',
         'title_en': 'Personnel',
+        'created_by': 'apresvelou@hua.gr',
+	'updated_by': 'apresvelou@hua.gr',
         'class_type': SubjectType,
     },
     'Φοιτητικό': {
         'title_gr': 'Φοιτητικό',
         'title_en': 'Student',
+        'created_by': 'apresvelou@hua.gr',
+	'updated_by': 'apresvelou@hua.gr',
         'class_type': SubjectType,
     },
     'Μεταπτυχιακών Σπουδών': {
         'title_gr': 'Μεταπτυχιακών Σπουδών',
         'title_en': 'Postgraduate Studies',
+        'created_by': 'itpsec@hua.gr',
+	'updated_by': 'itpsec@hua.gr',
         'class_type': SubjectType,
     },
     'Εξέλιξης Καθηγητή': {
         'title_gr': 'Εξέλιξης Καθηγητή',
         'title_en': 'Professor Promotion',
+        'created_by': 'mysec@hua.gr',
+	'updated_by': 'mysec@hua.gr',
         'class_type': SubjectType,
     },
     'Θεσμικό': {
         'title_gr': 'Θεσμικό',
         'title_en': 'Institutional',
+        'created_by': 'mysec@hua.gr',
+	'updated_by': 'mysec@hua.gr',
         'class_type': SubjectType,
     },
 }
@@ -346,81 +362,113 @@ SUBJECT_CATEGORIES = {
     'Πρόγραμμα Σπουδών': {
         'title_gr': 'Πρόγραμμα Σπουδών',
         'title_en': 'Curriculum',
+        'created_by': 'apresvelou@hua.gr',
+	'updated_by': 'apresvelou@hua.gr',
         'class_type': SubjectCategory,
     },
     'Αναθέσεις Διδακτικού Έργου': {
         'title_gr': 'Αναθέσεις Διδακτικού Έργου',
         'title_en': 'Teaching Assignments',
+        'created_by': 'apresvelou@hua.gr',
+	'updated_by': 'apresvelou@hua.gr',
         'class_type': SubjectCategory,
     },
     'Αιτήματα Φοιτητών': {
         'title_gr': 'Αιτήματα Φοιτητών',
         'title_en': 'Student Requests',
+        'created_by': 'apresvelou@hua.gr',
+	'updated_by': 'apresvelou@hua.gr',
         'class_type': SubjectCategory,
     },
     'Εισαγωγή Μεταπτυχιακών Φοιτητών': {
         'title_gr': 'Εισαγωγή Μεταπτυχιακών Φοιτητών',
         'title_en': 'Postgraduate Admissions',
+        'created_by': 'itpsec@hua.gr',
+	'updated_by': 'itpsec@hua.gr',
         'class_type': SubjectCategory,
     },
     'Αξιολόγηση Υποψηφίων Μεταπτυχιακών': {
         'title_gr': 'Αξιολόγηση Υποψηφίων Μεταπτυχιακών',
         'title_en': 'Postgraduate Candidate Evaluation',
+        'created_by': 'itpsec@hua.gr',
+	'updated_by': 'itpsec@hua.gr',
         'class_type': SubjectCategory,
     },
     'Πρόσληψη Προσωπικού': {
         'title_gr': 'Πρόσληψη Προσωπικού',
         'title_en': 'Personnel Recruitment',
+        'created_by': 'apresvelou@hua.gr',
+	'updated_by': 'apresvelou@hua.gr',
         'class_type': SubjectCategory,
     },
     'Εξέλιξη Καθηγητών': {
         'title_gr': 'Εξέλιξη Καθηγητών',
         'title_en': 'Professor Promotion',
+        'created_by': 'mysec@hua.gr',
+	'updated_by': 'mysec@hua.gr',
         'class_type': SubjectCategory,
     },
     'Εκλεκτορική Διαδικασία': {
         'title_gr': 'Εκλεκτορική Διαδικασία',
         'title_en': 'Electoral Procedure',
+        'created_by': 'mysec@hua.gr',
+	'updated_by': 'mysec@hua.gr',
         'class_type': SubjectCategory,
     },
     'Προϋπολογισμός': {
         'title_gr': 'Προϋπολογισμός',
         'title_en': 'Budget',
+        'created_by': 'mysec@hua.gr',
+	'updated_by': 'mysec@hua.gr',
         'class_type': SubjectCategory,
     },
     'Προμήθειες': {
         'title_gr': 'Προμήθειες',
         'title_en': 'Procurement',
+        'created_by': 'mysec@hua.gr',
+	'updated_by': 'mysec@hua.gr',
         'class_type': SubjectCategory,
     },
     'Υποδομές και Εξοπλισμός': {
         'title_gr': 'Υποδομές και Εξοπλισμός',
         'title_en': 'Infrastructure and Equipment',
+        'created_by': 'mysec@hua.gr',
+	'updated_by': 'mysec@hua.gr',
         'class_type': SubjectCategory,
     },
     'Στρατηγικός Σχεδιασμός Πανεπιστημίου': {
         'title_gr': 'Στρατηγικός Σχεδιασμός Πανεπιστημίου',
         'title_en': 'University Strategic Planning',
+        'created_by': 'mysec@hua.gr',
+	'updated_by': 'mysec@hua.gr',
         'class_type': SubjectCategory,
     },
     'Κανονισμοί και Θεσμικό Πλαίσιο': {
         'title_gr': 'Κανονισμοί και Θεσμικό Πλαίσιο',
         'title_en': 'Regulations and Institutional Framework',
+        'created_by': 'mysec@hua.gr',
+	'updated_by': 'mysec@hua.gr',
         'class_type': SubjectCategory,
     },
     'Διοικητικός Προγραμματισμός': {
         'title_gr': 'Διοικητικός Προγραμματισμός',
         'title_en': 'Administrative Planning',
+        'created_by': 'mysec@hua.gr',
+	'updated_by': 'mysec@hua.gr',
         'class_type': SubjectCategory,
     },
     'Έγκριση Πρακτικών': {
         'title_gr': 'Έγκριση Πρακτικών',
         'title_en': 'Approval of Minutes',
+        'created_by': 'apresvelou@hua.gr',
+	'updated_by': 'apresvelou@hua.gr',
         'class_type': SubjectCategory,
     },
     'Γενικά Θέματα': {
         'title_gr': 'Γενικά Θέματα',
         'title_en': 'General Subjects',
+        'created_by': 'mysec@hua.gr',
+	'updated_by': 'mysec@hua.gr',
         'class_type': SubjectCategory,
     },
 }
@@ -886,6 +934,9 @@ def queries(class_type, field_name, value):
                 return School.objects.get(short_en=value)
             if field_name == 'collective_body':
                 return CollectiveBody.objects.get(title_gr=value)
+        elif class_type in [SubjectType, SubjectCategory]:
+            if field_name in ['created_by', 'updated_by']:
+                return User.objects.get(email=value)
         elif class_type == Decision:
             if field_name == 'subject':
                 collective_body_title, subject_index = value
@@ -926,6 +977,23 @@ def create_or_update_object(field_dict={}):
                     setattr(obj, k, q)
             else:
                 setattr(obj, k, v)
+    
+    # Select who should appear in the created_by/updated_by fields
+    if class_type == Application:
+        update_user = obj.applicant
+    elif class_type == Subject:
+        update_user = obj.collective_body.secretariat.user
+    elif class_type == Decision:
+        update_user = obj.subject.collective_body.secretariat.user
+    elif class_type == CollectiveBody:
+        update_user = User.objects.get(email='admin@gmail.com', is_superuser=True)
+    else:
+        update_user = None
+
+    if update_user:
+        if not obj.created_by_id:
+            obj.created_by = update_user
+        obj.updated_by = update_user
 
     obj.save()
 

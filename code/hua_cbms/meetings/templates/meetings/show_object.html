@@ -51,7 +51,9 @@
             }
 
             // Clear index on page load
-            indexField.value = "";
+            if (collectiveBodySelect.value === "") {
+                indexField.value = "";
+            }
 
             // Retrieves the next available meeting index of the collective body selected
             function updateMeetingIndex() {

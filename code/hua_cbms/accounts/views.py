@@ -51,10 +51,10 @@ class SecCreateStaffMember(views.ScopedSecCreateView):
     def form_valid(self, form):
         response = super().form_valid(form)
 
-        next_url = self.request.GET.get("next")
+        next_url = self.request.GET.get('next')
 
-        if "sec/collectivebody/" in next_url:
-            body_id = next_url.split("collectivebody/")[1].split("/")[0]
+        if 'sec/collectivebody/' in next_url:
+            body_id = next_url.split('collectivebody/')[1].split('/')[0]
             body = get_object_or_404(CollectiveBody, pk=body_id)
             body.participants.add(self.object)
             self.success_url = reverse_lazy('bodies:sec_overview_collectivebody')

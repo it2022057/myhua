@@ -192,6 +192,9 @@ class SecCollectiveBodyOverviewList(SecMultipleList):
         if body:
             self.master_headline = _('Στοιχεία Συλλογικού Οργάνου: ') + '%s' % str(body)
 
+        # Allow modifications only when the CollectiveBody is active and its end_date has not passed
+        can_edit = body.active and (body.end_date >= timezone.now())
+
         subjects = Subject.objects.filter(collective_body=body)
         self.tables = [
             Table(
@@ -210,8 +213,10 @@ class SecCollectiveBodyOverviewList(SecMultipleList):
                 },
                 table_id='subject',
                 order=[[0, 'asc']],
-                update_url='subjects:sec_update_subject',
-                create_url='subjects:sec_create_subject',
+                update_url='subjects:sec_update_subject' if can_edit else None,
+                create_url='subjects:sec_create_subject' if can_edit else None,
+                update_buttons=can_edit,
+                create_button=can_edit,
                 objects=subjects,
                 next=self.request.path
             ),
@@ -228,9 +233,11 @@ class SecCollectiveBodyOverviewList(SecMultipleList):
                 update_url_callable=lambda obj: reverse_lazy(
                     "accounts:sec_update_participants",
                     kwargs={"pk": body.pk},
-                ),
+                ) if can_edit else None,
                 update_text=_('Ενημέρωση λίστας συμμετεχόντων'),
-                create_url='accounts:sec_create_staff_member',
+                create_url='accounts:sec_create_staff_member' if can_edit else None,
+                update_buttons=can_edit,
+                create_button=can_edit,
                 objects=body.participants.all(),
                 next=self.request.path
             ),
@@ -244,8 +251,10 @@ class SecCollectiveBodyOverviewList(SecMultipleList):
                 },
                 table_id='decision',
                 order=[[0, 'asc'], [1, 'asc']],
-                update_url='subjects:sec_update_decision',
-                create_url='subjects:sec_create_decision',
+                update_url='subjects:sec_update_decision' if can_edit else None,
+                create_url='subjects:sec_create_decision' if can_edit else None,
+                update_buttons=can_edit,
+                create_button=can_edit,
                 objects=Decision.objects.filter(subject__in=subjects),
                 next=self.request.path
             ),
@@ -262,8 +271,10 @@ class SecCollectiveBodyOverviewList(SecMultipleList):
                 },
                 table_id='meeting',
                 order=[[0, 'asc']],
-                update_url='meetings:sec_update_meeting',
-                create_url='meetings:sec_create_meeting',
+                update_url='meetings:sec_update_meeting' if can_edit else None,
+                create_url='meetings:sec_create_meeting' if can_edit else None,
+                update_buttons=can_edit,
+                create_button=can_edit,
                 objects=Meeting.objects.filter(collective_body=body),
                 next=self.request.path
             ),
@@ -275,21 +286,25 @@ class SecCollectiveBodyOverviewList(SecMultipleList):
                 },
                 table_id='subject_type',
                 order=[[0, 'asc']],
-                update_url='subjects:sec_update_subject-type',
-                create_url='subjects:sec_create_subject-type',
+                update_url='subjects:sec_update_subject-type' if can_edit else None,
+                create_url='subjects:sec_create_subject-type' if can_edit else None,
+                update_buttons=can_edit,
+                create_button=can_edit,
                 objects=SubjectType.objects.filter(id__in=subjects.values_list("type_id", flat=True)),
                 next=self.request.path
             ),
             Table(
-                fields=['title_gr', 'conference_title', 'year'],
+                fields=['title_gr'],
                 table_title=_('Κατηγορίες Θεμάτων Συλλογικού Οργάνου'),
                 headers={
                     'title_gr': _('Τίτλος')
                 },
                 table_id='subject_category',
                 order=[[0, 'asc']],
-                update_url='subjects:sec_update_subject-category',
-                create_url='subjects:sec_create_subject-category',
+                update_url='subjects:sec_update_subject-category' if can_edit else None,
+                create_url='subjects:sec_create_subject-category' if can_edit else None,
+                update_buttons=can_edit,
+                create_button=can_edit,
                 objects=SubjectCategory.objects.filter(id__in=subjects.values_list("category_id", flat=True)),
                 next=self.request.path
             ),
@@ -307,7 +322,8 @@ class SecCollectiveBodyOverviewList(SecMultipleList):
                 },
                 table_id='applications',
                 order=[[4, 'asc'], [3, 'asc'], [2, 'asc']],
-                update_url='bodyapplications:sec_update_bodyapplication',
+                update_url='bodyapplications:sec_update_bodyapplication' if can_edit else None,
+                update_buttons=can_edit,
                 create_button=False,
                 objects=Application.objects.filter(subject__in=subjects).distinct(),
                 next=self.request.path
@@ -387,7 +403,6 @@ class StaffListCollectiveBody(StaffMultipleList):
 
     def get_queryset(self, current=True):
         staff_member = get_object_or_404(StaffMember, user=self.request.user)
-        today = timezone.now()
 
         # Get all collective bodies where the staff member participates either as a regular participant or as president
         queryset = CollectiveBody.objects.filter(Q(participants=staff_member) | Q(president=staff_member)).distinct()
@@ -396,9 +411,9 @@ class StaffListCollectiveBody(StaffMultipleList):
             queryset = queryset.active_now()
         else:
             # Past/Inactive participations: show collective bodies that have either ended or have been marked inactive.
-            # Although inactive collective it is more of an administrative/secretariat state
+            # Although inactive collective bodies are more of an administrative/secretariat state
             # and not something the staff member needs to track, they keep access to their historical participation data
-            queryset = queryset.filter(Q(end_date__lt=today) | Q(active=False)).distinct()
+            queryset = queryset.inactive_now()
 
         return queryset.order_by(*self.ordering)
 

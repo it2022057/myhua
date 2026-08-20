@@ -1,10 +1,12 @@
 from dal import autocomplete
 from django.contrib.auth.mixins import UserPassesTestMixin, LoginRequiredMixin
 from django.db.models import Q
+from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
 
 from accounts.checks import is_secretariat
+from accounts.models import StaffMember
 from core import views
 from core.models import AttachmentFormSetMixin
 from core.utils import get_order_by_title
@@ -35,6 +37,21 @@ class SecCreateSubject(AttachmentFormSetMixin, views.ScopedSecCreateView):
 
         return context
 
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+
+        next_url = self.request.GET.get('next', '')
+
+        # Check if the create view was opened from a collective body overview page
+        if '/bodies/sec/collectivebody/' in next_url and '/overview' in next_url:
+            collective_body_id = next_url.split('collectivebody/')[1].split('/')[0]
+
+            # Pass the CollectiveBody's id to the form only if it is valid
+            if collective_body_id.isdigit():
+                kwargs['collective_body_id'] = collective_body_id
+
+        return kwargs
+
     def get_attachment_form_kwargs(self):
         return {'user': self.request.user}
 
@@ -55,7 +72,8 @@ class SecUpdateSubject(AttachmentFormSetMixin, views.ScopedSecUpdateView):
 
 class SecListSubject(views.ScopedSecListView):
     model = Subject
-    fields = ['index', 'collective_body', 'type', 'category', 'program', 'department', 'school', 'notes', 'attachments.download']
+    fields = ['index', 'collective_body', 'type', 'category', 'program', 'department', 'school', 'notes',
+              'attachments.download']
     headers = {
         'index': _('Θέση'),
         'collective_body': _('Συλλογικό Όργανο'),
@@ -68,10 +86,11 @@ class SecListSubject(views.ScopedSecListView):
         'attachments.download': _('Επισυναπτόμενα')
     }
     table_title = _('Θέματα')
-    ordering = ['type', 'category']
+    ordering = ['collective_body', 'index']
     create_url = 'subjects:sec_create_subject'
     update_url = 'subjects:sec_update_subject'
     back_url = reverse_lazy('bodies:sec_list_collectivebodies')
+
 
 class SecDeleteSubject(views.ScopedDeleteView):
     model = Subject
@@ -239,6 +258,15 @@ class StaffListSubject(views.StaffListView):
     update_buttons = False
     back_url = reverse_lazy('bodies:staff_list_collectivebodies')
 
+    def get_queryset(self):
+        staff_member = get_object_or_404(StaffMember, user=self.request.user)
+        queryset = Subject.objects.filter(
+            Q(collective_body__participants=staff_member) |
+            Q(collective_body__president=staff_member)
+        ).distinct()
+
+        return queryset.order_by(*self.ordering)
+
 
 class StaffListDecision(views.StaffListView):
     model = Decision
@@ -253,6 +281,15 @@ class StaffListDecision(views.StaffListView):
     create_button = False
     update_buttons = False
     back_url = reverse_lazy('bodies:staff_list_collectivebodies')
+
+    def get_queryset(self):
+        staff_member = get_object_or_404(StaffMember, user=self.request.user)
+        queryset = Decision.objects.filter(
+            Q(subject__collective_body__participants=staff_member) |
+            Q(subject__collective_body__president=staff_member)
+        ).distinct()
+
+        return queryset.order_by(*self.ordering)
 
 
 """

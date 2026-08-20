@@ -279,6 +279,12 @@ Run the docker containers:
 docker compose -f docker-compose-prod.yaml up
 ```
 
+View running containers:
+
+```
+docker compose -f docker-compose-prod.yaml ps
+```
+
 View logs:
 
 ```
@@ -332,7 +338,7 @@ docker compose -f docker-compose-prod.yaml exec web python manage.py createsuper
 You can run scripts to create some initial data.
 
 ```
-docker compose -f docker-compose-prod.yaml exec web python manage.py runscript initialdata
+docker compose -f docker-compose-prod.yaml exec web python manage.py runscript initial_data
 docker compose -f docker-compose-prod.yaml exec web python manage.py runscript initial_data2
 ```
 

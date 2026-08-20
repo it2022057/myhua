@@ -4,7 +4,9 @@ from django import forms
 from django.utils.translation import gettext_lazy as _
 
 from accounts.checks import validate_meeting_index
+from bodies.models import CollectiveBody
 from core.forms import GenericModelForm
+from subjects.utils import get_last_index
 from .models import Meeting
 
 MEETING_FIELDS = ['index', 'present', 'absent', 'collective_body', 'location', 'date_and_time', 'notes']
@@ -54,7 +56,22 @@ class SecMeetingForm(GenericModelForm):
         widgets = MEETING_WIDGETS
 
     def __init__(self, *args, **kwargs):
+        # Get the CollectiveBody's id passed by the create view, if available
+        collective_body_id = kwargs.pop('collective_body_id', None)
+
         super().__init__(*args, **kwargs)
+
+        # If the meeting is being created from a CollectiveBody overview page,
+        # automatically select that CollectiveBody in the form
+        if collective_body_id:
+            collective_body = CollectiveBody.objects.get(pk=collective_body_id)
+            self.fields['collective_body'].initial = collective_body
+
+            # Find the highest assigned index for the selected CollectiveBody's meetings
+            previous_index = get_last_index(Meeting, collective_body_id=collective_body_id)
+
+            # Set the next available index as the initial value
+            self.fields['index'].initial = previous_index + 1
 
         # If a CreateView is pressed for Meetings, disable present and absent fields
         # because the secretariat updates these fields after the meeting is finished

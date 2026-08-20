@@ -4,8 +4,10 @@ from django import forms
 from django.utils.translation import gettext_lazy as _
 
 from accounts.checks import validate_subject_index
+from bodies.models import CollectiveBody
 from core.forms import GenericModelForm
 from subjects.models import Subject, Decision, SubjectType, SubjectCategory
+from subjects.utils import get_last_index
 
 SUBJECT_FIELDS = ['index', 'type', 'category', 'applicant_user', 'program', 'department', 'school', 'collective_body', 'notes']
 
@@ -89,7 +91,22 @@ class SecSubjectForm(GenericModelForm):
         widgets = SUBJECT_WIDGETS
 
     def __init__(self, *args, **kwargs):
+        # Get the CollectiveBody's id passed by the create view, if available
+        collective_body_id = kwargs.pop('collective_body_id', None)
+
         super().__init__(*args, **kwargs)
+
+        # If the subject is being created from a CollectiveBody overview page,
+        # automatically select that CollectiveBody in the form
+        if collective_body_id:
+            collective_body = CollectiveBody.objects.get(pk=collective_body_id)
+            self.fields['collective_body'].initial = collective_body
+
+            # Find the highest assigned index for the selected CollectiveBody's subjects
+            previous_index = get_last_index(Subject, collective_body_id=collective_body_id)
+
+            # Set the next available index as the initial value
+            self.fields['index'].initial = previous_index + 1
 
         # Disable the form tag to allow submission together with the SubjectAttachment formset
         self.helper.form_tag = False
