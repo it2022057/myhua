@@ -1,7 +1,7 @@
 from django.contrib.auth import get_user_model
 from django.db import models
 from django.utils import timezone
-from django.utils.html import escape
+from django.utils.html import escape, format_html
 from django.utils.translation import gettext_lazy as _
 from romanize import romanize
 
@@ -65,6 +65,12 @@ class CollectiveBody(TitleStrMixin, TrackedScopedProgramModel):
 
     def scope_query(self, scope):
         return scope['collective_bodies'].filter(id=self.id).exists()
+
+    def active_display(self):
+        text = 'Yes' if self.active else 'No'
+        badge_class = 'bg-success' if self.active else 'bg-danger'
+
+        return format_html('<span class="badge {}" style="font-size: 0.9em">{}</span>', badge_class, text)
 
     def build_participants_rows(self):
         rows = ''

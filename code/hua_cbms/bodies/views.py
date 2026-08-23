@@ -136,7 +136,7 @@ class SecUpdateCollectiveBody(SecUpdate):
 
 class SecListCollectiveBody(SecList):
     model = CollectiveBody
-    fields = ['title_gr', 'president', 'secretariat', 'start_date', 'end_date', 'active']
+    fields = ['title_gr', 'president', 'secretariat', 'start_date', 'end_date', 'active_display']
     headers = {
         'title_gr': _('Τίτλος'),
         'participants': _('Συμμετέχοντες'),
@@ -144,7 +144,7 @@ class SecListCollectiveBody(SecList):
         'secretariat': _('Γραμματεία'),
         'start_date': _('Ημερομηνία Έναρξης'),
         'end_date': _('Ημερομηνία Λήξης'),
-        'active': _('Ενεργό')
+        'active_display': _('Ενεργό')
     }
     table_title = _('Συλλογικά Όργανα')
     ordering = ['end_date', 'start_date', 'secretariat', 'president', get_order_by_title()]
@@ -154,6 +154,7 @@ class SecListCollectiveBody(SecList):
     extra_button_icon = 'groups'
     extra_url = 'accounts:sec_list_participants'
     extra_buttons2 = True
+    extra_button_class2 = 'btn btn-info text-white'
     extra_button_icon2 = 'info'
     extra_text2 = _('Πληροφορίες')
     extra_url2 = 'bodies:sec_overview_collectivebody'
@@ -198,7 +199,8 @@ class SecCollectiveBodyOverviewList(SecMultipleList):
         subjects = Subject.objects.filter(collective_body=body)
         self.tables = [
             Table(
-                fields=['index', 'type', 'category', 'applicant_user', 'program', 'department', 'school', 'notes', 'attachments'],
+                fields=['index', 'type', 'category', 'applicant_user', 'program', 'department', 'school', 'notes',
+                        'attachments.download'],
                 table_title=_('Θέματα Συνεδριάσεων Συλλογικού Οργάνου'),
                 headers={
                     'index': _('Θέση'),
@@ -209,7 +211,7 @@ class SecCollectiveBodyOverviewList(SecMultipleList):
                     'department': _('Τμήμα'),
                     'school': _('Σχολή'),
                     'notes': _('Σημειώσεις'),
-                    'attachments': _('Επισυναπτόμενα')
+                    'attachments.download': _('Επισυναπτόμενα')
                 },
                 table_id='subject',
                 order=[[0, 'asc']],
@@ -218,6 +220,23 @@ class SecCollectiveBodyOverviewList(SecMultipleList):
                 update_buttons=can_edit,
                 create_button=can_edit,
                 objects=subjects,
+                next=self.request.path
+            ),
+            Table(
+                fields=['subject', 'decision', 'attachments.download'],
+                table_title=_('Αποφάσεις για τα Θέματα'),
+                headers={
+                    'subject': _('Θέμα'),
+                    'decision': _('Τελική Απόφαση'),
+                    'attachments.download': _('Επισυναπτόμενα')
+                },
+                table_id='decision',
+                order=[[0, 'asc'], [1, 'asc']],
+                update_url='subjects:sec_update_decision' if can_edit else None,
+                create_url='subjects:sec_create_decision' if can_edit else None,
+                update_buttons=can_edit,
+                create_button=can_edit,
+                objects=Decision.objects.filter(subject__in=subjects),
                 next=self.request.path
             ),
             Table(
@@ -239,23 +258,6 @@ class SecCollectiveBodyOverviewList(SecMultipleList):
                 update_buttons=can_edit,
                 create_button=can_edit,
                 objects=body.participants.all(),
-                next=self.request.path
-            ),
-            Table(
-                fields=['subject', 'title', 'attachments'],
-                table_title=_('Αποφάσεις για τα Θέματα'),
-                headers={
-                    'subject': _('Θέμα'),
-                    'title': _('Τελική Απόφαση'),
-                    'attachments': _('Επισυναπτόμενα')
-                },
-                table_id='decision',
-                order=[[0, 'asc'], [1, 'asc']],
-                update_url='subjects:sec_update_decision' if can_edit else None,
-                create_url='subjects:sec_create_decision' if can_edit else None,
-                update_buttons=can_edit,
-                create_button=can_edit,
-                objects=Decision.objects.filter(subject__in=subjects),
                 next=self.request.path
             ),
             Table(
@@ -309,7 +311,8 @@ class SecCollectiveBodyOverviewList(SecMultipleList):
                 next=self.request.path
             ),
             Table(
-                fields=['request_subject', 'description', 'created_at', 'subject', 'applicant', 'subject.decision', 'attachments.download'],
+                fields=['request_subject', 'description', 'created_at', 'subject', 'applicant', 'subject.decision',
+                        'attachments.download'],
                 table_title=_('Αιτήσεις προς το Συλλογικό Όργανο'),
                 headers={
                     'request_subject': _('Θέμα Αιτήματος'),
@@ -437,7 +440,7 @@ class StaffListCollectiveBody(StaffMultipleList):
                 create_button=False,
                 update_buttons=False,
                 extra_buttons=True,
-                extra_button_class='btn btn-secondary',
+                extra_button_class='btn btn-info text-white',
                 extra_button_icon='info',
                 extra_text=_('Πληροφορίες'),
                 extra_url='bodies:staff_overview_collectivebody',
@@ -453,7 +456,7 @@ class StaffListCollectiveBody(StaffMultipleList):
                 create_button=False,
                 update_buttons=False,
                 extra_buttons=True,
-                extra_button_class='btn btn-secondary',
+                extra_button_class='btn btn-info text-white',
                 extra_button_icon='info',
                 extra_text=_('Πληροφορίες'),
                 extra_url='bodies:staff_overview_collectivebody',
@@ -483,7 +486,7 @@ class StaffCollectiveBodyOverviewList(StaffMultipleList):
         subjects = Subject.objects.filter(collective_body=body).order_by('index')
         self.tables = [
             Table(
-                fields=['type', 'category', 'program', 'department', 'school', 'notes', 'attachments'],
+                fields=['type', 'category', 'program', 'department', 'school', 'notes', 'attachments.download'],
                 table_title=_('Θέματα Συνεδριάσεων Συλλογικού Οργάνου'),
                 headers={
                     'type': _('Τύπος'),
@@ -492,22 +495,22 @@ class StaffCollectiveBodyOverviewList(StaffMultipleList):
                     'department': _('Τμήμα'),
                     'school': _('Σχολή'),
                     'notes': _('Σημειώσεις'),
-                    'attachments': _('Επισυναπτόμενα')
+                    'attachments.download': _('Επισυναπτόμενα')
                 },
                 table_id='subject',
-                order=[[0, 'asc']],
+                order=[[0, 'asc'], [1, 'asc']],
                 create_button=False,
                 update_buttons=False,
                 objects=subjects,
                 next=self.request.path
             ),
             Table(
-                fields=['subject', 'title', 'attachments'],
+                fields=['subject.staff_subject_display', 'decision', 'attachments.download'],
                 table_title=_('Αποφάσεις για τα Θέματα'),
                 headers={
-                    'subject': _('Θέμα'),
-                    'title': _('Τελική Απόφαση'),
-                    'attachments': _('Επισυναπτόμενα')
+                    'subject.staff_subject_display': _('Θέμα'),
+                    'decision': _('Τελική Απόφαση'),
+                    'attachments.download': _('Επισυναπτόμενα')
                 },
                 table_id='decision',
                 order=[[0, 'asc'], [1, 'asc']],

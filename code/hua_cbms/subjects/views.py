@@ -2,18 +2,18 @@ from dal import autocomplete
 from django.contrib.auth.mixins import UserPassesTestMixin, LoginRequiredMixin
 from django.db.models import Q
 from django.shortcuts import get_object_or_404
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.utils.translation import gettext_lazy as _
 
 from accounts.checks import is_secretariat
 from accounts.models import StaffMember
+from attachments.formsets import SubjectAttachmentFormSet, DecisionAttachmentFormSet
 from core import views
 from core.models import AttachmentFormSetMixin
 from core.utils import get_order_by_title
 from scopes.utils import get_secretariat_scope
 from subjects.models import Subject, SubjectType, SubjectCategory, Decision
 from . import forms
-from attachments.formsets import SubjectAttachmentFormSet, DecisionAttachmentFormSet
 
 """
 Secretariat CRUD Subject views
@@ -72,6 +72,7 @@ class SecUpdateSubject(AttachmentFormSetMixin, views.ScopedSecUpdateView):
 
 class SecListSubject(views.ScopedSecListView):
     model = Subject
+    template_name = 'subjects/list_objects.html'
     fields = ['index', 'collective_body', 'type', 'category', 'program', 'department', 'school', 'notes',
               'attachments.download']
     headers = {
@@ -89,7 +90,23 @@ class SecListSubject(views.ScopedSecListView):
     ordering = ['collective_body', 'index']
     create_url = 'subjects:sec_create_subject'
     update_url = 'subjects:sec_update_subject'
+    extra_buttons = True
+    extra_text = _('Επεξεργασία Απόφασης')
+    extra_button_class = 'btn btn-dark'
+    extra_button_icon = 'thumbs_up_down'
     back_url = reverse_lazy('bodies:sec_list_collectivebodies')
+
+    def get_extra_url(self, obj):
+        # Retrieve the existing Decision related to this Subject, if one exists
+        decision = obj.decision.first()
+
+        # If a Decision already exists, redirect to its UpdateView
+        if decision:
+            return reverse_lazy('subjects:sec_update_decision', kwargs={'pk': decision.pk})
+
+        # Otherwise, redirect to the CreateView and pass the Subject's id
+        # so that the Subject can be automatically selected in the Decision form
+        return f"{reverse('subjects:sec_create_decision')}?subject_id={obj.pk}"
 
 
 class SecDeleteSubject(views.ScopedDeleteView):
@@ -201,6 +218,18 @@ class SecCreateDecision(AttachmentFormSetMixin, views.ScopedSecCreateView):
     def get_attachment_form_kwargs(self):
         return {'user': self.request.user}
 
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+
+        subject_id = self.request.GET.get('subject_id')
+
+        # Pass the Subject's id to the form if the CreateView
+        # was opened from a specific Subject in the ListView
+        if subject_id and subject_id.isdigit():
+            kwargs['subject_id'] = subject_id
+
+        return kwargs
+
 
 class SecUpdateDecision(AttachmentFormSetMixin, views.ScopedSecUpdateView):
     model = Decision
@@ -218,14 +247,15 @@ class SecUpdateDecision(AttachmentFormSetMixin, views.ScopedSecUpdateView):
 
 class SecListDecision(views.ScopedSecListView):
     model = Decision
-    fields = ['subject', 'title', 'attachments.download']
+    fields = ['subject.collective_body', 'subject', 'decision', 'attachments.download']
     headers = {
+        'subject.collective_body': _('Συλλογικό Όργανο'),
         'subject': _('Θέμα'),
-        'title': _('Τελική Απόφαση'),
+        'decision': _('Τελική Απόφαση'),
         'attachments.download': _('Επισυναπτόμενα')
     }
     table_title = _('Αποφάσεις')
-    ordering = ['subject', 'title']
+    ordering = ['subject__collective_body', 'subject', 'title']
     create_url = 'subjects:sec_create_decision'
     update_url = 'subjects:sec_update_decision'
     back_url = reverse_lazy('bodies:sec_list_collectivebodies')
@@ -270,14 +300,15 @@ class StaffListSubject(views.StaffListView):
 
 class StaffListDecision(views.StaffListView):
     model = Decision
-    fields = ['subject', 'title', 'attachments.download']
+    fields = ['subject.collective_body', 'subject.staff_subject_display', 'decision', 'attachments.download']
     headers = {
-        'subject': _('Θέμα'),
-        'title': _('Τελική Απόφαση'),
+        'subject.collective_body': _('Συλλογικό Όργανο'),
+        'subject.staff_subject_display': _('Θέμα'),
+        'decision': _('Τελική Απόφαση'),
         'attachments.download': _('Επισυναπτόμενα')
     }
     table_title = _('Αποφάσεις')
-    ordering = ['subject', 'title']
+    ordering = ['subject__collective_body', 'subject', 'title']
     create_button = False
     update_buttons = False
     back_url = reverse_lazy('bodies:staff_list_collectivebodies')

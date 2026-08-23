@@ -2,6 +2,7 @@ import shutil
 from pathlib import Path
 
 from django.core.validators import MinValueValidator
+from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth import get_user_model
 from django.db import models
@@ -90,7 +91,8 @@ class Subject(TrackedScopedProgramModel):
     applicant_user = models.ForeignKey(User, null=True, on_delete=models.SET_NULL, verbose_name=_('Αιτών'))
     program = models.ForeignKey('curricula.StudyProgram', null=True, on_delete=models.SET_NULL,
                                 verbose_name=_('Πρόγραμμα Σπουδών'))
-    department = models.ForeignKey('curricula.Department', null=True, on_delete=models.SET_NULL, verbose_name=_('Τμήμα'))
+    department = models.ForeignKey('curricula.Department', null=True, on_delete=models.SET_NULL,
+                                   verbose_name=_('Τμήμα'))
     school = models.ForeignKey('curricula.School', null=True, on_delete=models.SET_NULL, verbose_name=_('Σχολή'))
     collective_body = models.ForeignKey('bodies.CollectiveBody', null=True, on_delete=models.SET_NULL,
                                         verbose_name=_('Συλλογικό Όργανο'))
@@ -100,6 +102,9 @@ class Subject(TrackedScopedProgramModel):
 
     def scope_query(self, scope):
         return scope['collective_bodies'].filter(id=self.collective_body.id).exists()
+
+    def staff_subject_display(self):
+        return f"{self.type} - {self.category}"
 
     def __str__(self):
         return f"{self.index}. {self.type} - {self.category}"
@@ -141,12 +146,12 @@ class Decision(TrackedScopedProgramModel):
     TITLE_PENDING = 'Pending'
 
     TITLE_CHOICES = (
-        (TITLE_APPROVAL, _('Έγκριση ✅')),
+        (TITLE_APPROVAL, _('Έγκριση ✔')),
         (TITLE_REJECTION, _('Απόρριψη ❌')),
         (TITLE_PENDING, _('Σε εκκρεμότητα ⏳')),
     )
 
-    title = models.CharField(max_length=100, choices=TITLE_CHOICES, verbose_name=_('Τελική Απόφαση'))
+    title = models.CharField(max_length=10, choices=TITLE_CHOICES, verbose_name=_('Τελική Απόφαση'))
     subject = models.ForeignKey(Subject, null=True, on_delete=models.CASCADE, related_name='decision',
                                 verbose_name=_('Θέμα'))
 
@@ -154,6 +159,18 @@ class Decision(TrackedScopedProgramModel):
 
     def scope_query(self, scope):
         return scope['collective_bodies'].filter(id=self.subject.collective_body.id).exists()
+
+    def decision(self):
+        badge_classes = {
+            self.TITLE_APPROVAL: 'bg-success',
+            self.TITLE_REJECTION: 'bg-danger',
+            self.TITLE_PENDING: 'bg-warning',
+        }
+
+        return format_html(
+            '<span class="badge {}" style="font-size: 0.9em">{}</span>',
+            badge_classes.get(self.title, 'bg-secondary'), self.get_title_display()
+        )
 
     def __str__(self):
         return _('Για το Θέμα [%s], η τελική απόφαση είναι: %s') % (self.subject, self.get_title_display())

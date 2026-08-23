@@ -76,7 +76,7 @@ DECISION_WIDGETS = {
         attrs={**BASE_ATTRS, 'data-placeholder': _('Επιλέξτε θέμα')}
     ),
     'title': autocomplete.ListSelect2(
-        attrs={**BASE_ATTRS}
+        attrs={**BASE_ATTRS, 'data-placeholder': _('Επιλέξτε τελική απόφαση')}
     )
 }
 
@@ -170,10 +170,21 @@ class SecDecisionForm(GenericModelForm):
         widgets = DECISION_WIDGETS
 
     def __init__(self, *args, **kwargs):
+        # Get the Subject's id passed by the list view, if available
+        subject_id = kwargs.pop('subject_id', None)
+
         super().__init__(*args, **kwargs)
 
+        # Automatically select the Subject in the form when creating a Decision
+        # directly from the Subject ListView
+        if subject_id:
+            subject = Subject.objects.get(pk=subject_id)
+            self.fields['subject'].initial = subject
+
+        # Convert the choices iterator to a list so it can be easily modified
         choices = list(self.fields['title'].choices)
 
+        # Add a custom placeholder option and keep the remaining choices
         self.fields['title'].choices = [
             ('', _('Επιλέξτε τελική απόφαση')),
             *[choice for choice in choices if choice[0] != ''],
