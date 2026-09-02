@@ -222,6 +222,9 @@ class ApplicantCreateApplication(ApplicantCreate):
     success_url = 'bodyapplications:applicant_list_bodyapplications'
     headline = _('Δημιουργία Αιτήματος')
     back_url = ''
+    
+    def get_success_url(self):
+        return self.success_url
 
     def form_valid(self, form):
         collective_body = get_object_or_404(CollectiveBody.objects.active_now(), pk=self.kwargs['pk'])
@@ -278,11 +281,11 @@ class ApplicantUpdateApplication(ApplicantUpdate):
 
 class ApplicantListApplication(ApplicantList):
     model = Application
-    fields = ['request_subject', 'description', 'subject.decision', 'subject.collective_body', 'attachments.download']
+    fields = ['request_subject', 'description', 'subject.decision.decision', 'subject.collective_body', 'attachments.download']
     headers = {
         'request_subject': _('Θέμα Αιτήματος'),
         'description': _('Περιγραφή'),
-        'subject.decision': _('Απόφαση'),
+        'subject.decision.decision': _('Απόφαση'),
         'subject.collective_body': _('Προς'),
         'attachments.download': _('Επισυναπτόμενα')
     }

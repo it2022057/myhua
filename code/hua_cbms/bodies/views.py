@@ -84,8 +84,17 @@ class SecUpdateCollectiveBody(SecUpdate):
     model = CollectiveBody
     form_class = forms.SecCollectiveBodyForm
     success_url = 'bodies:sec_list_collectivebodies'
-    delete_url = 'bodies:sec_delete_collectivebody'
     confirm_modal = True
+    
+    def setup(self, request, *args, **kwargs):
+        super().setup(request, *args, **kwargs)
+
+        if request.user.is_superuser:
+            # If the user is the admin, assign a delete_url
+            self.delete_url = 'bodies:sec_delete_collectivebody'
+        else:
+            # else do not, as it gets hidden automatically, because only the admin can delete a collective body
+            self.delete_url = None
 
     def form_valid(self, form):
         # Store the old participant ids before saving the changes
@@ -171,9 +180,13 @@ class SecListCollectiveBody(SecList):
             self.create_url = None
 
 
-class SecDeleteCollectiveBody(SecDelete):
+class SecDeleteCollectiveBody(UserPassesTestMixin, SecDelete):
     model = CollectiveBody
     success_url = 'bodies:sec_list_collectivebodies'
+    
+    # Only the admin can delete a collective body
+    def test_func(self):
+        return self.request.user.is_superuser
 
 
 class SecCollectiveBodyOverviewList(SecMultipleList):
