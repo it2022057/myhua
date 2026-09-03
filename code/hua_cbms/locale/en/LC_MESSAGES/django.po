@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-03 02:12+0300\n"
+"POT-Creation-Date: 2026-09-03 14:48+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -947,8 +947,8 @@ msgstr "Attachment"
 #: attachments/models.py:70 bodies/views.py:227 bodies/views.py:244
 #: bodies/views.py:337 bodies/views.py:511 bodies/views.py:526
 #: bodyapplications/views.py:173 bodyapplications/views.py:191
-#: bodyapplications/views.py:290 subjects/views.py:87 subjects/views.py:255
-#: subjects/views.py:283 subjects/views.py:308
+#: subjects/views.py:87 subjects/views.py:255 subjects/views.py:283
+#: subjects/views.py:308
 msgid "Επισυναπτόμενα"
 msgstr "Attachments"
 
@@ -980,7 +980,7 @@ msgstr "Decision Attachment"
 msgid "Επισυναπτόμενα Αποφάσεων"
 msgstr "Decision Attachment"
 
-#: attachments/models.py:123 bodies/views.py:336 bodyapplications/views.py:288
+#: attachments/models.py:123 bodies/views.py:336 bodyapplications/views.py:289
 #: subjects/models.py:140
 msgid "Απόφαση"
 msgstr "Decision"
@@ -1097,7 +1097,7 @@ msgid "Συλλογικό Όργανο"
 msgstr "Collective Body"
 
 #: bodies/templates/bodies/partials/bodies_menu.html:7
-#: bodyapplications/models.py:38 bodyapplications/views.py:292
+#: bodyapplications/models.py:38 bodyapplications/views.py:294
 msgid "Αιτήσεις"
 msgstr "Applications"
 
@@ -1252,13 +1252,13 @@ msgstr "Applications to the Collective Body"
 
 #: bodies/views.py:331 bodyapplications/forms.py:17
 #: bodyapplications/models.py:43 bodyapplications/views.py:169
-#: bodyapplications/views.py:186 bodyapplications/views.py:286
+#: bodyapplications/views.py:186 bodyapplications/views.py:287
 msgid "Θέμα Αιτήματος"
 msgstr "Subject of Request"
 
 #: bodies/views.py:332 bodyapplications/forms.py:18
 #: bodyapplications/models.py:44 bodyapplications/views.py:170
-#: bodyapplications/views.py:187 bodyapplications/views.py:287
+#: bodyapplications/views.py:187 bodyapplications/views.py:288
 msgid "Περιγραφή"
 msgstr "Description"
 
@@ -1381,11 +1381,19 @@ msgstr "The request from the applicant, with username %s, has been deleted."
 msgid "Δημιουργία Αιτήματος"
 msgstr "Create Application"
 
-#: bodyapplications/views.py:289
+#: bodyapplications/views.py:290
+msgid "Επισυναπτόμενα Απόφασης"
+msgstr "Decision Attachments"
+
+#: bodyapplications/views.py:291
 msgid "Προς"
 msgstr "To"
 
-#: bodyapplications/views.py:294
+#: bodyapplications/views.py:292
+msgid "Επισυναπτόμενα Αίτησης"
+msgstr "Application Attachments"
+
+#: bodyapplications/views.py:296
 msgid "Κάνε Αίτηση"
 msgstr "Apply"
 

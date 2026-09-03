@@ -281,13 +281,15 @@ class ApplicantUpdateApplication(ApplicantUpdate):
 
 class ApplicantListApplication(ApplicantList):
     model = Application
-    fields = ['request_subject', 'description', 'subject.decision.decision', 'subject.collective_body', 'attachments.download']
+    fields = ['request_subject', 'description', 'subject.decision.decision', 'subject.decision.attachments.download',
+              'subject.collective_body', 'attachments.download']
     headers = {
         'request_subject': _('Θέμα Αιτήματος'),
         'description': _('Περιγραφή'),
         'subject.decision.decision': _('Απόφαση'),
+        'subject.decision.attachments.download': _('Επισυναπτόμενα Απόφασης'),
         'subject.collective_body': _('Προς'),
-        'attachments.download': _('Επισυναπτόμενα')
+        'attachments.download': _('Επισυναπτόμενα Αίτησης')
     }
     table_title = _('Αιτήσεις')
     create_url = 'bodies:applicant_list_collectivebodies'

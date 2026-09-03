@@ -324,7 +324,7 @@ class SecCollectiveBodyOverviewList(SecMultipleList):
                 next=self.request.path
             ),
             Table(
-                fields=['request_subject', 'description', 'created_at', 'subject', 'applicant', 'subject.decision',
+                fields=['request_subject', 'description', 'created_at', 'subject', 'applicant', 'subject.decision.decision',
                         'attachments.download'],
                 table_title=_('Αιτήσεις προς το Συλλογικό Όργανο'),
                 headers={
@@ -333,7 +333,7 @@ class SecCollectiveBodyOverviewList(SecMultipleList):
                     'created_at': _('Ημ/νία Υποβολής'),
                     'subject': _('Θέμα'),
                     'applicant': _('Αιτών'),
-                    'subject.decision': _('Απόφαση'),
+                    'subject.decision.decision': _('Απόφαση'),
                     'attachments.download': _('Επισυναπτόμενα')
                 },
                 table_id='applications',
