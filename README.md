@@ -252,6 +252,28 @@ docker compose exec web python manage.py runscript initial_data
 docker compose exec web python manage.py runscript initial_data2
 ```
 
+### 🧪 Automated Tests
+
+The project includes **automated Django tests** organized per application inside `tests/` directories. The tests cover important parts of the application such as *models, forms, views, permissions, access scopes, authentication and API functionality*. The automated test suite is intended to be executed using the development Docker environment before production deployment.
+
+A shared `ProjectTestCase`, containing common test data used by multiple test modules, is defined in:
+
+```text
+core/testing.py
+```
+
+#### Run all tests:
+
+```
+docker compose exec web python manage.py test
+```
+
+#### Run one app:
+
+```
+docker compose exec web python manage.py test <app_name>
+```
+
 ### 🌐 Compile messages
 
 To run the multilingual site we also need to compile the messages:
