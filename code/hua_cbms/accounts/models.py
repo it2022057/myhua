@@ -121,8 +121,7 @@ def create_personal_info_if_required(obj):
 
 class ScopedStaffMemberQuery(ScopedQueryDep):
     def scope_filter(self, scope):
-        return self.filter(collectivebody_participants__in=scope['collective_bodies']).distinct()
-
+        return self.filter(internal_department__in=scope['departments'])
 
 class StaffMember(PersonStrMixin, ScopedModelDep):
     """
@@ -165,7 +164,7 @@ class StaffMember(PersonStrMixin, ScopedModelDep):
     can_post_theses = models.BooleanField(null=True, default=True, verbose_name=_('Δυνατότητα δημοσίευσης διατριβών'))
 
     def scope_query(self, scope):
-        return scope['collective_bodies'].filter(id__in=self.collectivebody_participants.values('id')).exists()
+        return scope['departments'].filter(id = self.internal_department.id).exists()
 
     def save(self, *args, **kwargs):
         self.display_name = self.given_name + ' ' + self.surname

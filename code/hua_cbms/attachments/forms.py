@@ -43,8 +43,7 @@ class BaseAttachmentForm(GenericModelForm):
     def clean(self):
         cleaned_data = super().clean()
 
-        name = cleaned_data['name']
-        file = cleaned_data['file']
+        file = cleaned_data.get('file')
 
         try:
             validate_file(file)

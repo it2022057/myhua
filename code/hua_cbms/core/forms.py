@@ -1,7 +1,6 @@
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Row, Div, Field, HTML
 from django import forms
-from hua_cbms import settings
 from django.utils.translation import gettext_lazy as _
 
 from .widgets import DatePickerInput, DateTimePickerInput
@@ -81,7 +80,8 @@ class GenericModelForm(forms.ModelForm):
             form_model = self._meta.model
             attribute = getattr(form_model, field_name)
             related_model = attribute.field.related_model
-            field.queryset = related_model.objects.sc_filter(user=self.user)
+            # field.queryset = related_model.objects.sc_filter(user=self.user)
+            self.fields[field_name].queryset = related_model.objects.sc_filter(user=self.user)
 
         for field_name in self.required_fields_extra:
             self.fields[field_name].required = True

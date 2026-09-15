@@ -196,7 +196,7 @@ class StaffMemberAutocompleteTests(ProjectTestCase):
 
         self.assertIn(self.participant.pk, ids)
         self.assertIn(self.president.pk, ids)
-        self.assertIn(self.other_staff.pk, ids)
+        self.assertNotIn(self.other_staff.pk, ids)
 
     def test_excludes_selected_participants_when_selecting_president(self):
         ids = self._get_result_ids(

@@ -523,12 +523,12 @@ class ParticipantAutocomplete(ApplicantAutocomplete):
 
         collective_body = CollectiveBody.objects.get(pk=collective_body_id)
 
-        # Start from the participants of this collective body only
-        qs = collective_body.participants.all()
-
-        if collective_body.president:
-            # Also include the president, since he/she is not stored in the participants list
-            qs = qs | StaffMember.objects.filter(pk=collective_body.president.pk)
+        # Start from the participants of this collective body only, and also include the president,
+        # since he/she is not stored in the participants list
+        qs = StaffMember.objects.filter(
+            Q(collectivebody_participants=collective_body) |
+            Q(pk=collective_body.president_id)
+        ).distinct()
 
         # Get the staff members that are already selected as present or absent
         present_ids = self.get_forwarded_ids('present')
@@ -561,7 +561,7 @@ class ParticipantAutocomplete(ApplicantAutocomplete):
 
 class StaffMemberAutocomplete(ParticipantAutocomplete):
     def get_queryset(self):
-        qs = StaffMember.objects.all()
+        qs = StaffMember.objects.sc_filter(user=self.request.user)
 
         participant_ids = self.get_forwarded_ids('participants')
         if participant_ids:
