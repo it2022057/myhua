@@ -1,5 +1,3 @@
-from urllib import response
-
 from dal import autocomplete
 from django.contrib.auth import get_user_model, logout, update_session_auth_hash
 from django.contrib.auth.decorators import login_required
@@ -19,7 +17,8 @@ from hua_cbms import settings
 from mailer.gmail import notify
 from scopes.models import Secretariat
 from .checks import app_urls, is_secretariat, is_staff_member, is_applicant
-from .forms import SignUpForm, RegisterForm, PasswordForm, ForgotPasswordForm, SecStaffForm, SecPersonalInfoForm, SecParticipantsForm
+from .forms import SignUpForm, RegisterForm, PasswordForm, ForgotPasswordForm, SecStaffForm, SecPersonalInfoForm, \
+    SecParticipantsForm
 from .models import StaffMember, PersonalInfo
 from .utils import complexity_message, get_domain_uri, send_password_link
 
@@ -93,7 +92,7 @@ class SecListStaffMember(views.ScopedSecListView):
 
 class SecDeleteStaffMember(views.ScopedDeleteView):
     model = StaffMember
-    success_url = 'subjects:sec_list_staff_members'
+    success_url = 'accounts:sec_list_staff_members'
     success_message = _('Το μέλος του προσωπικού διαγράφηκε.')
 
 
@@ -112,6 +111,7 @@ class SecUpdateParticipants(views.ScopedSecUpdateView):
 
 class SecListParticipants(views.ScopedSecListView):
     model = StaffMember
+    template_name = 'bodies/list_objects.html'
     fields = ['display_name', 'title', 'email']
     headers = {
         'display_name': _('Ονοματεπώνυμο'),
@@ -520,7 +520,6 @@ class ParticipantAutocomplete(ApplicantAutocomplete):
 
         if not collective_body_id:
             return StaffMember.objects.none()
-
 
         collective_body = CollectiveBody.objects.get(pk=collective_body_id)
 
