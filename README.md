@@ -160,6 +160,14 @@ AUTH_LDAP_BIND_DN=it048579,ou=People,dc=hua,dc=gr
 
 The `AUTH_LDAP_BIND_PASSWORD` should be set to the password you use to login to your university Gmail account. The Django app needs these *credentials* to carry out user searches at the **University's LDAP server**. Remember to stay connected at the University's **VPN service** for the searches to work properly!
 
+For `DJANGO_SECRET_KEY` you need to generate a **Django secret key** using:
+
+```
+docker compose -f docker-compose-prod.yaml run --rm --no-deps web python -c "from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())"
+```
+
+Then add the generated key to your `.env` file. The `DJANGO_SECRET_KEY` variable is required by Django for cryptographic signing and other security-related functionality and should not be committed to the repository.
+
 ## 🐳 Docker Deployment (Development Environment)
 
 The development environment is defined in: **`docker-compose.yaml`**

@@ -124,7 +124,7 @@ class SecUpdateApplication(SecUpdate):
         # Sends an email notification to the applicant that the application he/she made, just got updated
         email = application.applicant.email
         message_body = SEC_APPLICATION_UPDATE_NOTIFICATION_BODY.format(applicant_username=escape(application.applicant.username))
-        notify.delay(email, SEC_APPLICATION_UPDATE_NOTIFICATION_SUBJECT, message_body, cc=settings.ALWAYS_NOTIFY)
+        notify.delay(email, SEC_APPLICATION_UPDATE_NOTIFICATION_SUBJECT, message_body)
 
         return response
 
@@ -261,7 +261,7 @@ class ApplicantCreateApplication(ApplicantCreate):
             url=url,
         )
         attachment_paths = [attachment.file.path for attachment in application.attachments.all() if attachment.file]
-        notify.delay(settings.ALWAYS_NOTIFY, SEC_APPLICATION_NOTIFICATION_SUBJECT, message_body, attachments=attachment_paths, cc=email)
+        notify.delay(email, SEC_APPLICATION_NOTIFICATION_SUBJECT, message_body, attachments=attachment_paths)
 
         return response
 
