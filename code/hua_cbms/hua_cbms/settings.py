@@ -34,9 +34,11 @@ if DUMMY_EMAILS:
     print('Outputting email messages to console because env variable DUMMY_EMAILS is set to True.')
 
 ALLOWED_HOSTS = ['myfaculty-dev.ditapps.hua.gr', 'localhost', '127.0.0.1', '10.100.59.105', '192.168.2.109',
-                 '192.168.2.10', '10.100.59.214', 'mydep.ditapps.hua.gr']
-CSRF_TRUSTED_ORIGINS = ['https://mydep.ditapps.hua.gr', 'https://myfaculty-dev.ditapps.hua.gr', 'http://localhost:30100',
-                        'http://127.0.0.1:30100']
+                 '192.168.2.10', '10.100.59.214', 'mydep.ditapps.hua.gr', 'myhua.loukidns.ip-ddns.com',
+                 '35.210.228.141']
+CSRF_TRUSTED_ORIGINS = ['https://mydep.ditapps.hua.gr', 'https://myfaculty-dev.ditapps.hua.gr',
+                        'http://localhost:30100', 'http://127.0.0.1:30100', 'https://myhua.loukidns.ip-ddns.com',
+                        'http://35.210.228.141:30100']
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
@@ -63,7 +65,7 @@ INSTALLED_APPS = [
     'django_extensions',
     'dal',
     'dal_select2',
-    'hua_cbms.apps.HuaAdminSiteConfig', # replaces django.contrib.admin, because a custom AdminSite is used
+    'hua_cbms.apps.HuaAdminSiteConfig',  # replaces django.contrib.admin, because a custom AdminSite is used
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -281,7 +283,7 @@ MIN_LENGTH = 8
 PASSWORD_SPECIAL_CHARS = '{}!@#$%^&*()-+'
 
 # User registration options
-MAX_AGE = 32000 # number seconds one time registration links are active
+MAX_AGE = 32000  # number seconds one time registration links are active
 REGISTRATION_MESSAGE = emails.USER_REGISTRATION_MESSAGE
 REGISTRATION_SUBJECT = 'Activate your account / Ενεργοποιήση του Λογαριασμού σας'
 
@@ -293,11 +295,11 @@ RECAPTCHA_PUBLIC_KEY = os.environ.get('RECAPTCHA_PUBLIC_KEY')
 RECAPTCHA_PRIVATE_KEY = os.environ.get('RECAPTCHA_PRIVATE_KEY')
 
 # Settings for reference letter invitations
-INVITATION_REFERENCE_MAX_AGE = 30 # Number of days that the invitation links are valid
+INVITATION_REFERENCE_MAX_AGE = 30  # Number of days that the invitation links are valid
 INVITATION_REFERENCE_MAX_AGE_SECS = INVITATION_REFERENCE_MAX_AGE * 24 * 60 * 60
 
 # Validity period for application confirmation links
-APPLICATION_MAX_AGE_DAYS = 7 # Number of days that the application links are valid
+APPLICATION_MAX_AGE_DAYS = 7  # Number of days that the application links are valid
 APPLICATION_MAX_AGE_SECS = APPLICATION_MAX_AGE_DAYS * 24 * 60 * 60
 
 # Reset password

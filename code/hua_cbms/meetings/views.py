@@ -1,3 +1,4 @@
+from django.db.models import Q
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
@@ -77,9 +78,9 @@ class SecUpdateMeeting(views.ScopedSecUpdateView):
 
         # Detect changes to the basic meeting details
         meeting_basic_info_change = (
-            old_meeting.date_and_time != meeting.date_and_time or
-            old_meeting.location != meeting.location or
-            old_meeting.notes != meeting.notes
+                old_meeting.date_and_time != meeting.date_and_time or
+                old_meeting.location != meeting.location or
+                old_meeting.notes != meeting.notes
         )
 
         # Notify participants when the basic meeting details change
@@ -113,7 +114,6 @@ class SecListMeeting(views.ScopedSecListView):
 
         # If the user is a secretariat, return the scoped meetings that did not conclude
         if not self.request.user.is_superuser:
-
             # Use the start of today instead of the current time,
             # so today's earlier meetings are not hidden.
             start_of_today = timezone.localtime().replace(hour=0, minute=0, second=0, microsecond=0)
@@ -145,7 +145,7 @@ class StaffListMeeting(views.StaffListView):
         'notes': _('Σημειώσεις')
     }
     table_title = _('Συνεδριάσεις')
-    ordering = ['collective_body', 'date_and_time']
+    ordering = ['date_and_time']
     create_button = False
     update_buttons = False
     back_url = reverse_lazy('bodies:staff_list_collectivebodies')
@@ -153,7 +153,10 @@ class StaffListMeeting(views.StaffListView):
     # Custom queryset that returns meetings scheduled for today or in the future, excluding past meetings
     def get_queryset(self):
         staff_member = get_object_or_404(StaffMember, user=self.request.user)
-        bodies = CollectiveBody.objects.active_now().filter(participants=staff_member)
+        bodies = CollectiveBody.objects.active_now().filter(
+            Q(participants=staff_member) |
+            Q(president=staff_member)
+        ).distinct()
         # Use the start of today instead of the current time,
         # so today's earlier meetings are not hidden.
         start_of_today = timezone.localtime().replace(hour=0, minute=0, second=0, microsecond=0)

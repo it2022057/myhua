@@ -541,6 +541,7 @@ class StaffCollectiveBodyOverviewList(StaffMultipleList):
                     'notes': _('Σημειώσεις')
                 },
                 table_id='meeting',
+                order=[[1, 'desc'], [0, 'asc']],
                 create_button=False,
                 update_buttons=False,
                 objects=Meeting.objects.filter(collective_body=body).order_by('index'),
